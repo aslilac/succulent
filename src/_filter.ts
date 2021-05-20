@@ -10,6 +10,5 @@ const makeSchema =
 	<T>(check: (x: unknown) => x is T): _Schema<T> =>
 	(...filters: readonly Filter<T>[]) =>
 		filters.length > 0
-			? (x: unknown): x is T =>
-					check(x) && filters.every((filter) => filter(x))
+			? (x: unknown): x is T => check(x) && filters.every((filter) => filter(x))
 			: check;
