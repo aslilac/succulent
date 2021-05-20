@@ -13,7 +13,7 @@
 		"typescript": "^4.2.4"
 	},
 	"scripts": {
-		"build": "yarn build:cjs && yarn:build:esm",
+		"build": "yarn build:cjs && yarn build:esm",
 		"build:cjs": "tsc -p . --module commonjs",
 		"build:esm": "tsc -p . --module esnext",
 		"fmt": "prettier --ignore-path .gitignore --write .",
