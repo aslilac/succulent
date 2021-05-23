@@ -1,8 +1,7 @@
 import { Schema } from "./schema";
-import { $string } from "./types/string";
 
 export function is<T>(x: unknown, schema: Schema<T>): x is T {
-	return typeof schema === "function" ? schema(x) : x === schema;
+	return typeof schema === "function" ? schema(x) : Object.is(x, schema);
 }
 
 type HasLength = { length: number };
@@ -33,11 +32,13 @@ export function union<T extends readonly unknown[]>(
 	return (t: unknown): t is T[number] => schemas.some((schema) => is(t, schema));
 }
 
-// function hi(x: unknown) {
-// 	if (is(x, union(1, 2, 3, $string))) {
-// 		x;
-// 	}
-// }
+import { $string } from "./types/string";
+function hi(x: unknown) {
+	if (is(x, union(1, 2, 3, $string))) {
+		// if (is(x, union(1, 2, 3, "hello"))) {
+		x;
+	}
+}
 
 export function or<X, Y>(x: Schema<X>, y: Schema<Y>): Schema<X | Y> {
 	return (t: unknown): t is X | Y => is(t, x) || is(t, y);
