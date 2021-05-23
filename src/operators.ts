@@ -32,13 +32,13 @@ export function union<T extends readonly unknown[]>(
 	return (t: unknown): t is T[number] => schemas.some((schema) => is(t, schema));
 }
 
-import { $string } from "./types/string";
-function hi(x: unknown) {
-	if (is(x, union(1, 2, 3, $string))) {
-		// if (is(x, union(1, 2, 3, "hello"))) {
-		x;
-	}
-}
+// import { $string } from "./types/string";
+// function hi(x: unknown) {
+// 	if (is(x, union(1, 2, 3, $string))) {
+// 		// if (is(x, union(1, 2, 3, "hello"))) {
+// 		x;
+// 	}
+// }
 
 export function or<X, Y>(x: Schema<X>, y: Schema<Y>): Schema<X | Y> {
 	return (t: unknown): t is X | Y => is(t, x) || is(t, y);
