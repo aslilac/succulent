@@ -2,7 +2,9 @@
 	"name": "succulent",
 	"author": "McKayla Washburn <mckayla@hey.com>",
 	"license": "MIT",
+	"version": "0.11.0",
 	"main": "target/main.js",
+	"repository": "https://github.com/partheseas/succulent",
 	"devDependencies": {
 		"@mckayla/prettier": "^0.8.90",
 		"@mckayla/tsconfig": "^0.41.0",
