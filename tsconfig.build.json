@@ -1,4 +1,4 @@
 {
 	"extends": ".",
-	"exclude": ["src/**/*.test.*"]
+	"exclude": ["**/*.test.*"]
 }

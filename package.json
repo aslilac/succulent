@@ -3,6 +3,7 @@
 	"author": "McKayla Washburn <mckayla@hey.com>",
 	"license": "MIT",
 	"version": "0.11.0",
+	"description": "Super simple data validation",
 	"main": "target/main.js",
 	"module": "target/module/main.js",
 	"types": "target/main.d.ts",

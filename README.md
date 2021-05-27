@@ -1,6 +1,6 @@
 # Succulent
 
-Dead simple data validation, built for TypeScript.
+Super simple data validation.
 
 ### Examples
 
