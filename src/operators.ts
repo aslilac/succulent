@@ -35,8 +35,13 @@ export function that<T>(schema: Schema<T>, ...filters: Filter<T>[]): Schema<T> {
 export function union<T extends readonly unknown[]>(
 	...schemas: readonly [...TSchema.WrapAll<T>]
 ): Schema<T[number]> {
-	return new Schema((t: unknown): t is T[number] =>
-		schemas.some((schema) => is(t, schema)),
+	return new Schema(
+		(t: unknown): t is T[number] => schemas.some((schema) => is(t, schema)),
+		function* () {
+			for (const schema of schemas) {
+				yield* Schema.from(schema);
+			}
+		},
 	);
 }
 

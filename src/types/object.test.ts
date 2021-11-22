@@ -1,5 +1,5 @@
 import { assertType } from "../_util";
-import { is, or } from "../operators";
+import { is, or, union } from "../operators";
 import { $boolean, $undefined } from "./constants";
 import { $number } from "./number";
 import { $object } from "./object";
@@ -51,6 +51,19 @@ test("$object", () => {
 test("$object with unwrapped literals", () => {
 	expect(is({ hi: "hi" }, $object({ hi: "hi" }))).toBe(true);
 	expect(is({ hi: "hi" }, $object({ hi: "hey" }))).toBe(false);
+});
+
+test("$object with optional keys", () => {
+	// I think exactOptionalPropertyTypes would actually make this fail, but
+	// I'm not sure what the solution would be if so.
+	type Test = { hi: string; optional?: string };
+	const schema = $object({ hi: $string, optional: union($string, $undefined) });
+
+	expect(is({ hi: "hi" }, schema)).toBe(true);
+
+	function _(x: unknown) {
+		if (is(x, schema)) assertType<Test, typeof x>(x);
+	}
 });
 
 test("Using $object to match an existing type", () => {

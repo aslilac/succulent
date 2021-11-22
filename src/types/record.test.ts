@@ -1,4 +1,4 @@
-import { is } from "../operators";
+import { is, union } from "../operators";
 import { $record } from "./record";
 import { $string } from "./string";
 
@@ -16,4 +16,10 @@ test("$record", () => {
 	expect(is({}, schema)).toBe(true);
 	expect(is(inst, schema)).toBe(true);
 	expect(is({ ...inst, f: false }, schema)).toBe(false);
+
+	const specific = $record(union("a", "b", "c"), $string);
+
+	expect(is({ a: "a", b: "b", c: "c" }, specific)).toBe(true);
+	expect(is(inst, specific)).toBe(true);
+	expect(is({}, specific)).toBe(false);
 });
