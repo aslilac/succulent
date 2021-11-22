@@ -1,6 +1,7 @@
 import { assertType } from "../_util";
 import { is } from "../operators";
-import { $boolean, $literal } from "./constants";
+import { $boolean } from "./constants";
+import { $literal } from "./misc";
 import { $number } from "./number";
 import { $string } from "./string";
 import { $monotuple, $tuple } from "./tuple";

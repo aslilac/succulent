@@ -1,13 +1,15 @@
 import { is } from "../operators";
 import { Schema } from "../schema";
 
-export function $tuple<T extends readonly unknown[]>(
-	...schemas: readonly [...Schema.WrapAll<T>]
+export function $tuple<T extends unknown[]>(
+	...schemas: [...Schema.WrapAll<T>]
 ): Schema<T> {
-	return (t: unknown): t is T =>
-		Array.isArray(t) &&
-		t.length === schemas.length &&
-		schemas.every((schema, i) => is(t[i], schema));
+	return new Schema(
+		(t: unknown): t is T =>
+			Array.isArray(t) &&
+			t.length === schemas.length &&
+			schemas.every((schema, i) => is(t[i], schema)),
+	);
 }
 
 type _MonotupleNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
@@ -20,6 +22,8 @@ export function $monotuple<T, N extends _MonotupleNumber>(
 	schema: Schema<T>,
 	length: N,
 ): Schema<_Monotuple<T, N>> {
-	return (t: unknown): t is _Monotuple<T, N> =>
-		Array.isArray(t) && t.length === length && t.every((x) => is(x, schema));
+	return new Schema(
+		(t: unknown): t is _Monotuple<T, N> =>
+			Array.isArray(t) && t.length === length && t.every((x) => is(x, schema)),
+	);
 }
