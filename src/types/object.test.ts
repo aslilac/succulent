@@ -11,51 +11,37 @@ test("$object", () => {
 	// assign the symbol we use here as a constant even though the whole point
 	// of Symbol.for is to return the same symbol when called with the same
 	// string multiple times.
-	const $k = Symbol();
-	const k = "k";
+	const k = Symbol();
 
 	const example = $object({
 		a: $boolean,
 		b: $number,
 		c: $string,
 		d: $object({
-			[$k]: $tuple($number, $number, $number, $number),
 			[k]: $tuple($number, $number, $number, $number),
+			k: $tuple($number, $number, $number, $number),
 		}),
 	});
 
-	const x = {
-		a: true,
-		b: 1,
-		c: "hi",
-		d: {},
-	};
-
-	const $y = {
-		...x,
-		d: { [$k]: [0, 0, 0, 0] },
-	};
-
-	const y = {
-		...x,
-		d: { [k]: [0, 0, 0, 0] },
-	};
+	const w = { a: true, b: 1, c: "hi", d: {} };
+	const x = { ...w, d: { [k]: [0, 0, 0, 0] } };
+	const y = { ...w, d: { k: [0, 0, 0, 0] } };
 
 	const z = {
-		...x,
+		...w,
 		d: {
-			[$k]: [0, 0, 0, 0],
 			[k]: [0, 0, 0, 0],
+			k: [0, 0, 0, 0],
 		},
 	};
 
+	expect(is(w, example)).toBe(false);
 	expect(is(x, example)).toBe(false);
-	expect(is($y, example)).toBe(false);
 	expect(is(y, example)).toBe(false);
 	expect(is(z, example)).toBe(true);
 
 	type Example = { a: boolean; b: number; c: string; d: ExampleD };
-	type ExampleD = { [$k]: Numbers; [k]: Numbers };
+	type ExampleD = { [k]: Numbers; k: Numbers };
 	type Numbers = [number, number, number, number];
 	function _(x: unknown) {
 		if (is(x, example)) assertType<Example, typeof x>(x);

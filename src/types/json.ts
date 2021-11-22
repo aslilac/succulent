@@ -2,7 +2,7 @@ type JsonString = string;
 const objectPrototype = Object.getPrototypeOf({});
 // const objectPrototype = Object.getPrototypeOf(Object.create(null));
 
-export function _json(x: any) {
+function _json(x: unknown): [boolean, any?] {
 	if (typeof x !== "string") {
 		return [false];
 	}
@@ -14,12 +14,12 @@ export function _json(x: any) {
 	}
 }
 
-export function $json(x: any): x is JsonString {
+export function $json(x: unknown): x is JsonString {
 	const [valid] = _json(x);
 	return valid;
 }
 
-export function $jsonobject(x: any): x is JsonString {
+export function $jsonobject(x: unknown): x is JsonString {
 	const [valid, result] = _json(x);
 
 	return (
@@ -30,7 +30,7 @@ export function $jsonobject(x: any): x is JsonString {
 	);
 }
 
-export function $jsonarray(x: any): x is JsonString {
+export function $jsonarray(x: unknown): x is JsonString {
 	const [valid, result] = _json(x);
 
 	return valid && Array.isArray(result);
