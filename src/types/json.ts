@@ -1,3 +1,5 @@
+import { Schema } from "../schema";
+
 type JsonString = string;
 const objectPrototype = Object.getPrototypeOf({});
 // const objectPrototype = Object.getPrototypeOf(Object.create(null));
@@ -14,12 +16,12 @@ function _json(x: unknown): [boolean, any?] {
 	}
 }
 
-export function $json(x: unknown): x is JsonString {
+export const $json = new Schema((x: unknown): x is JsonString => {
 	const [valid] = _json(x);
 	return valid;
-}
+});
 
-export function $jsonobject(x: unknown): x is JsonString {
+export const $jsonobject = new Schema((x: unknown): x is JsonString => {
 	const [valid, result] = _json(x);
 
 	return (
@@ -28,10 +30,10 @@ export function $jsonobject(x: unknown): x is JsonString {
 		result != null &&
 		Object.getPrototypeOf(result) === objectPrototype
 	);
-}
+});
 
-export function $jsonarray(x: unknown): x is JsonString {
+export const $jsonarray = new Schema((x: unknown): x is JsonString => {
 	const [valid, result] = _json(x);
 
 	return valid && Array.isArray(result);
-}
+});

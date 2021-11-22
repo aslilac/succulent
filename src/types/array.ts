@@ -1,5 +1,8 @@
-import { Schema } from "../schema";
+import { Schema, SchemaBase } from "../schema";
 
-export function $array<T>(schema: Schema<T>): Schema<T[]> {
-	return (t: unknown): t is T[] => Array.isArray(t) && t.every((x) => schema(x));
+export function $array<T>(schema: SchemaBase<T>): Schema<T[]> {
+	return new Schema(
+		(t: unknown): t is T[] =>
+			Array.isArray(t) && t.every((x) => Schema.check(schema, x)),
+	);
 }

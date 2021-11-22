@@ -1,6 +1,6 @@
 import { assertType } from "../_util";
 import { is } from "../operators";
-import { $falsy, $literal, $nullish } from "./misc";
+import { $falsy, $instanceof, $literal, $nullish } from "./misc";
 import { $object } from "./object";
 
 test("$falsy", () => {
@@ -18,6 +18,18 @@ test("$falsy", () => {
 	expect(is("hi", $falsy)).toBe(false);
 	expect(is([], $falsy)).toBe(false);
 	expect(is({}, $falsy)).toBe(false);
+});
+
+test("$instanceof", () => {
+	class Puppy {}
+	const puppy = new Puppy();
+
+	expect(is(puppy, $instanceof(Puppy))).toBe(true);
+	expect(is(Object.create(Puppy.prototype), $instanceof(Puppy))).toBe(true);
+
+	expect(is({}, $instanceof(Puppy))).toBe(false);
+	expect(is(Object.create(null), $instanceof(Puppy))).toBe(false);
+	expect(is(Puppy, $instanceof(Puppy))).toBe(false);
 });
 
 test("$literal", () => {

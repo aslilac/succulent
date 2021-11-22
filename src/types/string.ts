@@ -1,3 +1,3 @@
-export function $string(x: unknown): x is string {
-	return typeof x === "string";
-}
+import { Schema } from "../schema";
+
+export const $string = new Schema((x: unknown): x is string => typeof x === "string");

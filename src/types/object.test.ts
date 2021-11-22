@@ -48,6 +48,11 @@ test("$object", () => {
 	}
 });
 
+test("$object with unwrapped literals", () => {
+	expect(is({ hi: "hi" }, $object({ hi: "hi" }))).toBe(true);
+	expect(is({ hi: "hi" }, $object({ hi: "hey" }))).toBe(false);
+});
+
 test("Using $object to match an existing type", () => {
 	type Friend = { name: string };
 
