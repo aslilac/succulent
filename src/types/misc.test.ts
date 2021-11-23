@@ -9,6 +9,7 @@ import {
 	$nullish,
 	$regexp,
 	$url,
+	a,
 } from "./misc";
 import { $object } from "./object";
 
@@ -33,6 +34,7 @@ test("$instanceof", () => {
 	class Puppy {}
 	const puppy = new Puppy();
 
+	expect(is(puppy, a(Puppy))).toBe(true);
 	expect(is(puppy, $instanceof(Puppy))).toBe(true);
 	expect(is(Object.create(Puppy.prototype), $instanceof(Puppy))).toBe(true);
 
