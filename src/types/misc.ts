@@ -5,10 +5,10 @@ import { LiteralSchema, Schema } from "../schema";
 
 // Notably missing is (typeof NaN), which can't be included because it just
 // evaluates to number, and the vast majority of numbers are not falsy
-type Falsy = false | 0 | 0n | "" | Nullish;
+export type Falsy = false | 0 | 0n | "" | Nullish;
 export const $falsy = new Schema((x: unknown): x is Falsy => !x);
 
-type Nullish = undefined | null;
+export type Nullish = undefined | null;
 export const $nullish = new Schema((x: unknown): x is Nullish => x == null);
 
 export const $date = $instanceof(Date);

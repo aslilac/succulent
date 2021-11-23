@@ -42,7 +42,13 @@ export function union<T extends readonly unknown[]>(
 }
 
 export function or<X, Y>(x: SchemaBase<X>, y: SchemaBase<Y>): Schema<X | Y> {
-	return new Schema((t: unknown): t is X | Y => is(t, x) || is(t, y));
+	return new Schema(
+		(t: unknown): t is X | Y => is(t, x) || is(t, y),
+		function* () {
+			yield* Schema.from(x);
+			yield* Schema.from(y);
+		},
+	);
 }
 
 export function and<X, Y>(x: SchemaBase<X>, y: SchemaBase<Y>): Schema<X & Y> {
