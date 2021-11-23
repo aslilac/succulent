@@ -1,10 +1,10 @@
 import { Schema } from "../schema";
 
 type JsonString = string;
-const objectPrototype = Object.getPrototypeOf({});
+const objectPrototype = Object.getPrototypeOf({}) as unknown;
 // const objectPrototype = Object.getPrototypeOf(Object.create(null));
 
-function _json(x: unknown): [boolean, any?] {
+function _json(x: unknown): [boolean, unknown?] {
 	if (typeof x !== "string") {
 		return [false];
 	}

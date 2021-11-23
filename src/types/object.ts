@@ -4,9 +4,11 @@ export const $anyobject = new Schema(
 	(x: unknown): x is object => typeof x === "object" && x != null,
 );
 
-export function $object<T extends {}>(template: {
-	[K in keyof T]: SchemaBase<T[K]>;
-}): Schema<T> {
+export function $object<T extends object>(
+	template: {
+		[K in keyof T]: SchemaBase<T[K]>;
+	},
+): Schema<T> {
 	return new Schema(
 		(x: unknown): x is T =>
 			typeof x === "object" &&
@@ -16,7 +18,7 @@ export function $object<T extends {}>(template: {
 			// 	...Object.getOwnPropertySymbols(template),
 			// ]
 			Reflect.ownKeys(template).every((key) =>
-				// @ts-expect-error
+				// @ts-expect-error - Can't quite get these types
 				Schema.check(template[key], x[key]),
 			),
 	);

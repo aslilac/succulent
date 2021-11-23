@@ -1,7 +1,7 @@
-import { Schema, SchemaBase, TSchema } from "../schema";
+import { Schema, SchemaBase } from "../schema";
 
 export function $tuple<T extends unknown[]>(
-	...schemas: [...TSchema.WrapAll<T>]
+	...schemas: [...Schema.WrapAll<T>]
 ): Schema<T> {
 	return new Schema(
 		(t: unknown): t is T =>
@@ -13,11 +13,8 @@ export function $tuple<T extends unknown[]>(
 
 type _MonotupleNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
-type _$Monotuple<
-	T,
-	N extends _MonotupleNumber,
-	TArr extends T[],
-> = TArr["length"] extends N ? TArr : _$Monotuple<T, N, [...TArr, T]>;
+type _$Monotuple<T, N extends _MonotupleNumber, TArr extends T[]> =
+	TArr["length"] extends N ? TArr : _$Monotuple<T, N, [...TArr, T]>;
 type _Monotuple<T, N extends _MonotupleNumber> = _$Monotuple<T, N, []>;
 
 export function $monotuple<T, N extends _MonotupleNumber>(

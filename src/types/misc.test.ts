@@ -1,5 +1,5 @@
 import { assertType } from "../_util";
-import { is } from "../operators";
+import { is, union } from "../operators";
 import { $falsy, $instanceof, $literal, $nullish } from "./misc";
 import { $object } from "./object";
 
@@ -30,6 +30,10 @@ test("$instanceof", () => {
 	expect(is({}, $instanceof(Puppy))).toBe(false);
 	expect(is(Object.create(null), $instanceof(Puppy))).toBe(false);
 	expect(is(Puppy, $instanceof(Puppy))).toBe(false);
+
+	function _(x: unknown) {
+		if (is(x, $instanceof(Puppy))) assertType<Puppy, typeof x>(x);
+	}
 });
 
 test("$literal", () => {
@@ -41,11 +45,15 @@ test("$literal", () => {
 	expect(is(0, zero)).toBe(true);
 	expect(is(1, zero)).toBe(false);
 
+	expect(is(null, union(null, undefined))).toBe(true);
+	expect(is(undefined, union(null, undefined))).toBe(true);
+	expect(is(false, union(null, undefined))).toBe(false);
+
 	function _(x: unknown) {
 		if (is(x, $object({ kind }))) {
 			assertType<{ kind: "kind" }, typeof x>(x);
 
-			// @ts-expect-error
+			// @ts-expect-error - Types should be incompatible
 			assertType<{ kind: "kin" }, typeof x>(x);
 		}
 	}

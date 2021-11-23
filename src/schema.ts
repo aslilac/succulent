@@ -1,6 +1,4 @@
-// import { $literal } from "./types/misc";
-
-export namespace TSchema {
+export namespace Schema {
 	export type Unwrap<X> = X extends Schema<infer T> ? T : never;
 	export type UnwrapAll<X> = { [K in keyof X]: Unwrap<X[K]> };
 	export type Wrap<X> = SchemaBase<X>;
@@ -8,7 +6,7 @@ export namespace TSchema {
 }
 
 export type SchemaBase<T> = Schema<T> | (T extends LiteralSchema ? T : never);
-export type LiteralSchema = string | number;
+export type LiteralSchema = string | number | symbol | boolean | null | undefined;
 
 export class Schema<T> {
 	static check<T>(base: SchemaBase<T>, x: unknown): x is T {
@@ -43,6 +41,7 @@ export class Schema<T> {
 	 * Used to iterate through all possible values accepted by the schema,
 	 * for certain finite types
 	 */
+	// eslint-disable-next-line @typescript-eslint/no-empty-function, class-methods-use-this
 	[Symbol.iterator]: () => Iterator<T> = function* () {};
 
 	constructor(

@@ -7,6 +7,7 @@ export * from "./types/number";
 export * from "./types/object";
 export * from "./types/record";
 export * from "./types/string";
+export * from "./types/symbol";
 export * from "./types/tuple";
 export * from "./operators";
 export * from "./schema";

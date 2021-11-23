@@ -11,37 +11,37 @@ test("$object", () => {
 	// assign the symbol we use here as a constant even though the whole point
 	// of Symbol.for is to return the same symbol when called with the same
 	// string multiple times.
-	const k = Symbol();
+	const key = Symbol("k");
 
 	const example = $object({
 		a: $boolean,
 		b: $number,
 		c: $string,
 		d: $object({
-			[k]: $tuple($number, $number, $number, $number),
-			k: $tuple($number, $number, $number, $number),
+			[key]: $tuple($number, $number, $number, $number),
+			key: $tuple($number, $number, $number, $number),
 		}),
 	});
 
-	const w = { a: true, b: 1, c: "hi", d: {} };
-	const x = { ...w, d: { [k]: [0, 0, 0, 0] } };
-	const y = { ...w, d: { k: [0, 0, 0, 0] } };
+	const i = { a: true, b: 1, c: "hi", d: {} };
+	const j = { ...i, d: { [key]: [0, 0, 0, 0] } };
+	const k = { ...i, d: { key: [0, 0, 0, 0] } };
 
-	const z = {
-		...w,
+	const l = {
+		...i,
 		d: {
-			[k]: [0, 0, 0, 0],
-			k: [0, 0, 0, 0],
+			[key]: [0, 0, 0, 0],
+			key: [0, 0, 0, 0],
 		},
 	};
 
-	expect(is(w, example)).toBe(false);
-	expect(is(x, example)).toBe(false);
-	expect(is(y, example)).toBe(false);
-	expect(is(z, example)).toBe(true);
+	expect(is(i, example)).toBe(false);
+	expect(is(j, example)).toBe(false);
+	expect(is(k, example)).toBe(false);
+	expect(is(l, example)).toBe(true);
 
 	type Example = { a: boolean; b: number; c: string; d: ExampleD };
-	type ExampleD = { [k]: Numbers; k: Numbers };
+	type ExampleD = { [key]: Numbers; key: Numbers };
 	type Numbers = [number, number, number, number];
 	function _(x: unknown) {
 		if (is(x, example)) assertType<Example, typeof x>(x);
@@ -72,15 +72,13 @@ test("Using $object to match an existing type", () => {
 	// Validates that the object has a key of name with type string
 	is<Friend>({}, $object({ name: $string }));
 
-	// @ts-expect-error
-	// Doesn't have name!
+	// @ts-expect-error - Doesn't have name!
 	is<Friend>({}, $object({ count: $number }));
 
 	// Extra properties are fine
 	is<Friend>({}, $object({ name: $string, count: $number }));
 
-	// @ts-expect-error
-	// string | undefined is not assignable to type string
+	// @ts-expect-error - string | undefined is not assignable to type string
 	is<Friend>({}, $object({ name: or($undefined, $string) }));
 
 	// This one works fine, because we're using Partial<Friend> instead of Friend

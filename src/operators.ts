@@ -1,4 +1,4 @@
-import { Schema, SchemaBase, TSchema } from "./schema";
+import { Schema, SchemaBase } from "./schema";
 
 export function is<T>(x: unknown, schema: SchemaBase<T>): x is T {
 	return Schema.check(schema, x);
@@ -22,36 +22,24 @@ export function nonEmpty(x: HasLength) {
 	return x.length > 0;
 }
 
-interface Filter<T> {
-	(x: T): boolean;
-}
+type Filter<T> = (x: T) => boolean;
 
-export function that<T>(schema: Schema<T>, ...filters: Filter<T>[]): Schema<T> {
+export function that<T>(schema: Schema<T>, ...filters: Array<Filter<T>>): Schema<T> {
 	return new Schema(
 		(x: unknown): x is T => is(x, schema) && filters.every((filter) => filter(x)),
 	);
 }
 
 export function union<T extends readonly unknown[]>(
-	...schemas: readonly [...TSchema.WrapAll<T>]
+	...schemas: readonly [...Schema.WrapAll<T>]
 ): Schema<T[number]> {
 	return new Schema(
 		(t: unknown): t is T[number] => schemas.some((schema) => is(t, schema)),
 		function* () {
-			for (const schema of schemas) {
-				yield* Schema.from(schema);
-			}
+			for (const schema of schemas) yield* Schema.from(schema);
 		},
 	);
 }
-
-// import { $string } from "./types/string";
-// function hi(x: unknown) {
-// 	if (is(x, union(1, 2, 3, $string))) {
-// 		// if (is(x, union(1, 2, 3, "hello"))) {
-// 		x;
-// 	}
-// }
 
 export function or<X, Y>(x: SchemaBase<X>, y: SchemaBase<Y>): Schema<X | Y> {
 	return new Schema((t: unknown): t is X | Y => is(t, x) || is(t, y));

@@ -12,6 +12,5 @@ test("$array", () => {
 
 	const undefinedArray = $array($undefined);
 	expect(is(new Array(100), undefinedArray)).toBe(true);
-	// XXX: I want this to be false, but empty items are a pain
-	expect(is(new Array(100), numArray)).toBe(true);
+	expect(is(new Array(100), numArray)).toBe(false);
 });

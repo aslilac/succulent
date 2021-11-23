@@ -15,6 +15,8 @@ test("$int", () => {
 
 test("$number", () => {
 	expect(is(0, $number)).toBe(true);
+	expect(is(0, 0)).toBe(true);
+	expect(is(1, 0)).toBe(false);
 	expect(is(NaN, $number)).toBe(false);
 	expect(is(false, $number)).toBe(false);
 });

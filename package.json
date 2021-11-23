@@ -3,7 +3,15 @@
 	"author": "McKayla Washburn <mckayla@hey.com>",
 	"license": "MIT",
 	"version": "0.12.0",
-	"description": "Super simple data validation",
+	"description": "Powerful and easy runtime type checking",
+	"keywords": [
+		"typescript",
+		"type checking",
+		"validation",
+		"types",
+		"type safety",
+		"runtypes"
+	],
 	"main": "target/main.js",
 	"module": "target/module/main.js",
 	"types": "target/main.d.ts",
@@ -12,9 +20,11 @@
 		"target/**"
 	],
 	"devDependencies": {
-		"@mckayla/prettier": "^2.0.0",
-		"@mckayla/tsconfig": "^4.3.0",
+		"@mckayla/prettier": "^1.0.1",
+		"@mckayla/tsconfig": "^1.0.1",
 		"@types/jest": "^27.0.3",
+		"eslint": "^8.3.0",
+		"eslint-config-mckayla": "^1.0.4",
 		"jest": "^27.3.1",
 		"prettier": "^2.4.1",
 		"ts-jest": "^27.0.7",
@@ -25,6 +35,7 @@
 		"build:cjs": "tsc -p tsconfig.build.json --module commonjs --declaration",
 		"build:esm": "tsc -p tsconfig.build.json --module esnext --outdir target/module",
 		"fmt": "prettier --ignore-path .gitignore --write .",
+		"lint": "eslint .",
 		"prepack": "npm run build",
 		"test": "jest"
 	}
