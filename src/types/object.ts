@@ -4,11 +4,9 @@ export const $anyobject = new Schema(
 	(x: unknown): x is object => typeof x === "object" && x != null,
 );
 
-export function $object<T extends object>(
-	template: {
-		[K in keyof T]: SchemaBase<T[K]>;
-	},
-): Schema<T> {
+export function $object<T extends object>(template: {
+	[K in keyof T]: SchemaBase<T[K]>;
+}): Schema<T> {
 	return new Schema(
 		(x: unknown): x is T =>
 			typeof x === "object" &&
