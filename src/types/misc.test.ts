@@ -1,6 +1,15 @@
 import { assertType } from "../_util";
 import { is, union } from "../operators";
-import { $falsy, $instanceof, $literal, $nullish } from "./misc";
+import {
+	$date,
+	$error,
+	$falsy,
+	$instanceof,
+	$literal,
+	$nullish,
+	$regexp,
+	$url,
+} from "./misc";
 import { $object } from "./object";
 
 test("$falsy", () => {
@@ -34,6 +43,36 @@ test("$instanceof", () => {
 	function _(x: unknown) {
 		if (is(x, $instanceof(Puppy))) assertType<Puppy, typeof x>(x);
 	}
+});
+
+test("$date", () => {
+	expect(is(new Date(), $date)).toBe(true);
+	expect(is(Date.now(), $date)).toBe(false);
+});
+
+test("$error", () => {
+	expect(is(new Error(), $error)).toBe(true);
+	expect(is(new TypeError(), $error)).toBe(true);
+
+	function _(x: TypeError) {
+		if (is(x, $error)) {
+			// I feel like this shouldn't work? We end up losing specificity here,
+			// because x becomes `Error` instead of `TypeError`, but in this specific
+			// case they're duck-typed together, so it doesn't make a difference.
+			assertType<TypeError, typeof x>(x);
+			assertType<typeof x, TypeError>(x);
+		}
+	}
+});
+
+test("$regexp", () => {
+	expect(is(/hi/, $regexp)).toBe(true);
+	expect(is("hi", $regexp)).toBe(false);
+});
+
+test("$url", () => {
+	expect(is(new URL("/", "https://mckayla.dev"), $url)).toBe(true);
+	expect(is("https://mckayla.dev", $url)).toBe(false);
 });
 
 test("$literal", () => {

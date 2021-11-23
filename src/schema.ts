@@ -6,7 +6,14 @@ export namespace Schema {
 }
 
 export type SchemaBase<T> = Schema<T> | (T extends LiteralSchema ? T : never);
-export type LiteralSchema = string | number | symbol | boolean | null | undefined;
+export type LiteralSchema =
+	| string
+	| number
+	| bigint
+	| symbol
+	| boolean
+	| null
+	| undefined;
 
 export class Schema<T> {
 	static check<T>(base: SchemaBase<T>, x: unknown): x is T {

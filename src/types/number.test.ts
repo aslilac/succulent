@@ -1,5 +1,5 @@
 import { is } from "../operators";
-import { $finite, $int, $number } from "./number";
+import { $bigint, $finite, $int, $number } from "./number";
 
 test("$finite", () => {
 	expect(is(0, $finite)).toBe(true);
@@ -19,4 +19,11 @@ test("$number", () => {
 	expect(is(1, 0)).toBe(false);
 	expect(is(NaN, $number)).toBe(false);
 	expect(is(false, $number)).toBe(false);
+});
+
+test("$bigint", () => {
+	expect(is(0n, $bigint)).toBe(true);
+	expect(is(0, $bigint)).toBe(false);
+	expect(is(0n, 0n)).toBe(true);
+	expect(is(0, 0n)).toBe(false);
 });
