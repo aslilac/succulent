@@ -5,7 +5,15 @@ export namespace Schema {
 	export type WrapAll<X> = { [K in keyof X]: Wrap<X[K]> };
 }
 
-export type SchemaBase<T> = Schema<T> | (T extends LiteralSchema ? T : never);
+export type SchemaBase<T> = T extends Schema<infer X>
+	? T
+	:
+			| Schema<T>
+			| (T extends LiteralSchema ? T : never)
+			| (T extends Array<unknown>
+					? ArraySchema<T extends Schema<infer X> ? X[] : T>
+					: never);
+export type ArraySchema<T extends Array<unknown>> = [SchemaBase<T[number]>];
 export type LiteralSchema =
 	| string
 	| number
@@ -66,6 +74,13 @@ export class Schema<T> {
 		else if (typeof base === "function") {
 			this.check = base;
 			if (iter) this[Symbol.iterator] = iter;
+			return;
+		}
+
+		// Constructing a Schema from an ArraySchema
+		else if (Array.isArray(base) && base.length === 1) {
+			// this.check = $array(base)
+			this.check = (x: unknown): x is T => false;
 			return;
 		}
 
