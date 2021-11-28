@@ -15,7 +15,7 @@
 	"main": "target/main.js",
 	"module": "target/module/main.js",
 	"types": "target/main.d.ts",
-	"repository": "https://github.com/partheseas/succulent",
+	"repository": "https://github.com/aslilac/succulent",
 	"files": [
 		"target/**"
 	],
