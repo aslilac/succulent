@@ -1,8 +1,7 @@
 {
 	"extends": "@mckayla/tsconfig",
 	"compilerOptions": {
-		"outDir": "target",
-		"noUnusedLocals": false
+		"outDir": "./target"
 	},
-	"include": ["src/**/*"]
+	"include": ["./src/**/*"]
 }
