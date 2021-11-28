@@ -54,3 +54,15 @@ export function or<X, Y>(x: SchemaBase<X>, y: SchemaBase<Y>): Schema<X | Y> {
 export function and<X, Y>(x: SchemaBase<X>, y: SchemaBase<Y>): Schema<X & Y> {
 	return new Schema((t: unknown): t is X & Y => is(t, x) && is(t, y));
 }
+
+export function oneOf<T>(x: Iterable<T>): Schema<T> {
+	return new Schema((t: unknown): t is T => {
+		for (const value of x) {
+			if (Object.is(t, value)) {
+				return true;
+			}
+		}
+
+		return false;
+	});
+}
