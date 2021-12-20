@@ -1,15 +1,40 @@
 import { LiteralSchema, Schema } from "../schema";
+import { union } from "../operators";
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function $instanceof<T extends Function>(t: T) {
+	return new Schema((x: unknown): x is T["prototype"] => x instanceof t);
+}
+
+/**
+ * Alias for $instanceof, i.e. checks if a value is "a"/an `T`
+ */
+export const a = $instanceof;
+
+export function $literal<T extends LiteralSchema>(t: T) {
+	// @ts-expect-error - This should be fine, because LiteralSchema is a
+	// valid type to pass, but TypeScript is unhappy
+	return new Schema(t);
+}
 
 // Truthy is intentionally absent from this set because nearly anything can be truthy,
 // which is not very useful for type narrowing.
 
 // Notably missing is (typeof NaN), which can't be included because it just
-// evaluates to number, and the vast majority of numbers are not falsy
-export type Falsy = false | 0 | 0n | "" | Nullish;
-export const $falsy = new Schema((x: unknown): x is Falsy => !x);
+// evaluates to `number`, and the vast majority of numbers are not falsy
+export type falsy = false | 0 | 0n | "" | nullish;
+export type nullish = undefined | null;
 
-export type Nullish = undefined | null;
-export const $nullish = new Schema((x: unknown): x is Nullish => x == null);
+export const $falsy = new Schema((x: unknown): x is falsy => !x);
+export const $nullish = new Schema((x: unknown): x is nullish => x == null);
+
+export function $optional<T>(schema: Schema<T>): Schema<T | undefined> {
+	return union(schema, undefined);
+}
+
+export function $maybe<T>(schema: Schema<T>): Schema<T | nullish> {
+	return union(schema, $nullish);
+}
 
 export const $date = $instanceof(Date);
 export const $error = $instanceof(Error);
@@ -27,19 +52,3 @@ export const $Uint32Array = $instanceof(Uint32Array);
 export const $BigUint64Array = $instanceof(BigUint64Array);
 export const $Float32Array = $instanceof(Float32Array);
 export const $Float64Array = $instanceof(Float64Array);
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function $instanceof<T extends Function>(t: T) {
-	return new Schema((x: unknown): x is T["prototype"] => x instanceof t);
-}
-
-/**
- * Alias for $instanceof, i.e. checks if a value is "a"/an `T`
- */
-export const a = $instanceof;
-
-export function $literal<T extends LiteralSchema>(t: T) {
-	// @ts-expect-error - This should be fine, because LiteralSchema is a
-	// valid type to pass, but TypeScript is unhappy
-	return new Schema(t);
-}
