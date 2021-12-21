@@ -1,3 +1,4 @@
+export type Type<X> = Schema.Unwrap<X>;
 export namespace Schema {
 	export type Unwrap<X> = X extends Schema<infer T> ? T : never;
 	export type UnwrapAll<X> = { [K in keyof X]: Unwrap<X[K]> };
