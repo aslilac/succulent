@@ -37,6 +37,7 @@
 		"fmt": "prettier --ignore-path .gitignore --write .",
 		"lint": "eslint .",
 		"prepack": "npm run build",
-		"test": "jest"
+		"test": "jest",
+		"type-check": "tsc -p . --noEmit"
 	}
 }

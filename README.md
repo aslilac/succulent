@@ -1,6 +1,6 @@
 # Succulent
 
-Super simple data validation.
+Powerful and easy runtime type checking
 
 ### Examples
 
