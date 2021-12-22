@@ -2,7 +2,7 @@ import { assertType } from "../_util";
 import { is, or, union } from "../operators";
 import { $boolean, $undefined } from "./constants";
 import { $number } from "./number";
-import { $object } from "./object";
+import { $exact, $object } from "./object";
 import { $string } from "./string";
 import { $tuple } from "./tuple";
 
@@ -83,4 +83,13 @@ test("Using $object to match an existing type", () => {
 
 	// This one works fine, because we're using Partial<Friend> instead of Friend
 	is<Partial<Friend>>({}, $object({ name: or($undefined, $string) }));
+});
+
+test("$exact", () => {
+	const schema = $exact({ a: $boolean, b: $boolean, c: $boolean });
+
+	expect(is({ a: true, b: true }, schema)).toBe(false);
+	expect(is({ a: true, b: true, c: true }, schema)).toBe(true);
+	expect(is({ a: true, b: true, c: true, d: true }, schema)).toBe(false);
+	expect(is({ b: true, c: true, d: true }, schema)).toBe(false);
 });
