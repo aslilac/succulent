@@ -1,4 +1,7 @@
 {
 	"extends": ".",
+	"compilerOptions": {
+		"types": []
+	},
 	"exclude": ["**/*.test.*"]
 }

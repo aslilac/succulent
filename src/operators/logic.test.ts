@@ -1,20 +1,11 @@
-import { is, oneOf, union } from "./operators";
-import { $literal } from "./types/misc";
-import { $string } from "./types/string";
-import { assertType } from "./_util";
-
-test("is", () => {
-	expect(is("hi", "hello")).toBe(false);
-	expect(is("hello", "hello")).toBe(true);
-});
+import { assertType } from "../_util";
+import { $literal, $string } from "../types";
+import { is } from "./is";
+import { union } from "./logic";
 
 test("union", () => {
 	expect(is(0, union(0, 1, 2, 3, 4))).toBe(true);
 	expect(is(5, union(0, 1, 2, 3, 4))).toBe(false);
-
-	expect(is("a", union($literal("a"), $literal("b")))).toBe(true);
-	expect(is("b", union($literal("a"), $literal("b")))).toBe(true);
-	expect(is("c", union($literal("a"), $literal("b")))).toBe(false);
 
 	expect(is("a", union($literal("a"), "b"))).toBe(true);
 	expect(is("b", union($literal("a"), "b"))).toBe(true);
@@ -33,16 +24,4 @@ test("union", () => {
 			}
 		}
 	}
-});
-
-test("oneOf", () => {
-	type ExampleKey = "a" | "b" | "c";
-	const example = new Map<ExampleKey, number>([
-		["a", 0],
-		["b", 1],
-		["c", 2],
-	]);
-
-	expect(is("a", oneOf(example.keys()))).toBe(true);
-	expect(is("d", oneOf(example.keys()))).toBe(false);
 });

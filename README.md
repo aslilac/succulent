@@ -33,30 +33,27 @@ import {
 	$date,
 	$object,
 	$string,
-	$undefined,
 } from "succulent";
 
 // Easily define a reuseable way to validate input from untrusted sources
-const $user = $object({
+const $User = $object({
 	id: that($string, matches(/[A-Za-z0-9_-]{24}/)),
 	name: that($string, hasMaxLength(50)),
 	emailAddresses: $array(that($string, matches(/[A-Za-z0-9_-]{1,}\@hey\.com/))),
-	meta: or(
-		$undefined,
-		$partialObject({
-			lastSeen: $date,
+	meta: $optional(
+		$object({
+			lastSeen: $optional($date),
 		}),
 	),
 });
 
 // Use your validation definition to automatically generate TypeScript types
-import { Schema } from "succulent";
-type User = Schema.Unwrap<typeof $user>;
+import { Type } from "succulent";
+type User = Type<typeof $User>;
 
 export default function (user: unknown): string {
-	if (!is(x, $user)) {
+	if (!is(x, $User)) {
 		throw new TypeError("Expected x to be a user");
-		console.error($user.description);
 	}
 
 	return x; // is now type `User`
@@ -66,17 +63,17 @@ export default function (user: unknown): string {
 #### Even more complicated...
 
 ```typescript
-import { is, reporter, that, inRange, $number, $object, $string } from "succulent";
+import { is, reporter, that, inRange, $int, $object, $string } from "succulent";
 
 type Friend = {
 	name: string;
 	happiness: number;
 };
 
-const $friend = $object({
+const $Friend = $object({
 	name: $string,
-	happiness: that($number, inRange(0, 10)),
-	friends: [$friend],
+	happiness: that($int, inRange(0, 10)),
+	friends: [$Friend],
 });
 
 export default function (person: unknown) {
