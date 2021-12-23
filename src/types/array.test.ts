@@ -1,7 +1,4 @@
-import { is } from "../operators";
-import { $array } from "./array";
-import { $undefined } from "./constants";
-import { $number } from "./number";
+import { is, $array, $number, $undefined } from "succulent";
 
 test("$array", () => {
 	const numArray = $array($number);

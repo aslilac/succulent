@@ -1,7 +1,6 @@
+import { is, union, $literal, $string } from "succulent";
+
 import { assertType } from "../_util";
-import { $literal, $string } from "../types";
-import { is } from "./is";
-import { union } from "./logic";
 
 test("union", () => {
 	expect(is(0, union(0, 1, 2, 3, 4))).toBe(true);

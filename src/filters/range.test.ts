@@ -1,6 +1,4 @@
-import { is } from "../operators";
-import { $number } from "../types";
-import { inRange } from "./range";
+import { inRange, is, $number } from "succulent";
 
 const $rating = $number.that(inRange(1, 5));
 

@@ -1,17 +1,19 @@
-import { assertType } from "../_util";
-import { is, union } from "../operators";
 import {
+	a,
+	is,
+	union,
 	$date,
 	$error,
 	$falsy,
 	$instanceof,
 	$literal,
 	$nullish,
+	$object,
 	$regexp,
 	$url,
-	a,
-} from "./misc";
-import { $object } from "./object";
+} from "succulent";
+
+import { assertType } from "../_util";
 
 test("$falsy", () => {
 	expect(is(false, $falsy)).toBe(true);

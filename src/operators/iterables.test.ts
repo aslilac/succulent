@@ -1,5 +1,4 @@
-import { is } from "./is";
-import { oneOf } from "./iterables";
+import { is, oneOf } from "succulent";
 
 test("oneOf", () => {
 	type ExampleKey = "a" | "b" | "c";

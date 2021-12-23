@@ -1,6 +1,4 @@
-import { is } from "../operators";
-import { $string } from "../types";
-import { matches } from "./matches";
+import { is, matches, $string } from "succulent";
 
 const $email = $string.that(matches(/[A-Za-z0-9_-]{1,}\@hey\.com/));
 

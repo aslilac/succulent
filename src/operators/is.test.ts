@@ -1,4 +1,4 @@
-import { is } from "./is";
+import { is } from "succulent";
 
 test("is", () => {
 	expect(is("hi", "hello")).toBe(false);

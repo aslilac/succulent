@@ -1,5 +1,4 @@
-import { is } from "../operators";
-import { $bigint, $finite, $int, $number } from "./number";
+import { is, $bigint, $finite, $int, $number } from "succulent";
 
 test("$finite", () => {
 	expect(is(0, $finite)).toBe(true);

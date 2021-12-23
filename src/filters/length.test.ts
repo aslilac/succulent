@@ -1,6 +1,13 @@
-import { is } from "../operators";
-import { $any, $array, $string } from "../types";
-import { hasLength, minLength, maxLength, nonEmpty } from "./length";
+import {
+	hasLength,
+	is,
+	minLength,
+	maxLength,
+	nonEmpty,
+	$any,
+	$array,
+	$string,
+} from "succulent";
 
 const $nonEmptyArray = $array($any).that(nonEmpty);
 const $nonEmptyString = $string.that(nonEmpty);

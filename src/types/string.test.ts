@@ -1,5 +1,4 @@
-import { is, union } from "../operators";
-import { $string } from "./string";
+import { is, union, $string } from "succulent";
 
 test("$string", () => {
 	expect(is("hi", $string)).toBe(true);

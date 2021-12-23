@@ -1,10 +1,6 @@
+import { is, $boolean, $literal, $monotuple, $number, $string, $tuple } from "succulent";
+
 import { assertType } from "../_util";
-import { is } from "../operators";
-import { $boolean } from "./constants";
-import { $literal } from "./misc";
-import { $number } from "./number";
-import { $string } from "./string";
-import { $monotuple, $tuple } from "./tuple";
 
 test("$tuple", () => {
 	const strings = $tuple($string, $string, $string);

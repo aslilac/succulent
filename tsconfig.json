@@ -2,7 +2,11 @@
 	"extends": "@mckayla/tsconfig",
 	"compilerOptions": {
 		"outDir": "./target",
-		"types": ["jest"]
+		"types": ["jest"],
+		"baseUrl": ".",
+		"paths": {
+			"succulent": ["./src/main.ts"]
+		}
 	},
 	"include": ["./src/**/*"]
 }

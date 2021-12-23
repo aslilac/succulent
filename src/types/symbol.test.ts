@@ -1,5 +1,4 @@
-import { is, union } from "../operators";
-import { $symbol } from "./symbol";
+import { is, union, $symbol } from "succulent";
 
 test("$symbol", () => {
 	const test = Symbol("test");

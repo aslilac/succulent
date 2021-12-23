@@ -1,5 +1,4 @@
-import { is } from "../operators";
-import { $boolean, $false, $NaN, $null, $true, $undefined } from "./constants";
+import { is, $boolean, $false, $NaN, $null, $true, $undefined } from "succulent";
 
 test("$boolean", () => {
 	expect(is(true, $boolean)).toBe(true);

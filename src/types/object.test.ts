@@ -1,11 +1,18 @@
+import {
+	is,
+	or,
+	Type,
+	union,
+	$boolean,
+	$exact,
+	$number,
+	$object,
+	$string,
+	$tuple,
+	$undefined,
+} from "succulent";
+
 import { assertType } from "../_util";
-import { is, or, union } from "../operators";
-import { Type } from "../schema";
-import { $boolean, $undefined } from "./constants";
-import { $number } from "./number";
-import { $exact, $object } from "./object";
-import { $string } from "./string";
-import { $tuple } from "./tuple";
 
 test("$object", () => {
 	// The type signature of Symbol.for isn't quite correct, so we have to

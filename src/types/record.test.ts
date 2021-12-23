@@ -1,6 +1,4 @@
-import { is, union } from "../operators";
-import { $record } from "./record";
-import { $string } from "./string";
+import { is, union, $record, $string } from "succulent";
 
 test("$record", () => {
 	const inst = {

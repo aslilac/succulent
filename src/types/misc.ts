@@ -36,6 +36,20 @@ export function $maybe<T>(schema: Schema<T>): Schema<T | nullish> {
 	return union(schema, $nullish);
 }
 
+/**
+ * Probably shouldn't be used very frequently, but occasionally useful for
+ * stuff like `$array($any)` or just specifying that an object should have a
+ * key, without needing to specify the whole type. Basically the same kind of
+ * cases you might want to use it in TypeScript.
+ */
+export const $any = new Schema((x: unknown): x is any => true);
+
+/**
+ * Mostly useful for tests to convey that something should never match, honestly
+ * not very useful for anything else imho.
+ */
+export const $never = new Schema((x: unknown): x is never => false);
+
 export const $date = $instanceof(Date);
 export const $error = $instanceof(Error);
 export const $regexp = $instanceof(RegExp);

@@ -1,8 +1,4 @@
-import { is } from "../operators";
-import { $map, $set } from "./collections";
-import { $boolean } from "./constants";
-import { $number } from "./number";
-import { $anyobject } from "./object";
+import { is, $anyobject, $boolean, $map, $number, $set } from "succulent";
 
 test("$map", () => {
 	const example = new Map([
