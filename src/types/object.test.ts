@@ -1,5 +1,6 @@
 import { assertType } from "../_util";
 import { is, or, union } from "../operators";
+import { Type } from "../schema";
 import { $boolean, $undefined } from "./constants";
 import { $number } from "./number";
 import { $exact, $object } from "./object";
@@ -13,7 +14,7 @@ test("$object", () => {
 	// string multiple times.
 	const key = Symbol("k");
 
-	const example = $object({
+	const $Example = $object({
 		a: $boolean,
 		b: $number,
 		c: $string,
@@ -35,16 +36,23 @@ test("$object", () => {
 		},
 	};
 
-	expect(is(i, example)).toBe(false);
-	expect(is(j, example)).toBe(false);
-	expect(is(k, example)).toBe(false);
-	expect(is(l, example)).toBe(true);
+	expect(is(i, $Example)).toBe(false);
+	expect(is(j, $Example)).toBe(false);
+	expect(is(k, $Example)).toBe(false);
+	expect(is(l, $Example)).toBe(true);
 
 	type Example = { a: boolean; b: number; c: string; d: ExampleD };
 	type ExampleD = { [key]: Numbers; key: Numbers };
 	type Numbers = [number, number, number, number];
+
+	type TAutoExample = Type<typeof $Example>;
+	interface IAutoExample extends Type<typeof $Example> {}
 	function _(x: unknown) {
-		if (is(x, example)) assertType<Example, typeof x>(x);
+		if (is(x, $Example)) {
+			assertType<Example, typeof x>(x);
+			assertType<Example, TAutoExample>(x);
+			assertType<Example, IAutoExample>(x);
+		}
 	}
 });
 

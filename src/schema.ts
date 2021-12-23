@@ -16,6 +16,8 @@ export type LiteralSchema =
 	| null
 	| undefined;
 
+type Filter<T> = (x: T) => boolean;
+
 export class Schema<T> {
 	static check<T>(base: SchemaBase<T>, x: unknown): x is T {
 		if (base instanceof Schema) {
@@ -77,5 +79,11 @@ export class Schema<T> {
 			function* () {
 				yield base;
 			};
+	}
+
+	that(...filters: Array<Filter<T>>): Schema<T> {
+		return new Schema(
+			(x: unknown): x is T => this.check(x) && filters.every((filter) => filter(x)),
+		);
 	}
 }

@@ -24,22 +24,27 @@ export default function (x: unknown): string {
 
 ```typescript
 import {
-	is,
-	or,
-	that,
-	matches,
 	hasMaxLength,
+	is,
+	matches,
+	Type,
 	$array,
 	$date,
 	$object,
+	$optional,
 	$string,
 } from "succulent";
 
+// Use your schema definition to automatically generate TypeScript types.
+// Either one of the following should work. The choice is mostly a matter of style.
+export type User = Type<typeof $User>;
+export interface User extends Type<typeof $User> {}
+
 // Easily define a reuseable way to validate input from untrusted sources
-const $User = $object({
-	id: that($string, matches(/[A-Za-z0-9_-]{24}/)),
-	name: that($string, hasMaxLength(50)),
-	emailAddresses: $array(that($string, matches(/[A-Za-z0-9_-]{1,}\@hey\.com/))),
+export const $User = $object({
+	id: $string.that(matches(/[A-Za-z0-9_-]{24}/)),
+	name: $string.that(hasMaxLength(50)),
+	emailAddresses: $array($string.that(matches(/[A-Za-z0-9_-]{1,}\@hey\.com/))),
 	meta: $optional(
 		$object({
 			lastSeen: $optional($date),
@@ -47,23 +52,21 @@ const $User = $object({
 	),
 });
 
-// Use your validation definition to automatically generate TypeScript types
-import { Type } from "succulent";
-type User = Type<typeof $User>;
-
-export default function (user: unknown): string {
-	if (!is(x, $User)) {
-		throw new TypeError("Expected x to be a user");
+export default function (user: unknown) {
+	// You can specify a compatible generic type to use instead of the generated type
+	// Mostly helpful for getting nicer editor hints
+	if (!is<User>(x, $User)) {
+		throw new TypeError("Expected x to be a User");
 	}
 
-	return x; // is now type `User`
+	// x now has type `User`
 }
 ```
 
 #### Even more complicated...
 
 ```typescript
-import { is, reporter, that, inRange, $int, $object, $string } from "succulent";
+import { is, reporter, inRange, $int, $object, $string } from "succulent";
 
 type Friend = {
 	name: string;
@@ -72,16 +75,16 @@ type Friend = {
 
 const $Friend = $object({
 	name: $string,
-	happiness: that($int, inRange(0, 10)),
+	happiness: $int.that(inRange(0, 10)),
 	friends: [$Friend],
 });
 
 export default function (person: unknown) {
 	// Allows us to report specific validation errors
 	const report = reporter();
-	// Specifying `Friend` here as a generic ensures that our friend validator
+	// Specifying `Friend` here as a generic ensures that our $Friend schema
 	// is compatible with the `Friend` type
-	if (!is<Friend>(person, $friend, report)) {
+	if (!is<Friend>(person, $Friend, report)) {
 		// throw a detailed validation error message
 		throw report.typeError;
 	}
