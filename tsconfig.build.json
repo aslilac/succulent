@@ -4,5 +4,5 @@
 		"types": [],
 		"paths": {}
 	},
-	"exclude": ["**/*.test.*"]
+	"exclude": ["./**/*.test.*"]
 }
