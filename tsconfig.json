@@ -5,7 +5,7 @@
 		"types": ["jest"],
 		"baseUrl": ".",
 		"paths": {
-			"succulent": ["./src/main.ts"]
+			"succulent": ["./src/main"]
 		}
 	},
 	"include": ["./src/**/*"]
