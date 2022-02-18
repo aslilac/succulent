@@ -1,4 +1,4 @@
-import { is, $bigint, $finite, $int, $number } from "succulent";
+import { is, $bigint, $finite, $int, $number } from "../index";
 
 test("$finite", () => {
 	expect(is(0, $finite)).toBe(true);

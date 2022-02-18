@@ -1,4 +1,4 @@
-import { is, $array, $number, $undefined } from "succulent";
+import { is, $array, $number, $undefined } from "../index";
 
 test("$array", () => {
 	const numArray = $array($number);

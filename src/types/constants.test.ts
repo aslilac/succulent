@@ -1,4 +1,4 @@
-import { is, $boolean, $false, $NaN, $null, $true, $undefined } from "succulent";
+import { is, $boolean, $false, $NaN, $null, $true, $undefined } from "../index";
 
 test("$boolean", () => {
 	expect(is(true, $boolean)).toBe(true);

@@ -7,7 +7,7 @@ import {
 	$any,
 	$array,
 	$string,
-} from "succulent";
+} from "../index";
 
 const $nonEmptyArray = $array($any).that(nonEmpty);
 const $nonEmptyString = $string.that(nonEmpty);

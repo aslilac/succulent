@@ -10,7 +10,7 @@ import {
 	$string,
 	$tuple,
 	$undefined,
-} from "succulent";
+} from "../index";
 
 import { assertType } from "../_util";
 

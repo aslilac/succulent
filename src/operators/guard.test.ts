@@ -1,4 +1,4 @@
-import { guard, $any, $never, $string } from "succulent";
+import { guard, $any, $never, $string } from "../index";
 
 import { assertType } from "../_util";
 

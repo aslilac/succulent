@@ -1,4 +1,4 @@
-import { is, matches, $string } from "succulent";
+import { is, matches, $string } from "../index";
 
 const $email = $string.that(matches(/[A-Za-z0-9_-]{1,}\@hey\.com/));
 

@@ -1,4 +1,4 @@
-import { is, $anyobject, $boolean, $map, $number, $set } from "succulent";
+import { is, $anyobject, $boolean, $map, $number, $set } from "../index";
 
 test("$map", () => {
 	const example = new Map([

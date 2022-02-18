@@ -1,4 +1,4 @@
-import { is, union, $record, $string } from "succulent";
+import { is, union, $record, $string } from "../index";
 
 test("$record", () => {
 	const inst = {

@@ -1,4 +1,4 @@
-import { is, union, $string } from "succulent";
+import { is, union, $string } from "../index";
 
 test("$string", () => {
 	expect(is("hi", $string)).toBe(true);

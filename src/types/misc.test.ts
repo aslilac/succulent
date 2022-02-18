@@ -11,7 +11,7 @@ import {
 	$object,
 	$regexp,
 	$url,
-} from "succulent";
+} from "../index";
 
 import { assertType } from "../_util";
 

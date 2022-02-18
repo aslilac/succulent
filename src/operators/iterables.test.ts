@@ -1,4 +1,4 @@
-import { is, oneOf } from "succulent";
+import { is, oneOf } from "../index";
 
 test("oneOf", () => {
 	type ExampleKey = "a" | "b" | "c";

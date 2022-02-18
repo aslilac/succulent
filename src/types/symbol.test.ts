@@ -1,4 +1,4 @@
-import { is, union, $symbol } from "succulent";
+import { is, union, $symbol } from "../index";
 
 test("$symbol", () => {
 	const test = Symbol("test");
