@@ -1,3 +1,5 @@
+/// <reference types="jest" />
+
 import { inRange, is, $number } from "../index";
 
 const $rating = $number.that(inRange(1, 5));

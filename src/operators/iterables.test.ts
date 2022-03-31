@@ -1,3 +1,5 @@
+/// <reference types="jest" />
+
 import { is, oneOf } from "../index";
 
 test("oneOf", () => {

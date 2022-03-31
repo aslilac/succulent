@@ -1,3 +1,5 @@
+/// <reference types="jest" />
+
 import { is, $array, $number, $undefined } from "../index";
 
 test("$array", () => {

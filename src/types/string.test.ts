@@ -1,3 +1,5 @@
+/// <reference types="jest" />
+
 import { is, union, $string } from "../index";
 
 test("$string", () => {

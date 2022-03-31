@@ -1,3 +1,5 @@
+/// <reference types="jest" />
+
 import { is, $boolean, $literal, $monotuple, $number, $string, $tuple } from "../index";
 
 import { assertType } from "../_util";

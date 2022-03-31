@@ -1,3 +1,5 @@
+/// <reference types="jest" />
+
 import { is, $bigint, $finite, $int, $number } from "../index";
 
 test("$finite", () => {

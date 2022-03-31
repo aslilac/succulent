@@ -1,3 +1,5 @@
+/// <reference types="jest" />
+
 import { is, union, $symbol } from "../index";
 
 test("$symbol", () => {
