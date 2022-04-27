@@ -2,7 +2,7 @@
 	"extends": "@mckayla/tsconfig",
 	"compilerOptions": {
 		"outDir": "./build/",
-		"baseUrl": "."
+		"emitDeclarationOnly": true
 	},
 	"include": ["./src/**/*"],
 	"exclude": ["./**/*.test.*"]

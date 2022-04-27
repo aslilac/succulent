@@ -13,7 +13,7 @@
 		"runtypes"
 	],
 	"main": "./build/index.js",
-	"module": "./build/module/index.js",
+	"module": "./build/index.mjs",
 	"types": "./build/index.d.ts",
 	"repository": "https://github.com/aslilac/succulent",
 	"files": [
@@ -23,18 +23,18 @@
 		"@mckayla/prettier": "^1.0.1",
 		"@mckayla/tsconfig": "^1.0.2",
 		"@types/jest": "^27.0.3",
+		"esbuild": "^0.14.38",
+		"esbuild-kit": "^0.0.2",
 		"eslint": "^8.3.0",
 		"eslint-config-mckayla": "^1.0.4",
 		"jest": "^27.4.5",
 		"prettier": "^2.5.1",
 		"ts-jest": "^27.1.2",
-		"typescript": "^4.5.4"
+		"typescript": "^4.6.3"
 	},
 	"scripts": {
-		"build": "npm run build:cjs -s && npm run build:esm -s",
-		"build:cjs": "tsc -p . --module commonjs --declaration",
-		"build:esm": "tsc -p . --module esnext --outdir ./build/module/",
-		"fmt": "prettier --ignore-path .gitignore --write .",
+		"build": "tsc -b . && ./build.mjs",
+		"fmt": "prettier --write .",
 		"lint": "eslint .",
 		"prepack": "npm run build -s",
 		"test": "jest",
