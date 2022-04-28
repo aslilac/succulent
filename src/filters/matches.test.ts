@@ -2,7 +2,7 @@
 
 import { is, matches, $string } from "../index";
 
-const $email = $string.that(matches(/[A-Za-z0-9_-]{1,}\@hey\.com/));
+const $email = $string.that(matches(/[A-Za-z0-9_-]{1,}@hey\.com/));
 
 test("matches", () => {
 	// Obviously this is a valid email address, but it doesn't match the test

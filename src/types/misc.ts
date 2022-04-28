@@ -42,7 +42,7 @@ export function $maybe<T>(schema: Schema<T>): Schema<T | nullish> {
  * key, without needing to specify the whole type. Basically the same kind of
  * cases you might want to use it in TypeScript.
  */
-export const $any = new Schema((x: unknown): x is any => true);
+export const $any = new Schema((x: unknown): x is any => true); // eslint-disable-line @typescript-eslint/no-explicit-any
 
 /**
  * Mostly useful for tests to convey that something should never match, honestly

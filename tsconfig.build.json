@@ -1,0 +1,7 @@
+{
+	"extends": ".",
+	"compilerOptions": {
+		"emitDeclarationOnly": true
+	},
+	"exclude": ["./**/*.test.*"]
+}

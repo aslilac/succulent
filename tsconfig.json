@@ -1,9 +1,4 @@
 {
 	"extends": "@mckayla/tsconfig",
-	"compilerOptions": {
-		"outDir": "./build/",
-		"emitDeclarationOnly": true
-	},
-	"include": ["./src/**/*"],
-	"exclude": ["./**/*.test.*"]
+	"include": ["./src/**/*"]
 }
