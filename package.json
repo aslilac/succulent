@@ -33,11 +33,10 @@
 		"typescript": "^4.6.3"
 	},
 	"scripts": {
-		"build": "tsc -b . && ./build.mjs",
+		"build": "tsc -b tsconfig.build.json && ./build.mjs",
 		"fmt": "prettier --write .",
 		"lint": "eslint .",
 		"prepack": "npm run build -s",
-		"test": "jest",
-		"type-check": "tsc -p . --noEmit"
+		"test": "jest"
 	}
 }
