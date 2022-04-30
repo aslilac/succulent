@@ -1,8 +1,6 @@
 /// <reference types="jest" />
-
-import { guard, $any, $never, $string } from "../";
-
 import { assertType } from "../_util";
+import { guard, $any, $never, $string } from "../index";
 
 test("guard", () => {
 	const value: unknown = "hi friend!";

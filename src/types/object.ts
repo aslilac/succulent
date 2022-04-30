@@ -1,4 +1,4 @@
-import { keyReporter, toDisplayKey } from "../base";
+import { keyReporter, messages, toDisplayKey } from "../base";
 import { Schema, SchemaBase } from "../schema";
 
 function hasOwn(target: unknown, prop: string | symbol) {
@@ -12,13 +12,6 @@ function hasOwn(target: unknown, prop: string | symbol) {
 type KeyValuePair = readonly [key: unknown, valueSchema: SchemaBase<unknown>];
 const toDisplayKeyValue = ([key, valueSchema]: KeyValuePair) =>
 	`${toDisplayKey(key)}: ${Schema.displayName(valueSchema)}`;
-
-function incorrectKeyMessage(key: unknown, schema: SchemaBase<unknown>, error?: unknown) {
-	const displayKey = toDisplayKey(key);
-	const typeName = Schema.displayName(schema);
-
-	return `Expected property ${displayKey} to have type ${typeName}`;
-}
 
 export const $anyobject = new Schema(
 	(x: unknown): x is object => typeof x === "object" && x != null,
@@ -34,7 +27,7 @@ export function $object<T extends object>(template: {
 				// @ts-expect-error - Can't quite get these types
 				(key: string | symbol) => Schema.check(template[key], x[key]),
 				// @ts-expect-error - Can't quite get these types
-				(key) => incorrectKeyMessage(key, template[key] as Schema<unknown>),
+				(key) => messages.invalidProperty(key, template[key] as Schema<unknown>),
 			);
 
 			return (
@@ -67,7 +60,7 @@ export function $exact<T extends object>(template: {
 				// @ts-expect-error - Can't quite get these types
 				(key: string | symbol) => Schema.check(template[key], x[key]),
 				// @ts-expect-error - Can't quite get these types
-				(key) => incorrectKeyMessage(key, template[key] as Schema<unknown>),
+				(key) => messages.invalidProperty(key, template[key] as Schema<unknown>),
 			);
 
 			return (

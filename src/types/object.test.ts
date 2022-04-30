@@ -1,5 +1,5 @@
 /// <reference types="jest" />
-
+import { assertType } from "../_util";
 import {
 	check,
 	is,
@@ -13,9 +13,7 @@ import {
 	$string,
 	$tuple,
 	$undefined,
-} from "..";
-
-import { assertType } from "../_util";
+} from "../index";
 
 test("$object", () => {
 	// The type signature of Symbol.for isn't quite correct, so we have to

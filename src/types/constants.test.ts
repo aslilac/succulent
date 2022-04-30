@@ -1,5 +1,4 @@
 /// <reference types="jest" />
-
 import { is, $boolean, $false, $NaN, $null, $true, $undefined } from "../index";
 
 test("$boolean", () => {

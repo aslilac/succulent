@@ -1,7 +1,9 @@
 /// <reference types="jest" />
 
+import { assertType } from "../_util";
 import {
 	a,
+	createErrorRef,
 	is,
 	union,
 	$Date,
@@ -12,11 +14,11 @@ import {
 	$maybe,
 	$nullish,
 	$object,
+	$optional,
 	$RegExp,
+	$string,
 	$URL,
 } from "../index";
-
-import { assertType } from "../_util";
 
 test("$falsy", () => {
 	expect(is(false, $falsy)).toBe(true);
@@ -105,8 +107,28 @@ test("$literal", () => {
 	}
 });
 
+test("$maybe", () => {
+	expect(is(undefined, $maybe($string))).toBe(true);
+	expect(is(null, $maybe($string))).toBe(true);
+	expect(is("hi", $maybe($string))).toBe(true);
+
+	const ref = createErrorRef();
+	expect(is(false, $maybe($string), ref)).toBe(false);
+	expect(ref.error).toMatchSnapshot();
+});
+
 test("$nullish", () => {
 	expect(is(undefined, $nullish)).toBe(true);
 	expect(is(null, $nullish)).toBe(true);
 	expect(is({}, $nullish)).toBe(false);
+});
+
+test("$optional", () => {
+	expect(is(undefined, $optional($string))).toBe(true);
+	expect(is(null, $optional($string))).toBe(false);
+	expect(is("hi", $optional($string))).toBe(true);
+
+	const ref = createErrorRef();
+	expect(is(false, $optional($string), ref)).toBe(false);
+	expect(ref.error).toMatchSnapshot();
 });

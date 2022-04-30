@@ -115,11 +115,11 @@ export class Schema<T> {
 		try {
 			ok = this._check(x);
 		} catch (error) {
-			throw new TypeError(trace(messages.incorrectValue(x, this), error));
+			throw new TypeError(trace(messages.invalidValue(x, this), error));
 		}
 
 		if (!ok) {
-			throw new TypeError(messages.incorrectValue(x, this));
+			throw new TypeError(messages.invalidValue(x, this));
 		}
 
 		return true;

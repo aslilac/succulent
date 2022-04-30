@@ -1,5 +1,4 @@
 /// <reference types="jest" />
-
 import { check, is, $anyobject, $boolean, $map, $number, $set } from "../index";
 
 test("$map", () => {

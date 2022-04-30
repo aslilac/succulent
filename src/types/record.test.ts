@@ -1,5 +1,4 @@
 /// <reference types="jest" />
-
 import { is, union, $record, $string } from "../index";
 
 test("$record", () => {

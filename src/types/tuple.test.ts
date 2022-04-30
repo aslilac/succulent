@@ -1,5 +1,5 @@
 /// <reference types="jest" />
-
+import { assertType } from "../_util";
 import {
 	check,
 	is,
@@ -10,8 +10,6 @@ import {
 	$string,
 	$tuple,
 } from "../index";
-
-import { assertType } from "../_util";
 
 test("$tuple", () => {
 	const strings = $tuple($string, $string, $string);

@@ -4,6 +4,9 @@ export function $record<K extends string | number | symbol, T>(
 	keySchema: SchemaBase<K>,
 	valueSchema: SchemaBase<T>,
 ): Schema<Record<K, T>> {
+	const keyTypeName = Schema.displayName(keySchema);
+	const valueTypeName = Schema.displayName(valueSchema);
+
 	return new Schema(
 		(x: unknown): x is Record<K, T> =>
 			typeof x === "object" &&
@@ -14,11 +17,7 @@ export function $record<K extends string | number | symbol, T>(
 				// as all of the ones that should do
 				Schema.is(keySchema, key) ? Schema.is(valueSchema, value) : true,
 			),
-		{
-			displayName: `Record<${Schema.displayName(keySchema)}, ${Schema.displayName(
-				valueSchema,
-			)}>`,
-		},
+		{ displayName: `Record<${keyTypeName}, ${valueTypeName}>` },
 	);
 }
 

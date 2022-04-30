@@ -4,6 +4,9 @@ export function $map<K, V>(
 	keySchema: SchemaBase<K>,
 	valueSchema: SchemaBase<V>,
 ): Schema<Map<K, V>> {
+	const keyTypeName = Schema.displayName(keySchema);
+	const valueTypeName = Schema.displayName(valueSchema);
+
 	return new Schema(
 		(x: unknown): x is Map<K, V> => {
 			if (!(x instanceof Map)) {
@@ -19,11 +22,7 @@ export function $map<K, V>(
 			// If we made it through the whole map, and nothing failed, then everything passed!
 			return true;
 		},
-		{
-			displayName: `Map<${Schema.displayName(keySchema)}, ${Schema.displayName(
-				valueSchema,
-			)}>`,
-		},
+		{ displayName: `Map<${keyTypeName}, ${valueTypeName}>` },
 	);
 }
 
@@ -43,8 +42,6 @@ export function $set<K>(schema: SchemaBase<K>): Schema<Set<K>> {
 			// If we made it through the whole set, and nothing failed, then everything passed!
 			return true;
 		},
-		{
-			displayName: `Set<${Schema.displayName(schema)}>`,
-		},
+		{ displayName: `Set<${Schema.displayName(schema)}>` },
 	);
 }
