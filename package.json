@@ -2,7 +2,7 @@
 	"name": "succulent",
 	"author": "McKayla Washburn <mckayla@hey.com>",
 	"license": "MIT",
-	"version": "0.15.0",
+	"version": "0.16.0",
 	"description": "Powerful and easy runtime type checking",
 	"keywords": [
 		"typescript",
@@ -10,7 +10,8 @@
 		"validation",
 		"types",
 		"type safety",
-		"runtypes"
+		"runtypes",
+		"zod"
 	],
 	"main": "./build/index.cjs",
 	"module": "./build/index.mjs",
