@@ -1,6 +1,6 @@
 /// <reference types="jest" />
 
-import { guard, $any, $never, $string } from "../index";
+import { guard, $any, $never, $string } from "../";
 
 import { assertType } from "../_util";
 

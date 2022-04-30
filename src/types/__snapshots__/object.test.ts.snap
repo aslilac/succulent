@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`$exact 1`] = `
+"Expected {|a: boolean, b: boolean, c: boolean|}, got [object Object]
+  Expected property b to have type boolean
+    Expected boolean, got undefined
+  Expected property c to have type boolean
+    Expected boolean, got undefined"
+`;
+
+exports[`$exact 2`] = `
+"Expected {|a: boolean, b: boolean, c: boolean|}, got [object Object]
+  Unexpected property d
+  Unexpected property e"
+`;
+
+exports[`$exact 3`] = `
+"Expected {|a: boolean, b: boolean, c: boolean|}, got [object Object]
+  Unexpected property d"
+`;

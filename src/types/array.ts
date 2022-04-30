@@ -1,19 +1,29 @@
 import { Schema, SchemaBase } from "../schema";
 
-export function $array<T>(schema: SchemaBase<T>): Schema<T[]> {
-	return new Schema((t: unknown): t is T[] => {
-		if (!Array.isArray(t)) {
-			return false;
-		}
+export function $array<T>(base: SchemaBase<T>): Schema<T[]> {
+	const baseDisplayName = Schema.displayName(base);
 
-		const instance = Schema.from(schema);
-
-		for (const each of t) {
-			if (!instance.check(each)) {
+	return new Schema(
+		(t: unknown): t is T[] => {
+			if (!Array.isArray(t)) {
 				return false;
 			}
-		}
 
-		return true;
-	});
+			const instance = Schema.from(base);
+
+			for (const each of t) {
+				if (!instance.check(each)) {
+					return false;
+				}
+			}
+
+			return true;
+		},
+		{
+			displayName:
+				baseDisplayName.length < 15
+					? `${baseDisplayName}[]`
+					: `Array<${baseDisplayName}>`,
+		},
+	);
 }

@@ -1,6 +1,7 @@
 /// <reference types="jest" />
 
 import {
+	check,
 	is,
 	or,
 	Type,
@@ -12,7 +13,7 @@ import {
 	$string,
 	$tuple,
 	$undefined,
-} from "../index";
+} from "..";
 
 import { assertType } from "../_util";
 
@@ -33,6 +34,7 @@ test("$object", () => {
 		}),
 	});
 
+	const h = { a: true, b: 1, c: "hi" };
 	const i = { a: true, b: 1, c: "hi", d: {} };
 	const j = { ...i, d: { [key]: [0, 0, 0, 0] } };
 	const k = { ...i, d: { key: [0, 0, 0, 0] } };
@@ -45,6 +47,7 @@ test("$object", () => {
 		},
 	};
 
+	expect(is(h, $Example)).toBe(false);
 	expect(is(i, $Example)).toBe(false);
 	expect(is(j, $Example)).toBe(false);
 	expect(is(k, $Example)).toBe(false);
@@ -105,8 +108,18 @@ test("Using $object to match an existing type", () => {
 test("$exact", () => {
 	const schema = $exact({ a: $boolean, b: $boolean, c: $boolean });
 
-	expect(is({ a: true, b: true }, schema)).toBe(false);
-	expect(is({ a: true, b: true, c: true }, schema)).toBe(true);
-	expect(is({ a: true, b: true, c: true, d: true }, schema)).toBe(false);
-	expect(is({ b: true, c: true, d: true }, schema)).toBe(false);
+	const smol = { a: true };
+	const correct = { a: true, b: true, c: true };
+	const big = { a: true, b: true, c: true, d: true, e: true };
+	const wrong = { a: true, b: true, d: true };
+
+	expect(() => check(smol, schema)).toThrowErrorMatchingSnapshot();
+	expect(() => check(correct, schema)).not.toThrow();
+	expect(() => check(big, schema)).toThrowErrorMatchingSnapshot();
+	expect(() => check(wrong, schema)).toThrowErrorMatchingSnapshot();
+
+	expect(is(smol, schema)).toBe(false);
+	expect(is(correct, schema)).toBe(true);
+	expect(is(big, schema)).toBe(false);
+	expect(is(wrong, schema)).toBe(false);
 });

@@ -4,15 +4,16 @@ import {
 	a,
 	is,
 	union,
-	$date,
-	$error,
+	$Date,
+	$Error,
 	$falsy,
 	$instanceof,
 	$literal,
+	$maybe,
 	$nullish,
 	$object,
-	$regexp,
-	$url,
+	$RegExp,
+	$URL,
 } from "../index";
 
 import { assertType } from "../_util";
@@ -51,17 +52,17 @@ test("$instanceof", () => {
 	}
 });
 
-test("$date", () => {
-	expect(is(new Date(), $date)).toBe(true);
-	expect(is(Date.now(), $date)).toBe(false);
+test("$Date", () => {
+	expect(is(new Date(), $Date)).toBe(true);
+	expect(is(Date.now(), $Date)).toBe(false);
 });
 
-test("$error", () => {
-	expect(is(new Error(), $error)).toBe(true);
-	expect(is(new TypeError(), $error)).toBe(true);
+test("$Error", () => {
+	expect(is(new Error(), $Error)).toBe(true);
+	expect(is(new TypeError(), $Error)).toBe(true);
 
 	function _(x: TypeError) {
-		if (is(x, $error)) {
+		if (is(x, $Error)) {
 			// I feel like this shouldn't work? We end up losing specificity here,
 			// because x becomes `Error` instead of `TypeError`, but in this specific
 			// case they're duck-typed together, so it doesn't make a difference.
@@ -71,14 +72,14 @@ test("$error", () => {
 	}
 });
 
-test("$regexp", () => {
-	expect(is(/hi/, $regexp)).toBe(true);
-	expect(is("hi", $regexp)).toBe(false);
+test("$RegExp", () => {
+	expect(is(/hi/, $RegExp)).toBe(true);
+	expect(is("hi", $RegExp)).toBe(false);
 });
 
-test("$url", () => {
-	expect(is(new URL("/", "https://mckayla.dev"), $url)).toBe(true);
-	expect(is("https://mckayla.dev", $url)).toBe(false);
+test("$URL", () => {
+	expect(is(new URL("/", "https://mckayla.dev"), $URL)).toBe(true);
+	expect(is("https://mckayla.dev", $URL)).toBe(false);
 });
 
 test("$literal", () => {
