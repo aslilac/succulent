@@ -8,6 +8,11 @@ export function $tuple<T extends unknown[]>(
 			Array.isArray(t) &&
 			t.length === schemas.length &&
 			schemas.every((schema, i) => Schema.check(schema, t[i])),
+		{
+			displayName: `[${schemas
+				.map((schema) => Schema.displayName(schema))
+				.join(", ")}]`,
+		},
 	);
 }
 
@@ -29,5 +34,6 @@ export function $monotuple<T, N extends _MonotupleNumber>(
 			Array.isArray(t) &&
 			t.length === length &&
 			t.every((x) => Schema.check(schema, x)),
+		{ displayName: `[${Schema.displayName(schema)} x${length}]` },
 	);
 }

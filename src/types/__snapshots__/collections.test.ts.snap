@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`$map 1`] = `
+"Expected Map<boolean, number>, got [object Map]
+  Expected number, got [object Object]"
+`;
+
+exports[`$set 1`] = `
+"Expected Set<number>, got [object Set]
+  Expected number, got true"
+`;

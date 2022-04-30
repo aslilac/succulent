@@ -1,6 +1,5 @@
 /// <reference types="jest" />
-
-import { is, $anyobject, $boolean, $map, $number, $set } from "../index";
+import { check, is, $anyobject, $boolean, $map, $number, $set } from "../index";
 
 test("$map", () => {
 	const example = new Map([
@@ -11,6 +10,8 @@ test("$map", () => {
 	expect(is(example, $map($boolean, $anyobject))).toBe(true);
 	expect(is(example, $map($number, $anyobject))).toBe(false);
 	expect(is(example, $map($boolean, $number))).toBe(false);
+
+	expect(() => check(example, $map($boolean, $number))).toThrowErrorMatchingSnapshot();
 });
 
 test("$set", () => {
@@ -18,4 +19,6 @@ test("$set", () => {
 
 	expect(is(example, $set($boolean))).toBe(true);
 	expect(is(example, $set($number))).toBe(false);
+
+	expect(() => check(example, $set($number))).toThrowErrorMatchingSnapshot();
 });

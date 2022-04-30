@@ -1,5 +1,4 @@
 /// <reference types="jest" />
-
 import { is } from "../index";
 
 test("is", () => {

@@ -1,21 +1,24 @@
 /// <reference types="jest" />
 
+import { assertType } from "../_util";
 import {
 	a,
+	createErrorRef,
 	is,
 	union,
-	$date,
-	$error,
+	$Date,
+	$Error,
 	$falsy,
 	$instanceof,
 	$literal,
+	$maybe,
 	$nullish,
 	$object,
-	$regexp,
-	$url,
+	$optional,
+	$RegExp,
+	$string,
+	$URL,
 } from "../index";
-
-import { assertType } from "../_util";
 
 test("$falsy", () => {
 	expect(is(false, $falsy)).toBe(true);
@@ -51,17 +54,17 @@ test("$instanceof", () => {
 	}
 });
 
-test("$date", () => {
-	expect(is(new Date(), $date)).toBe(true);
-	expect(is(Date.now(), $date)).toBe(false);
+test("$Date", () => {
+	expect(is(new Date(), $Date)).toBe(true);
+	expect(is(Date.now(), $Date)).toBe(false);
 });
 
-test("$error", () => {
-	expect(is(new Error(), $error)).toBe(true);
-	expect(is(new TypeError(), $error)).toBe(true);
+test("$Error", () => {
+	expect(is(new Error(), $Error)).toBe(true);
+	expect(is(new TypeError(), $Error)).toBe(true);
 
 	function _(x: TypeError) {
-		if (is(x, $error)) {
+		if (is(x, $Error)) {
 			// I feel like this shouldn't work? We end up losing specificity here,
 			// because x becomes `Error` instead of `TypeError`, but in this specific
 			// case they're duck-typed together, so it doesn't make a difference.
@@ -71,14 +74,14 @@ test("$error", () => {
 	}
 });
 
-test("$regexp", () => {
-	expect(is(/hi/, $regexp)).toBe(true);
-	expect(is("hi", $regexp)).toBe(false);
+test("$RegExp", () => {
+	expect(is(/hi/, $RegExp)).toBe(true);
+	expect(is("hi", $RegExp)).toBe(false);
 });
 
-test("$url", () => {
-	expect(is(new URL("/", "https://mckayla.dev"), $url)).toBe(true);
-	expect(is("https://mckayla.dev", $url)).toBe(false);
+test("$URL", () => {
+	expect(is(new URL("/", "https://mckayla.dev"), $URL)).toBe(true);
+	expect(is("https://mckayla.dev", $URL)).toBe(false);
 });
 
 test("$literal", () => {
@@ -104,8 +107,28 @@ test("$literal", () => {
 	}
 });
 
+test("$maybe", () => {
+	expect(is(undefined, $maybe($string))).toBe(true);
+	expect(is(null, $maybe($string))).toBe(true);
+	expect(is("hi", $maybe($string))).toBe(true);
+
+	const ref = createErrorRef();
+	expect(is(false, $maybe($string), ref)).toBe(false);
+	expect(ref.error).toMatchSnapshot();
+});
+
 test("$nullish", () => {
 	expect(is(undefined, $nullish)).toBe(true);
 	expect(is(null, $nullish)).toBe(true);
 	expect(is({}, $nullish)).toBe(false);
+});
+
+test("$optional", () => {
+	expect(is(undefined, $optional($string))).toBe(true);
+	expect(is(null, $optional($string))).toBe(false);
+	expect(is("hi", $optional($string))).toBe(true);
+
+	const ref = createErrorRef();
+	expect(is(false, $optional($string), ref)).toBe(false);
+	expect(ref.error).toMatchSnapshot();
 });

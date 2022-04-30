@@ -1,3 +1,6 @@
+import { messages, toDisplayString, trace } from "./base";
+import type { ErrorRef } from "./ref";
+
 export type Type<X> = Schema.Unwrap<X>;
 export namespace Schema {
 	export type Unwrap<X> = X extends Schema<infer T> ? T : never;
@@ -18,6 +21,11 @@ export type LiteralSchema =
 
 type Filter<T> = (x: T) => boolean;
 
+interface SchemaOptions<T> {
+	displayName?: string;
+	iter?: () => Iterator<T>;
+}
+
 export class Schema<T> {
 	static check<T>(base: SchemaBase<T>, x: unknown): x is T {
 		if (base instanceof Schema) {
@@ -25,6 +33,20 @@ export class Schema<T> {
 		}
 
 		return new Schema(base).check(x);
+	}
+
+	static is<T>(base: SchemaBase<T>, x: unknown, ref?: ErrorRef): x is T {
+		try {
+			Schema.check(base, x);
+			return true;
+		} catch (error) {
+			if (ref && error instanceof Error) ref.error = error;
+			return false;
+		}
+	}
+
+	static displayName<T>(base: SchemaBase<T>) {
+		return Schema.from(base).displayName;
 	}
 
 	static every<T>(
@@ -43,37 +65,41 @@ export class Schema<T> {
 	}
 
 	/**
-	 * A method used to check if a given value matches the schema
-	 */
-	check: (x: unknown) => x is T;
-
-	/**
 	 * Used to iterate through all possible values accepted by the schema,
 	 * for certain finite types
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-empty-function, class-methods-use-this
-	[Symbol.iterator]: () => Iterator<T> = function* () {};
+	readonly [Symbol.iterator]: () => Iterator<T> = function* () {};
+
+	private readonly _check: (x: unknown) => x is T;
+
+	public readonly displayName: string = "(unknown)";
 
 	constructor(
 		base: ((x: unknown) => x is T) | SchemaBase<T>,
-		iter?: () => Iterator<T>,
+		options: SchemaOptions<T> = {},
 	) {
+		const { displayName, iter } = options;
+
 		// Constructing a Schema from a previous Schema, just copy
 		if (base instanceof Schema) {
-			this.check = base.check;
+			this._check = base._check;
+			this.displayName = displayName || base.displayName;
 			this[Symbol.iterator] = iter ?? base[Symbol.iterator];
 			return;
 		}
 
 		// Constructing a Schema from a FunctionSchema
-		else if (typeof base === "function") {
-			this.check = base;
+		if (typeof base === "function") {
+			this._check = base;
+			if (displayName) this.displayName = displayName;
 			if (iter) this[Symbol.iterator] = iter;
 			return;
 		}
 
 		// Constructing a Schema from a LiteralSchema
-		this.check = (x: unknown): x is T => Object.is(x, base);
+		this._check = (x: unknown): x is T => Object.is(x, base);
+		this.displayName = displayName || toDisplayString(base);
 		this[Symbol.iterator] =
 			iter ??
 			function* () {
@@ -81,9 +107,31 @@ export class Schema<T> {
 			};
 	}
 
+	/**
+	 * A method used to check if a given value matches the schema
+	 */
+	check(x: unknown): x is T {
+		let ok;
+		try {
+			ok = this._check(x);
+		} catch (error) {
+			throw new TypeError(trace(messages.invalidValue(x, this), error));
+		}
+
+		if (!ok) {
+			throw new TypeError(messages.invalidValue(x, this));
+		}
+
+		return true;
+	}
+
 	that(...filters: Array<Filter<T>>): Schema<T> {
 		return new Schema(
 			(x: unknown): x is T => this.check(x) && filters.every((filter) => filter(x)),
 		);
+	}
+
+	toString(): string {
+		return this.displayName;
 	}
 }

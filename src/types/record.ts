@@ -4,6 +4,9 @@ export function $record<K extends string | number | symbol, T>(
 	keySchema: SchemaBase<K>,
 	valueSchema: SchemaBase<T>,
 ): Schema<Record<K, T>> {
+	const keyTypeName = Schema.displayName(keySchema);
+	const valueTypeName = Schema.displayName(valueSchema);
+
 	return new Schema(
 		(x: unknown): x is Record<K, T> =>
 			typeof x === "object" &&
@@ -12,8 +15,9 @@ export function $record<K extends string | number | symbol, T>(
 			Object.entries(x).every(([key, value]) =>
 				// It doesn't hurt if there are extra keys that don't match, as long
 				// as all of the ones that should do
-				Schema.check(keySchema, key) ? Schema.check(valueSchema, value) : true,
+				Schema.is(keySchema, key) ? Schema.is(valueSchema, value) : true,
 			),
+		{ displayName: `Record<${keyTypeName}, ${valueTypeName}>` },
 	);
 }
 

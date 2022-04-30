@@ -1,9 +1,11 @@
 import { LiteralSchema, Schema } from "../schema";
-import { union } from "../operators";
+import { $undefined } from "./constants";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function $instanceof<T extends Function>(t: T) {
-	return new Schema((x: unknown): x is T["prototype"] => x instanceof t);
+	return new Schema((x: unknown): x is T["prototype"] => x instanceof t, {
+		displayName: t.name,
+	});
 }
 
 /**
@@ -25,15 +27,27 @@ export function $literal<T extends LiteralSchema>(t: T) {
 export type falsy = false | 0 | 0n | "" | nullish;
 export type nullish = undefined | null;
 
-export const $falsy = new Schema((x: unknown): x is falsy => !x);
-export const $nullish = new Schema((x: unknown): x is nullish => x == null);
+export const $falsy = new Schema((x: unknown): x is falsy => !x, {
+	displayName: "falsy",
+});
+export const $nullish = new Schema((x: unknown): x is nullish => x == null, {
+	displayName: "nullish",
+});
 
 export function $optional<T>(schema: Schema<T>): Schema<T | undefined> {
-	return union(schema, undefined);
+	return new Schema(
+		(x: unknown): x is T | undefined =>
+			Schema.is(schema, x) || Schema.is($undefined, x),
+		{ displayName: `${schema.displayName}?` },
+	);
 }
 
 export function $maybe<T>(schema: Schema<T>): Schema<T | nullish> {
-	return union(schema, $nullish);
+	return new Schema(
+		(x: unknown): x is T | undefined =>
+			Schema.is(schema, x) || Schema.is($nullish, x),
+		{ displayName: `maybe ${schema.displayName}` },
+	);
 }
 
 /**
@@ -42,18 +56,28 @@ export function $maybe<T>(schema: Schema<T>): Schema<T | nullish> {
  * key, without needing to specify the whole type. Basically the same kind of
  * cases you might want to use it in TypeScript.
  */
-export const $any = new Schema((x: unknown): x is any => true); // eslint-disable-line @typescript-eslint/no-explicit-any
+export const $any = new Schema((x: unknown): x is any => true, { displayName: "any" }); // eslint-disable-line @typescript-eslint/no-explicit-any
 
 /**
  * Mostly useful for tests to convey that something should never match, honestly
  * not very useful for anything else imho.
  */
-export const $never = new Schema((x: unknown): x is never => false);
+export const $never = new Schema((x: unknown): x is never => false, {
+	displayName: "never",
+});
 
-export const $date = $instanceof(Date);
-export const $error = $instanceof(Error);
-export const $regexp = $instanceof(RegExp);
-export const $url = $instanceof(URL);
+// export const $Blob = $instanceof(Blob);
+export const $Date = $instanceof(Date);
+// export const $File = $instanceof(File);
+export const $Error = $instanceof(Error);
+export const $RegExp = $instanceof(RegExp);
+export const $URL = $instanceof(URL);
+
+export const $ArrayBuffer = $instanceof(ArrayBuffer);
+export const $ArrayBufferView = new Schema(
+	(x: unknown): x is ArrayBufferView => ArrayBuffer.isView(x),
+	{ displayName: "ArrayBufferView" },
+);
 
 export const $Int8Array = $instanceof(Int8Array);
 export const $Int16Array = $instanceof(Int16Array);
