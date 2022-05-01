@@ -2,7 +2,7 @@
 	"name": "succulent",
 	"author": "McKayla Washburn <mckayla@hey.com>",
 	"license": "MIT",
-	"version": "0.16.0",
+	"version": "0.16.1",
 	"description": "Powerful and easy runtime type checking",
 	"keywords": [
 		"typescript",
@@ -16,6 +16,12 @@
 	"main": "./build/index.cjs",
 	"module": "./build/index.mjs",
 	"types": "./build/index.d.ts",
+	"exports": {
+		".": {
+			"import": "./build/index.mjs",
+			"require": "./build/index.cjs"
+		}
+	},
 	"repository": "https://github.com/aslilac/succulent",
 	"files": [
 		"build/**"
