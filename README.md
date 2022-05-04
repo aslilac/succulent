@@ -2,6 +2,30 @@
 
 Powerful and easy runtime type checking
 
+### Motivation
+
+> What if you could just write TypeScript, and get runtime validation for free?
+
+Basically, a lot of equivalent libraries have weird naming and syntax. We already know
+TypeScript, and that knowledge already does so much for us, but to take the concept a
+little bit further, and extend our type checking to the runtime, it kind of feels like
+having to learn another dialect, with all of its subtle differences. Succulent's main goal
+is to make it feel like you're just writing TypeScript, and for the necessary differences
+to feel obvious quickly.
+
+Some examples...
+
+-   the type `string` is represented by the schema `$string`
+-   the type `bigint` is represented by the schema `$bigint`
+-   the type `Date` is represented by the schema `$Date`
+-   the type `ArrayBuffer` is represented by the schema `$ArrayBuffer`
+
+Getting more complex...
+
+-   the type `T[]` (or equivalently, `Array<T>`) could be represented by the schema `$Array($T)` _(assuming `$T` is a schema)_
+-   the type `Map<K, V>` could be represented by the schema `$Map($K, $V)` _(assuming `$K` and `$V` are schemas)_
+-   the types `$any` and `$never` can be represented by the schemas `$any` and `$never` respectively
+
 ### Examples
 
 ```typescript
@@ -28,7 +52,7 @@ import {
 	is,
 	matches,
 	Type,
-	$array,
+	$Array,
 	$Date,
 	$object,
 	$optional,
@@ -41,10 +65,11 @@ export type User = Type<typeof $User>;
 export interface User extends Type<typeof $User> {}
 
 // Easily define a reuseable way to validate input from untrusted sources
+// By convention, schemas are named after the type they represent, prefixed with `$`.
 export const $User = $object({
 	id: $string.that(matches(/[A-Za-z0-9_-]{24}/)),
 	name: $string.that(hasMaxLength(50)),
-	emailAddresses: $array($string.that(matches(/[A-Za-z0-9_-]{1,}\@hey\.com/))),
+	emailAddresses: $Array($string.that(matches(/[A-Za-z0-9_-]{1,}\@hey\.com/))),
 	meta: $optional(
 		$object({
 			lastSeen: $optional($Date),
@@ -66,7 +91,7 @@ export default function (user: unknown) {
 #### Even more complicated...
 
 ```typescript
-import { createErrorRef, is, inRange, $int, $object, $string } from "succulent";
+import { createErrorRef, is, inRange, $Array, $int, $object, $string } from "succulent";
 
 type Friend = {
 	name: string;
@@ -76,7 +101,7 @@ type Friend = {
 const $Friend = $object({
 	name: $string,
 	happiness: $int.that(inRange(0, 10)),
-	friends: [$Friend],
+	friends: $Array($Friend),
 });
 
 export default function (person: unknown) {

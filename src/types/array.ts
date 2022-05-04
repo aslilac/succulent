@@ -1,6 +1,6 @@
 import { Schema, SchemaBase } from "../schema";
 
-export function $array<T>(base: SchemaBase<T>): Schema<T[]> {
+export function $Array<T>(base: SchemaBase<T>): Schema<T[]> {
 	const baseDisplayName = Schema.displayName(base);
 
 	return new Schema(

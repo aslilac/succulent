@@ -1,6 +1,6 @@
 import { Schema, SchemaBase } from "../schema";
 
-export function $record<K extends string | number | symbol, T>(
+export function $Record<K extends string | number | symbol, T>(
 	keySchema: SchemaBase<K>,
 	valueSchema: SchemaBase<T>,
 ): Schema<Record<K, T>> {

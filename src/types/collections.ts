@@ -1,6 +1,6 @@
 import { Schema, SchemaBase } from "../schema";
 
-export function $map<K, V>(
+export function $Map<K, V>(
 	keySchema: SchemaBase<K>,
 	valueSchema: SchemaBase<V>,
 ): Schema<Map<K, V>> {
@@ -26,7 +26,7 @@ export function $map<K, V>(
 	);
 }
 
-export function $set<K>(schema: SchemaBase<K>): Schema<Set<K>> {
+export function $Set<K>(schema: SchemaBase<K>): Schema<Set<K>> {
 	return new Schema(
 		(x: unknown): x is Set<K> => {
 			if (!(x instanceof Set)) {

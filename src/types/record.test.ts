@@ -1,7 +1,7 @@
 /// <reference types="jest" />
-import { is, union, $record, $string } from "../index";
+import { is, union, $Record, $string } from "../index";
 
-test("$record", () => {
+test("$Record", () => {
 	const inst = {
 		a: "hi",
 		b: "hey",
@@ -10,13 +10,13 @@ test("$record", () => {
 		e: "hola",
 	};
 
-	const schema = $record($string, $string);
+	const schema = $Record($string, $string);
 
 	expect(is({}, schema)).toBe(true);
 	expect(is(inst, schema)).toBe(true);
 	expect(is({ ...inst, f: false }, schema)).toBe(false);
 
-	const specific = $record(union("a", "b", "c"), $string);
+	const specific = $Record(union("a", "b", "c"), $string);
 
 	expect(is({ a: "a", b: "b", c: "c" }, specific)).toBe(true);
 	expect(is(inst, specific)).toBe(true);
