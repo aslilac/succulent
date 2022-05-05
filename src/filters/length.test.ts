@@ -6,11 +6,11 @@ import {
 	maxLength,
 	nonEmpty,
 	$any,
-	$array,
+	$Array,
 	$string,
 } from "../index";
 
-const $nonEmptyArray = $array($any).that(nonEmpty);
+const $nonEmptyArray = $Array($any).that(nonEmpty);
 const $nonEmptyString = $string.that(nonEmpty);
 
 test("nonEmpty", () => {
@@ -29,7 +29,7 @@ test("hasLength", () => {
 	expect(is("hello friend!", $hasLengthTwelve)).toBe(false);
 });
 
-const $hasAtLeastTwo = $array($any).that(minLength(2));
+const $hasAtLeastTwo = $Array($any).that(minLength(2));
 
 test("minLength", () => {
 	expect(is([0], $hasAtLeastTwo)).toBe(false);
@@ -37,7 +37,7 @@ test("minLength", () => {
 	expect(is([0, 1, 2], $hasAtLeastTwo)).toBe(true);
 });
 
-const $hasAtMostTwo = $array($any).that(maxLength(2));
+const $hasAtMostTwo = $Array($any).that(maxLength(2));
 
 test("maxLength", () => {
 	expect(is([0], $hasAtMostTwo)).toBe(true);

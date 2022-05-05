@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`$array 1`] = `
+exports[`$Array 1`] = `
 [TypeError: Expected number[], got 1,2,3,4,5,
   Expected number, got undefined]
 `;
 
-exports[`$array 2`] = `"Expected Array<{name: string, count: number}>, got false"`;
+exports[`$Array 2`] = `"Expected Array<{name: string, count: number}>, got false"`;
 
-exports[`$array 3`] = `
+exports[`$Array 3`] = `
 "Expected Array<{name: string, count: number}>, got false
   Expected {name: string, count: number}, got false
     Expected object, got false"
