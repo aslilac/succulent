@@ -2,7 +2,7 @@
 	"name": "succulent",
 	"author": "McKayla Washburn <mckayla@hey.com>",
 	"license": "MIT",
-	"version": "0.16.1",
+	"version": "0.17.0",
 	"description": "Powerful and easy runtime type checking",
 	"keywords": [
 		"typescript",
