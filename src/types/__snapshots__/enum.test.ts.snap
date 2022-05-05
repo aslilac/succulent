@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`$enum 1`] = `
+"Expected {friend: enum { August, Bandit, Dot, Mady, Toby }, message: Message}, got [object Object]
+  Expected property friend to have type enum { August, Bandit, Dot, Mady, Toby }
+    Expected enum { August, Bandit, Dot, Mady, Toby }, got \\"Tony\\"
+  Expected property message to have type Message
+    Expected Message, got null"
+`;

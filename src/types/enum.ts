@@ -28,8 +28,7 @@ export function $enum<E, K extends string | number | symbol>(
 
 	// eslint-disable-next-line
 	return new Schema((x: unknown): x is E => values.has(x as any), {
-		displayName: `enum { ${keys.join(", ")} }`,
-		...options,
+		displayName: options.displayName ?? `enum { ${keys.join(", ")} }`,
 		*iter() {
 			yield* values;
 		},

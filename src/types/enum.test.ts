@@ -1,6 +1,7 @@
 /// <reference types="jest" />
 import { assertType } from "../_util";
-import { is, $enum } from "../index";
+import { check, is, $enum } from "../index";
+import { $object } from "./object";
 
 enum Fruit {
 	Apple,
@@ -48,10 +49,19 @@ test("$enum", () => {
 	expect(is("Bandit", $Friend)).toBe(true); // because `"Bandit" === Friend.Bandit`
 	expect($Friend.displayName).toBe("enum { August, Bandit, Dot, Mady, Toby }");
 
-	const $Message = $enum(Message);
+	const $Message = $enum(Message, { displayName: "Message" });
 	expect(is(Message.Hello, $Message)).toBe(true);
 	expect(is("Bye", $Message)).toBe(false); // because `"Bye" === Message.Bye`
-	expect($Message.displayName).toBe("enum { Hello, Bye }");
+
+	const $MessageToFriend = $object({
+		friend: $Friend,
+		message: $Message,
+	});
+
+	const good = { friend: Friend.Bandit, message: Message.Hello };
+	const bad = { friend: "Tony", message: null };
+	expect(is(good, $MessageToFriend)).toBe(true);
+	expect(() => check(bad, $MessageToFriend)).toThrowErrorMatchingSnapshot();
 
 	function _(x: unknown) {
 		if (is(x, $Fruit)) assertType<Fruit, typeof x>(x);
