@@ -1,6 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`$Map 1`] = `
+"Expected Map<number, object>, got [object Map]
+  Expected number, got true"
+`;
+
+exports[`$Map 2`] = `
 "Expected Map<boolean, number>, got [object Map]
   Expected number, got [object Object]"
 `;

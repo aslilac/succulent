@@ -11,6 +11,7 @@ test("$Map", () => {
 	expect(is(example, $Map($number, $object))).toBe(false);
 	expect(is(example, $Map($boolean, $number))).toBe(false);
 
+	expect(() => check(example, $Map($number, $object))).toThrowErrorMatchingSnapshot();
 	expect(() => check(example, $Map($boolean, $number))).toThrowErrorMatchingSnapshot();
 });
 

@@ -1,17 +1,16 @@
 /// <reference types="jest" />
 import { assertType } from "../_util";
-import { check, guard, $any, $never, $string } from "../index";
+import { check, $any, $never, $string } from "../index";
 
 test("check", () => {
 	const value: unknown = "hi friend!";
 
-	expect(check(value, $any)).toBe(value);
-	expect(guard(value, $any)).toBe(value);
+	expect(() => check(value, $any)).not.toThrow();
 	expect(() => check(value, $never)).toThrow();
 
 	function _(x: unknown) {
-		const validatedX = check(x, $string);
+		check(x, $string);
 
-		assertType<string, typeof validatedX>(validatedX);
+		assertType<string, typeof x>(x);
 	}
 });
