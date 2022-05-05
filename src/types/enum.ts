@@ -15,28 +15,23 @@ function enumKeys<E, K extends string | number | symbol>(enumObject: Record<K, E
 	) as K[];
 }
 
-function isEnumMember<E, K extends string | number | symbol>(
-	x: unknown,
-	enumObject: Record<K, E>,
-): x is E {
-	switch (typeof x) {
-		case "number":
-			// @ts-expect-error - This is some real fun voodoo :)
-			return enumObject[enumObject[x as K]] === x;
-		case "string":
-			return (
-				typeof enumObject[x as K] !== "number" &&
-				Object.values(enumObject).includes(x)
-			);
-		default:
-			return false;
-	}
+export interface EnumOptions {
+	displayName?: string;
 }
 
 export function $enum<E, K extends string | number | symbol>(
 	enumObject: Record<K, E>,
+	options: EnumOptions = {},
 ): Schema<E> {
-	return new Schema((x: unknown): x is E => isEnumMember(x, enumObject), {
-		displayName: `enum { ${enumKeys(enumObject).join(", ")} }`,
+	const keys = enumKeys(enumObject);
+	const values = new Set(keys.map((key) => enumObject[key]));
+
+	// eslint-disable-next-line
+	return new Schema((x: unknown): x is E => values.has(x as any), {
+		displayName: `enum { ${keys.join(", ")} }`,
+		...options,
+		*iter() {
+			yield* values;
+		},
 	});
 }
