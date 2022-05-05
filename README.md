@@ -54,7 +54,7 @@ import {
 	Type,
 	$Array,
 	$Date,
-	$object,
+	$interface,
 	$optional,
 	$string,
 } from "succulent";
@@ -66,12 +66,12 @@ export interface User extends Type<typeof $User> {}
 
 // Easily define a reuseable way to validate input from untrusted sources
 // By convention, schemas are named after the type they represent, prefixed with `$`.
-export const $User = $object({
+export const $User = $interface({
 	id: $string.that(matches(/[A-Za-z0-9_-]{24}/)),
 	name: $string.that(hasMaxLength(50)),
 	emailAddresses: $Array($string.that(matches(/[A-Za-z0-9_-]{1,}\@hey\.com/))),
 	meta: $optional(
-		$object({
+		$interface({
 			lastSeen: $optional($Date),
 		}),
 	),
@@ -91,14 +91,22 @@ export default function (user: unknown) {
 #### Even more complicated...
 
 ```typescript
-import { createErrorRef, is, inRange, $Array, $int, $object, $string } from "succulent";
+import {
+	createErrorRef,
+	is,
+	inRange,
+	$Array,
+	$int,
+	$interface,
+	$string,
+} from "succulent";
 
 type Friend = {
 	name: string;
 	happiness: number;
 };
 
-const $Friend = $object({
+const $Friend = $interface({
 	name: $string,
 	happiness: $int.that(inRange(0, 10)),
 	friends: $Array($Friend),

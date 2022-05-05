@@ -13,7 +13,7 @@ import {
 	$literal,
 	$maybe,
 	$nullish,
-	$object,
+	$interface,
 	$optional,
 	$RegExp,
 	$string,
@@ -98,7 +98,7 @@ test("$literal", () => {
 	expect(is(false, union(null, undefined))).toBe(false);
 
 	function _(x: unknown) {
-		if (is(x, $object({ kind }))) {
+		if (is(x, $interface({ kind }))) {
 			assertType<{ kind: "kind" }, typeof x>(x);
 
 			// @ts-expect-error - Types should be incompatible

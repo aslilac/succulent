@@ -7,28 +7,28 @@ import {
 	Type,
 	union,
 	$boolean,
-	$exact,
+	$Exact,
 	$number,
-	$object,
+	$interface,
 	$string,
-	$tuple,
+	$Tuple,
 	$undefined,
 } from "../index";
 
-test("$object", () => {
+test("$interface", () => {
 	// The type signature of Symbol.for isn't quite correct, so we have to
 	// assign the symbol we use here as a constant even though the whole point
 	// of Symbol.for is to return the same symbol when called with the same
 	// string multiple times.
 	const key = Symbol("k");
 
-	const $Example = $object({
+	const $Example = $interface({
 		a: $boolean,
 		b: $number,
 		c: $string,
-		d: $object({
-			[key]: $tuple($number, $number, $number, $number),
-			key: $tuple($number, $number, $number, $number),
+		d: $interface({
+			[key]: $Tuple($number, $number, $number, $number),
+			key: $Tuple($number, $number, $number, $number),
 		}),
 	});
 
@@ -66,16 +66,16 @@ test("$object", () => {
 	}
 });
 
-test("$object with unwrapped literals", () => {
-	expect(is({ hi: "hi" }, $object({ hi: "hi" }))).toBe(true);
-	expect(is({ hi: "hi" }, $object({ hi: "hey" }))).toBe(false);
+test("$interface with unwrapped literals", () => {
+	expect(is({ hi: "hi" }, $interface({ hi: "hi" }))).toBe(true);
+	expect(is({ hi: "hi" }, $interface({ hi: "hey" }))).toBe(false);
 });
 
-test("$object with optional keys", () => {
+test("$interface with optional keys", () => {
 	// I think exactOptionalPropertyTypes would actually make this fail, but
 	// I'm not sure what the solution would be if so.
 	type Test = { hi: string; optional?: string };
-	const schema = $object({ hi: $string, optional: union($string, $undefined) });
+	const schema = $interface({ hi: $string, optional: union($string, $undefined) });
 
 	expect(is({ hi: "hi" }, schema)).toBe(true);
 
@@ -84,27 +84,27 @@ test("$object with optional keys", () => {
 	}
 });
 
-test("Using $object to match an existing type", () => {
+test("Using $interface to match an existing type", () => {
 	type Friend = { name: string };
 
 	// Validates that the object has a key of name with type string
-	is<Friend>({}, $object({ name: $string }));
+	is<Friend>({}, $interface({ name: $string }));
 
 	// @ts-expect-error - Doesn't have name!
-	is<Friend>({}, $object({ count: $number }));
+	is<Friend>({}, $interface({ count: $number }));
 
 	// Extra properties are fine
-	is<Friend>({}, $object({ name: $string, count: $number }));
+	is<Friend>({}, $interface({ name: $string, count: $number }));
 
 	// @ts-expect-error - string | undefined is not assignable to type string
-	is<Friend>({}, $object({ name: or($undefined, $string) }));
+	is<Friend>({}, $interface({ name: or($undefined, $string) }));
 
 	// This one works fine, because we're using Partial<Friend> instead of Friend
-	is<Partial<Friend>>({}, $object({ name: or($undefined, $string) }));
+	is<Partial<Friend>>({}, $interface({ name: or($undefined, $string) }));
 });
 
-test("$exact", () => {
-	const schema = $exact({ a: $boolean, b: $boolean, c: $boolean });
+test("$Exact", () => {
+	const schema = $Exact({ a: $boolean, b: $boolean, c: $boolean });
 
 	const smol = { a: true };
 	const correct = { a: true, b: true, c: true };

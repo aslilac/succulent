@@ -13,12 +13,12 @@ type KeyValuePair = readonly [key: unknown, valueSchema: SchemaBase<unknown>];
 const toDisplayKeyValue = ([key, valueSchema]: KeyValuePair) =>
 	`${toDisplayKey(key)}: ${Schema.displayName(valueSchema)}`;
 
-export const $anyobject = new Schema(
+export const $object = new Schema(
 	(x: unknown): x is object => typeof x === "object" && x != null,
 	{ displayName: "object" },
 );
 
-export function $object<T extends object>(template: {
+export function $interface<T extends object>(template: {
 	[K in keyof T]: SchemaBase<T[K]>;
 }): Schema<T> {
 	return new Schema(
@@ -31,8 +31,7 @@ export function $object<T extends object>(template: {
 			);
 
 			return (
-				$anyobject.check(x) &&
-				(Reflect.ownKeys(template).forEach(report), resolve())
+				$object.check(x) && (Reflect.ownKeys(template).forEach(report), resolve())
 			);
 		},
 
@@ -46,7 +45,7 @@ export function $object<T extends object>(template: {
 	);
 }
 
-export function $exact<T extends object>(template: {
+export function $Exact<T extends object>(template: {
 	[K in keyof T]: SchemaBase<T[K]>;
 }): Schema<T> {
 	return new Schema(
@@ -64,7 +63,7 @@ export function $exact<T extends object>(template: {
 			);
 
 			return (
-				$anyobject.check(x) &&
+				$object.check(x) &&
 				(Reflect.ownKeys(x).forEach(reportUnknown), resolveUnknown()) &&
 				(Reflect.ownKeys(template).forEach(reportKnown), resolveKnown())
 			);

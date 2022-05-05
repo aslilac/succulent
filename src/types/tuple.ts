@@ -1,6 +1,6 @@
-import { Schema, SchemaBase } from "../schema";
+import { Schema } from "../schema";
 
-export function $tuple<T extends unknown[]>(
+export function $Tuple<T extends unknown[]>(
 	...schemas: [...Schema.WrapAll<T>]
 ): Schema<T> {
 	return new Schema(
@@ -13,27 +13,5 @@ export function $tuple<T extends unknown[]>(
 				.map((schema) => Schema.displayName(schema))
 				.join(", ")}]`,
 		},
-	);
-}
-
-type _MonotupleNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
-
-type _$Monotuple<
-	T,
-	N extends _MonotupleNumber,
-	TArr extends T[],
-> = TArr["length"] extends N ? TArr : _$Monotuple<T, N, [...TArr, T]>;
-type _Monotuple<T, N extends _MonotupleNumber> = _$Monotuple<T, N, []>;
-
-export function $monotuple<T, N extends _MonotupleNumber>(
-	schema: SchemaBase<T>,
-	length: N,
-): Schema<_Monotuple<T, N>> {
-	return new Schema(
-		(t: unknown): t is _Monotuple<T, N> =>
-			Array.isArray(t) &&
-			t.length === length &&
-			t.every((x) => Schema.check(schema, x)),
-		{ displayName: `[${Schema.displayName(schema)} x${length}]` },
 	);
 }

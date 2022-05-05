@@ -1,7 +1,7 @@
 /// <reference types="jest" />
 import { assertType } from "../_util";
 import { check, is, $enum } from "../index";
-import { $object } from "./object";
+import { $interface } from "./object";
 
 enum Fruit {
 	Apple,
@@ -53,7 +53,7 @@ test("$enum", () => {
 	expect(is(Message.Hello, $Message)).toBe(true);
 	expect(is("Bye", $Message)).toBe(false); // because `"Bye" === Message.Bye`
 
-	const $MessageToFriend = $object({
+	const $MessageToFriend = $interface({
 		friend: $Friend,
 		message: $Message,
 	});

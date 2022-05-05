@@ -1,4 +1,4 @@
-import { LiteralSchema, Schema } from "../schema";
+import { LiteralSchema, Schema, SchemaBase } from "../schema";
 import { $undefined } from "./constants";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -34,7 +34,9 @@ export const $nullish = new Schema((x: unknown): x is nullish => x == null, {
 	displayName: "nullish",
 });
 
-export function $optional<T>(schema: Schema<T>): Schema<T | undefined> {
+export function $optional<T>(base: SchemaBase<T>): Schema<T | undefined> {
+	const schema = Schema.from(base);
+
 	return new Schema(
 		(x: unknown): x is T | undefined =>
 			Schema.is(schema, x) || Schema.is($undefined, x),
@@ -42,7 +44,9 @@ export function $optional<T>(schema: Schema<T>): Schema<T | undefined> {
 	);
 }
 
-export function $maybe<T>(schema: Schema<T>): Schema<T | nullish> {
+export function $maybe<T>(base: SchemaBase<T>): Schema<T | nullish> {
+	const schema = Schema.from(base);
+
 	return new Schema(
 		(x: unknown): x is T | undefined =>
 			Schema.is(schema, x) || Schema.is($nullish, x),

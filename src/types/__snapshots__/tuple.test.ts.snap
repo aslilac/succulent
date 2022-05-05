@@ -1,9 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`$monotuple 1`] = `"Expected [string x3], got hi,hi"`;
+exports[`$tuple 1`] = `"Expected [string, string, string], got hi,hi"`;
 
-exports[`$monotuple 2`] = `"Expected [string x3], got hi,hi,hi,howdy"`;
-
-exports[`$monotuple 3`] = `"Expected [\\"hi\\" x3], got hi,hi"`;
-
-exports[`$monotuple 4`] = `"Expected [\\"hi\\" x3], got hi,hi,hi,howdy"`;
+exports[`$tuple 2`] = `"Expected [string, string, string], got hi,hi,hi,howdy"`;

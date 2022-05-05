@@ -1,5 +1,5 @@
 /// <reference types="jest" />
-import { check, is, $anyobject, $boolean, $Map, $number, $Set } from "../index";
+import { check, is, $object, $boolean, $Map, $number, $Set } from "../index";
 
 test("$Map", () => {
 	const example = new Map([
@@ -7,8 +7,8 @@ test("$Map", () => {
 		[false, {}],
 	]);
 
-	expect(is(example, $Map($boolean, $anyobject))).toBe(true);
-	expect(is(example, $Map($number, $anyobject))).toBe(false);
+	expect(is(example, $Map($boolean, $object))).toBe(true);
+	expect(is(example, $Map($number, $object))).toBe(false);
 	expect(is(example, $Map($boolean, $number))).toBe(false);
 
 	expect(() => check(example, $Map($boolean, $number))).toThrowErrorMatchingSnapshot();
