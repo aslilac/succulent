@@ -51,6 +51,9 @@ test("$interface", () => {
 	expect(is(k, $Example)).toBe(false);
 	expect(is(l, $Example)).toBe(true);
 
+	expect(() => check(j, $Example)).toThrowErrorMatchingSnapshot();
+	expect(() => check(k, $Example)).toThrowErrorMatchingSnapshot();
+
 	type Example = { a: boolean; b: number; c: string; d: ExampleD };
 	type ExampleD = { [key]: Numbers; key: Numbers };
 	type Numbers = [number, number, number, number];

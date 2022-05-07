@@ -18,3 +18,19 @@ exports[`$Exact 3`] = `
 "Expected {|a: boolean, b: boolean, c: boolean|}, got [object Object]
   Unexpected property d"
 `;
+
+exports[`$interface 1`] = `
+"Expected {a: boolean, b: number, c: string, d: {key: [number, number, number, number], [Symbol(k)]: [number, number, number, number]}}, got [object Object]
+  Expected property d to have type {key: [number, number, number, number], [Symbol(k)]: [number, number, number, number]}
+    Expected {key: [number, number, number, number], [Symbol(k)]: [number, number, number, number]}, got [object Object]
+      Expected property key to have type [number, number, number, number]
+        Expected [number, number, number, number], got undefined"
+`;
+
+exports[`$interface 2`] = `
+"Expected {a: boolean, b: number, c: string, d: {key: [number, number, number, number], [Symbol(k)]: [number, number, number, number]}}, got [object Object]
+  Expected property d to have type {key: [number, number, number, number], [Symbol(k)]: [number, number, number, number]}
+    Expected {key: [number, number, number, number], [Symbol(k)]: [number, number, number, number]}, got [object Object]
+      Expected property [Symbol(k)] to have type [number, number, number, number]
+        Expected [number, number, number, number], got undefined"
+`;
