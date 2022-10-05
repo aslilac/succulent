@@ -2,8 +2,9 @@
 	"name": "succulent",
 	"author": "McKayla Washburn <mckayla@hey.com>",
 	"license": "MIT",
-	"version": "0.18.0",
+	"version": "0.19.0",
 	"description": "Powerful and easy runtime type checking",
+	"repository": "https://github.com/aslilac/succulent",
 	"keywords": [
 		"typescript",
 		"type checking",
@@ -14,34 +15,30 @@
 		"yup",
 		"zod"
 	],
-	"main": "./build/index.cjs",
-	"module": "./build/index.mjs",
+	"type": "module",
+	"module": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"exports": {
 		".": {
-			"import": "./build/index.mjs",
-			"require": "./build/index.cjs"
+			"import": "./build/index.js"
 		}
 	},
-	"repository": "https://github.com/aslilac/succulent",
 	"files": [
 		"build/**"
 	],
 	"devDependencies": {
-		"@mckayla/prettier": "^1.0.1",
+		"@mckayla/prettier": "^1.0.2",
 		"@mckayla/tsconfig": "^1.0.2",
-		"@types/jest": "^27.0.3",
-		"esbuild": "^0.14.38",
-		"esbuild-kit": "^0.0.3",
-		"eslint": "^8.14.0",
+		"@types/jest": "^29.1.1",
+		"eslint": "^8.24.0",
 		"eslint-config-mckayla": "^1.0.4",
-		"jest": "^27.4.5",
-		"prettier": "^2.5.1",
-		"ts-jest": "^27.1.2",
-		"typescript": "^4.6.3"
+		"jest": "^29.1.2",
+		"prettier": "^2.7.1",
+		"ts-jest": "^29.0.3",
+		"typescript": "^4.8.4"
 	},
 	"scripts": {
-		"build": "tsc -b tsconfig.build.json && ./build.mjs",
+		"build": "tsc -b tsconfig.build.json",
 		"fmt": "prettier --write .",
 		"lint": "eslint .",
 		"prepack": "npm run build -s",

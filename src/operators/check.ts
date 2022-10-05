@@ -6,4 +6,4 @@ export function check<T>(x: unknown, schema: SchemaBase<T>): asserts x is T {
 	}
 }
 
-export const guard = check;
+export { check as guard };

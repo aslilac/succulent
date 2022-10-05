@@ -14,11 +14,6 @@ test("union", () => {
 		if (is(x, union($string, 0))) {
 			if (is(x, union("hello", 0))) {
 				assertType<"hello" | 0, typeof x>(x);
-
-				// @ts-expect-error - This is a weird bug that comes from the combination
-				// of unions and checking for $string, and *then* a string literal.
-				// Seems to be an issue with tsc though, and not us
-				// https://www.typescriptlang.org/play?#code/GYVwdgxgLglg9mABFApgZygCgB4C5HgDWYcA7mAJSIDeAUAJAzCKZQCeADinM9ogLyDEAIgwAnGGADmwxAB85iPoP6IADFTr162Bo2Y4BQ4QAsUAG3NxZCpUdUaaenXoC+DdwyYsIZiIQBGHApNPV1tb0xfFH8AJmDQ7Rdtd3p3T1BIWAREaP8gvAIwYjJKfD4YNBZxSSl5dUSxFCgQMSR2Lh47FREa6RtFZSE1AG5aDPBoeCQ8wnjCohJyCnLESpZTCysbBqd6Jpa27uMzS2t5Qft1MdcgA
 				assertType<typeof x, "hello" | 0>(x);
 			}
 		}
