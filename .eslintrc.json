@@ -1,3 +1,6 @@
 {
-	"extends": ["mckayla"]
+	"extends": ["mckayla"],
+	"rules": {
+		"@typescript-eslint/no-misused-promises": "off"
+	}
 }
