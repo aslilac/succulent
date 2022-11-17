@@ -4,6 +4,7 @@
 .nova/
 .vscode/
 build/
+coverage/
 dist/
 node_modules/
 target/
