@@ -1,8 +1,10 @@
-import { keyReporter, messages, toDisplayKey } from "../base";
+import { KeyReporter, messages, toDisplayKey } from "../base";
 import { Schema, SchemaBase } from "../schema";
 
-function hasOwn(target: unknown, prop: string | symbol) {
-	if (!{}.hasOwnProperty.call(target, prop)) {
+const hasOwn = {}.hasOwnProperty;
+
+function assertHasOwn(target: unknown, prop: string | symbol) {
+	if (!hasOwn.call(target, prop)) {
 		throw null;
 	}
 
@@ -18,25 +20,36 @@ export const $object = new Schema(
 	{ displayName: "object" },
 );
 
-export function $interface<T extends object>(template: {
+export function $interface<const T extends object>(template: {
 	[K in keyof T]: SchemaBase<T[K]>;
 }): Schema<T> {
+	const keys = Reflect.ownKeys(template);
+	const shape = Object.fromEntries(keys.map((key) => [key, Schema.from(template[key as keyof T])]));
+
+	const known = new KeyReporter(
+		// @ts-expect-error - Can't quite get these types
+		(key: string | symbol, value: unknown) => shape[key].check(value),
+		// @ts-expect-error - Can't quite get these types
+		(key, value) => messages.invalidProperty(key, shape[key] as Schema<unknown>),
+	);
+
 	return new Schema(
 		(x: unknown): x is T => {
-			const [report, resolve] = keyReporter(
-				// @ts-expect-error - Can't quite get these types
-				(key: string | symbol) => Schema.check(template[key], x[key]),
-				// @ts-expect-error - Can't quite get these types
-				(key) => messages.invalidProperty(key, template[key] as Schema<unknown>),
-			);
+			if (!$object.check(x)) {
+				return false;
+			}
 
-			return (
-				$object.check(x) && (Reflect.ownKeys(template).forEach(report), resolve())
-			);
+			known.reset();
+			for (const key of keys) {
+				// @ts-expect-error - `x` is just `object` still, not enough to index
+				known.report(key, x[key as keyof T]);
+			}
+			known.resolve();
+
+			return true;
 		},
-
 		{
-			displayName: `{${Reflect.ownKeys(template)
+			displayName: `{${keys
 				// @ts-expect-error - Can't quite get these types
 				.map((key) => [key, template[key]] as const)
 				.map(toDisplayKeyValue)
@@ -45,31 +58,47 @@ export function $interface<T extends object>(template: {
 	);
 }
 
-export function $Exact<T extends object>(template: {
+export function $Exact<const T extends object>(template: {
 	[K in keyof T]: SchemaBase<T[K]>;
 }): Schema<T> {
+	const keys = Reflect.ownKeys(template);
+	const shape = Object.fromEntries(keys.map((key) => [key, Schema.from(template[key as keyof T])]));
+
+	const unknown = new KeyReporter(
+		(key: string | symbol) => assertHasOwn(template, key),
+		(key) => `Unexpected property ${toDisplayKey(key)}`,
+	);
+
+	const known = new KeyReporter(
+		// @ts-expect-error - Can't quite get these types
+		(key: string | symbol, value: unknown) => shape[key].check(value),
+		// @ts-expect-error - Can't quite get these types
+		(key, value) => messages.invalidProperty(key, shape[key] as Schema<unknown>),
+	);
+
 	return new Schema(
 		(x: unknown): x is T => {
-			const [reportUnknown, resolveUnknown] = keyReporter(
-				(key: string | symbol) => hasOwn(template, key),
-				(key) => `Unexpected property ${toDisplayKey(key)}`,
-			);
+			if (!$object.check(x)) {
+				return false;
+			}
 
-			const [reportKnown, resolveKnown] = keyReporter(
-				// @ts-expect-error - Can't quite get these types
-				(key: string | symbol) => Schema.check(template[key], x[key]),
-				// @ts-expect-error - Can't quite get these types
-				(key) => messages.invalidProperty(key, template[key] as Schema<unknown>),
-			);
+			unknown.reset();
+			for (const key of Reflect.ownKeys(x)) {
+				unknown.report(key);
+			}
+			unknown.resolve();
 
-			return (
-				$object.check(x) &&
-				(Reflect.ownKeys(x).forEach(reportUnknown), resolveUnknown()) &&
-				(Reflect.ownKeys(template).forEach(reportKnown), resolveKnown())
-			);
+			known.reset();
+			for (const key of keys) {
+				// @ts-expect-error - `x` is just `object` still, not enough to index
+				known.report(key, x[key as keyof T]);
+			}
+			known.resolve();
+
+			return true;
 		},
 		{
-			displayName: `{|${Reflect.ownKeys(template)
+			displayName: `{|${keys
 				// @ts-expect-error - Can't quite get these types
 				.map((key) => [key, template[key]] as const)
 				.map(toDisplayKeyValue)
