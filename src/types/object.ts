@@ -24,7 +24,9 @@ export function $interface<const T extends object>(template: {
 	[K in keyof T]: SchemaBase<T[K]>;
 }): Schema<T> {
 	const keys = Reflect.ownKeys(template);
-	const shape = Object.fromEntries(keys.map((key) => [key, Schema.from(template[key as keyof T])]));
+	const shape = Object.fromEntries(
+		keys.map((key) => [key, Schema.from(template[key as keyof T])]),
+	);
 
 	const known = new KeyReporter(
 		// @ts-expect-error - Can't quite get these types
@@ -62,7 +64,9 @@ export function $Exact<const T extends object>(template: {
 	[K in keyof T]: SchemaBase<T[K]>;
 }): Schema<T> {
 	const keys = Reflect.ownKeys(template);
-	const shape = Object.fromEntries(keys.map((key) => [key, Schema.from(template[key as keyof T])]));
+	const shape = Object.fromEntries(
+		keys.map((key) => [key, Schema.from(template[key as keyof T])]),
+	);
 
 	const unknown = new KeyReporter(
 		(key: string | symbol) => assertHasOwn(template, key),
