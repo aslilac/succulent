@@ -21,6 +21,7 @@
 	"main": "./build/index.mjs",
 	"types": "./build/index.d.ts",
 	"exports": {
+		"types": "./build/index.d.ts",
 		"import": "./build/index.mjs",
 		"require": "./build/index.cjs"
 	},
