@@ -15,11 +15,34 @@ type KeyValuePair = readonly [key: unknown, valueSchema: SchemaBase<unknown>];
 const toDisplayKeyValue = ([key, valueSchema]: KeyValuePair) =>
 	`${toDisplayKey(key)}: ${Schema.displayName(valueSchema)}`;
 
+/**
+ * Matches any non-primitive, non-null, non-undefined, value. Equivalent to `object` in TypeScript.
+ * @example
+ * ```ts
+ * guard({}, $object); // ok
+ * guard({ a: 1, b: 2 }, $object); // ok
+ * guard(1, $object); // will throw a `TypeError`, because `1` is a `number`
+ * guard(new Date(), $object); // ok
+ * guard(null, $object); // will throw a `TypeError`, because `null` is not an object
+ * ```
+ */
 export const $object = new Schema(
 	(x: unknown): x is object => typeof x === "object" && x != null,
 	{ displayName: "object" },
 );
 
+/**
+ * @param template an object with the same keys that a valid object should have, whose
+ * values should be schemas which correspond to the values of a valid object.
+ * @example
+ * ```ts
+ * guard({}, $interface({})); // ok
+ * guard({ a: 1 }, $interface({ a: $number })); // ok
+ * guard({ a: 1, b: 2 }, $interface({ a: $number })); // ok
+ * guard({ a: 1 }, $interface({ a: $number, b: $number })); // throw a `TypeError`, because `b` is missing
+ * guard({ a: 1, b: 2 }, $interface({ a: $number, b: $number })); // ok
+ * ```
+ */
 export function $interface<const T extends object>(template: {
 	[K in keyof T]: SchemaBase<T[K]>;
 }): Schema<T> {
@@ -60,6 +83,22 @@ export function $interface<const T extends object>(template: {
 	);
 }
 
+/**
+ * The same as `$interface`, but will reject any object which has properties that are
+ * unspecified by the template.
+ * @param template an object with the same keys that a valid object should have, whose
+ * values should be schemas which correspond to the values of a valid object.
+ * @example
+ * ```ts
+ * guard({ a: 1, b: 2 }, $Exact({ a: $number })); // throws a `TypeError`; property `b` is not allowed by the schema
+ *
+ * // These behave the same as if we used `$inferface`
+ * guard({}, $Exact({})); // ok
+ * guard({ a: 1 }, $Exact({ a: $number })); // ok
+ * guard({ a: 1 }, $Exact({ a: $number, b: $number })); // throw a `TypeError`, because `b` is missing
+ * guard({ a: 1, b: 2 }, $Exact({ a: $number, b: $number })); // ok
+ * ```
+ */
 export function $Exact<const T extends object>(template: {
 	[K in keyof T]: SchemaBase<T[K]>;
 }): Schema<T> {
@@ -69,7 +108,7 @@ export function $Exact<const T extends object>(template: {
 	);
 
 	const unknown = new KeyReporter(
-		(key: string | symbol) => assertHasOwn(template, key),
+		(key: string | symbol) => assertHasOwn($T, key),
 		(key) => `Unexpected property ${toDisplayKey(key)}`,
 	);
 

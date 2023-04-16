@@ -1,4 +1,4 @@
-import { is, guard, $boolean, $Exact, $interface, $number, $string } from "succulent";
+import { is, $boolean, $Exact, $interface, $number, $string } from "succulent";
 import { bench, intro, STRICT } from "../shared.js";
 
 const $Type = $interface({
@@ -36,7 +36,7 @@ export function start() {
 	bench("exact", STRICT, (v) => is(v, $ExactType));
 }
 
-// Dumb workaround. Should be `import.meta.main`.
+// Dumb workaround. Should be `if (import.meta.main)`.
 // See https://github.com/nodejs/modules/issues/274.
 if (process.argv.includes("-run")) {
 	start();
