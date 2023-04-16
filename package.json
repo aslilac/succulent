@@ -32,6 +32,7 @@
 		"@mckayla/prettier": "^1.0.3",
 		"@mckayla/tsconfig": "^1.0.3",
 		"@types/jest": "^29.5.0",
+		"esbuild": "^0.17.16",
 		"eslint": "^8.38.0",
 		"eslint-config-mckayla": "^1.0.6",
 		"jest": "^29.5.0",
@@ -40,7 +41,9 @@
 		"typescript": "~5.0.4"
 	},
 	"scripts": {
-		"build": "tsc -b tsconfig.build.json",
+		"build": "tsc -b tsconfig.build.json && $npm_execpath run bundle:cjs && $npm_execpath run bundle:mjs",
+		"bundle:cjs": "esbuild --bundle ./build/index.js --outfile=build/index.cjs --format=cjs --sourcemap",
+		"bundle:mjs": "esbuild --bundle ./build/index.js --outfile=build/index.mjs --format=esm --sourcemap",
 		"fmt": "prettier --write .",
 		"lint": "eslint .",
 		"prepack": "npm run build -s",

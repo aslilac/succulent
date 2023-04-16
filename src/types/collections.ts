@@ -1,11 +1,8 @@
 import { Schema, SchemaBase } from "../schema";
 
-export function $Map<K, V>(
-	keySchemaBase: SchemaBase<K>,
-	valueSchemaBase: SchemaBase<V>,
-): Schema<Map<K, V>> {
-	const keySchema = Schema.from(keySchemaBase);
-	const valueSchema = Schema.from(valueSchemaBase);
+export function $Map<K, V>($K: SchemaBase<K>, $V: SchemaBase<V>): Schema<Map<K, V>> {
+	const keySchema = Schema.from($K);
+	const valueSchema = Schema.from($V);
 	const keyTypeName = keySchema.displayName;
 	const valueTypeName = valueSchema.displayName;
 
@@ -27,8 +24,8 @@ export function $Map<K, V>(
 	);
 }
 
-export function $Set<K>(schemaBase: SchemaBase<K>): Schema<Set<K>> {
-	const schema = Schema.from(schemaBase);
+export function $Set<K>($K: SchemaBase<K>): Schema<Set<K>> {
+	const schema = Schema.from($K);
 
 	return new Schema(
 		(x: unknown): x is Set<K> => {

@@ -1,12 +1,13 @@
-import * as succulentBench from "./comparisons/succulent.js";
-import * as runtypesBench from "./comparisons/runtypes.js";
-import * as yupBench from "./comparisons/yup.js";
-import * as zodBench from "./comparisons/zod.js";
+import * as benchmark from "./benchmark.js";
+
+import * as runtypes from "./comparisons/runtypes.js";
+import * as yup from "./comparisons/yup.js";
+import * as zod from "./comparisons/zod.js";
 
 // Us :)
-succulentBench.start();
+benchmark.start();
 
 // Competitors >:)
-runtypesBench.start();
-yupBench.start();
-zodBench.start();
+runtypes.start();
+yup.start();
+zod.start();

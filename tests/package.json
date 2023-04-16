@@ -9,7 +9,7 @@
 		"zod": "^3.21.4"
 	},
 	"scripts": {
-		"bench": "0x -o -- node ./bench/comparisons/succulent.js -run",
-		"perf": "node ./bench/index.js"
+		"bench": "node ./bench/index.js",
+		"perf": "0x -o -- node ./bench/comparisons/succulent.js -run"
 	}
 }

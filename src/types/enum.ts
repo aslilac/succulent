@@ -19,6 +19,11 @@ export interface EnumOptions {
 	displayName?: string;
 }
 
+/**
+ * @remarks
+ * This `Schema` is a little different from the rest, in that it assumes you are using
+ * TypeScript, *and* that you have already defined a TypeScript `enum`.
+ */
 export function $enum<E, K extends string | number | symbol>(
 	enumObject: Record<K, E>,
 	options: EnumOptions = {},
