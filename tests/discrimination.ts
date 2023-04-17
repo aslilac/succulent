@@ -1,4 +1,5 @@
-import { is, Type, $interface, $number, union, $literal } from "succulent";
+import * as assert from "node:assert/strict";
+import { Type, $interface, $number, union, $literal, guard } from "succulent";
 
 export const $Stuff = union(
 	$interface({
@@ -19,7 +20,7 @@ const a: Stuff = {
 	a: 1,
 };
 
-// @ts-expect-error
+// @ts-expect-error - b is missing
 const b: Stuff = {
 	type: "two_numbers",
 	a: 1,
@@ -28,7 +29,7 @@ const b: Stuff = {
 const c: Stuff = {
 	type: "one_number",
 	a: 1,
-	// @ts-expect-error
+	// @ts-expect-error - b is not allowed
 	b: 2,
 };
 
@@ -37,3 +38,8 @@ const d: Stuff = {
 	a: 1,
 	b: 2,
 };
+
+guard(a, $Stuff);
+assert.throws(() => guard(b, $Stuff));
+assert.throws(() => guard(c, $Stuff));
+guard(d, $Stuff);

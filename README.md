@@ -29,15 +29,13 @@ Getting more complex...
 ### Examples
 
 ```typescript
-import { is, $string } from "succulent";
+import { guard, $string } from "succulent";
 
 /**
  * Takes untrusted user input!
  */
 export default function (x: unknown): string {
-	if (!is(x, $string)) {
-		throw new TypeError("Expected x to be a string");
-	}
+	guard(x, $string);
 
 	// x now has type `string` and can be treated as such
 	return x;
@@ -48,8 +46,8 @@ export default function (x: unknown): string {
 
 ```typescript
 import {
+	guard,
 	hasMaxLength,
-	is,
 	matches,
 	Type,
 	$Array,
@@ -80,11 +78,10 @@ export const $User = $interface({
 export default function (user: unknown) {
 	// You can specify a compatible generic type to use instead of the generated type!
 	// Mostly helpful for getting nicer editor hints
-	if (!is<User>(x, $User)) {
-		throw new TypeError("Expected x to be a User");
-	}
+	guard<User>(x, $User);
 
 	// x now has type `User`
+	// ...
 }
 ```
 
@@ -92,9 +89,10 @@ export default function (user: unknown) {
 
 ```typescript
 import {
-	createErrorRef,
-	is,
+	guard,
 	inRange,
+	lazy,
+	Schema,
 	$Array,
 	$int,
 	$interface,
@@ -104,29 +102,28 @@ import {
 type Friend = {
 	name: string;
 	happiness: number;
+	friends: Friend[];
 };
 
-const $Friend = $interface({
+// Specifying `Friend` here as a generic ensures that our $Friend schema is
+// compatible with the `Friend` type. If they get out of sync, TypeScript will throw
+// a compilation error to let you know.
+const $Friend: Schema<Friend> = $interface({
 	name: $string,
 	happiness: $int.that(inRange(0, 10)),
-	friends: $Array($Friend),
+	// We need to use `lazy` here because $Friend is not yet defined. A little unfortunate,
+	// but there isn't really a be better way to do this. (unless you know of one, then tell me!)
+	friends: $Array(lazy(() => $Friend)),
 });
 
 export default function (person: unknown) {
-	// Allows us to report specific validation errors
-	const ref = createErrorRef();
+	try {
+		guard(person, $Friend);
 
-	// Specifying `Friend` here as a generic ensures that our $Friend schema is
-	// compatible with the `Friend` type. If they get out of sync, TypeScript will throw
-	// a compilation error to let you know.
-	if (!is<Friend>(person, $Friend, ref)) {
-		// As a note, you should just use `check` instead if this is all you plan on
-		// doing. It would behave the same way that this example does, without needing
-		// to create an `ErrorRef` object. But, if you need to access the `Error` object,
-		// you can. :)
-		throw ref.error;
+		// person has type `Friend` now!
+		// ...
+	} catch (error) {
+		// Do something with the error, like probe the heirarchy of where errors came from!
 	}
-
-	return person; // person has type `Friend`
 }
 ```

@@ -91,19 +91,21 @@ test("Using $interface to match an existing type", () => {
 	type Friend = { name: string };
 
 	// Validates that the object has a key of name with type string
-	is<Friend>({}, $interface({ name: $string }));
+	expect(is<Friend>({}, $interface({ name: $string }))).toBe(false);
 
 	// @ts-expect-error - Doesn't have name!
-	is<Friend>({}, $interface({ count: $number }));
+	expect(is<Friend>({}, $interface({ count: $number }))).toBe(false);
 
 	// Extra properties are fine
-	is<Friend>({}, $interface({ name: $string, count: $number }));
+	expect(is<Friend>({}, $interface({ name: $string, count: $number }))).toBe(false);
 
 	// @ts-expect-error - string | undefined is not assignable to type string
-	is<Friend>({}, $interface({ name: or($undefined, $string) }));
+	expect(is<Friend>({}, $interface({ name: union($undefined, $string) }))).toBe(true);
 
 	// This one works fine, because we're using Partial<Friend> instead of Friend
-	is<Partial<Friend>>({}, $interface({ name: or($undefined, $string) }));
+	expect(is<Partial<Friend>>({}, $interface({ name: or($undefined, $string) }))).toBe(
+		true,
+	);
 });
 
 test("$Exact", () => {

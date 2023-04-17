@@ -14,9 +14,10 @@ export function $instanceof<T extends Function>(t: T) {
  * `Blob` or `File`. If the type `T` is not available in the current environment, the
  * returned schema will be an alias of `$never`.
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function $tryinstanceof<T extends Function>(mapT: () => T) {
 	try {
-		let t = mapT();
+		const t = mapT();
 		if (!t) {
 			return $never;
 		}

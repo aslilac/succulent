@@ -17,6 +17,9 @@ export function union<T extends readonly unknown[]>(
 	);
 }
 
+/**
+ * @deprecated Use `union` instead
+ */
 export function or<X, Y>(x: SchemaBase<X>, y: SchemaBase<Y>): Schema<X | Y> {
 	return new Schema((t: unknown): t is X | Y => is(t, x) || is(t, y), {
 		displayName: `(${Schema.displayName(x)} | ${Schema.displayName(y)})`,

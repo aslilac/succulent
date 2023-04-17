@@ -68,7 +68,7 @@ export class Schema<T> {
 	 * Used to iterate through all possible values accepted by the schema,
 	 * for certain finite types
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-empty-function, class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	readonly [Symbol.iterator]: () => Iterator<T> = function* () {};
 
 	private readonly _check: (x: unknown) => x is T;
