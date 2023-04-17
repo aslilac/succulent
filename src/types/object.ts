@@ -108,7 +108,7 @@ export function $Exact<const T extends object>(template: {
 	);
 
 	const unknown = new KeyReporter(
-		(key: string | symbol) => assertHasOwn($T, key),
+		(key: string | symbol) => assertHasOwn(template, key),
 		(key) => `Unexpected property ${toDisplayKey(key)}`,
 	);
 
