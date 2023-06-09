@@ -1,6 +1,6 @@
-export * as messages from "./errorMessages";
-export * from "./indent";
-export * from "./keyReporter";
-export * from "./toDisplayKey";
-export * from "./toDisplayString";
-export * from "./trace";
+export * as messages from "./errorMessages.js";
+export * from "./indent.js";
+export * from "./keyReporter.js";
+export * from "./toDisplayKey.js";
+export * from "./toDisplayString.js";
+export * from "./trace.js";

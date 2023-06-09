@@ -1,4 +1,4 @@
-import { Schema } from "../schema";
+import { Schema } from "../schema.js";
 
 export function $Tuple<T extends unknown[]>(
 	...schemas: [...Schema.WrapAll<T>]

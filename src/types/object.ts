@@ -1,5 +1,5 @@
-import { KeyReporter, messages, toDisplayKey } from "../base";
-import { Schema, SchemaBase } from "../schema";
+import { KeyReporter, messages, toDisplayKey } from "../base/index.js";
+import { Schema, SchemaBase } from "../schema.js";
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
 const hasOwn = {}.hasOwnProperty;

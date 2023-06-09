@@ -1,4 +1,4 @@
-import { Schema, SchemaBase } from "../schema";
+import { Schema, SchemaBase } from "../schema.js";
 
 /**
  * Checks that the value is an `Array`, and that every value in it matches `$T`

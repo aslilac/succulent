@@ -1,6 +1,6 @@
-import { Schema, SchemaBase } from "../schema";
-import { toDisplayKey } from "./toDisplayKey";
-import { toDisplayString } from "./toDisplayString";
+import { Schema, SchemaBase } from "../schema.js";
+import { toDisplayKey } from "./toDisplayKey.js";
+import { toDisplayString } from "./toDisplayString.js";
 
 export function invalidProperty(key: unknown, schema: SchemaBase<unknown>) {
 	const displayKey = toDisplayKey(key);

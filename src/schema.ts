@@ -1,5 +1,5 @@
-import { messages, toDisplayString, trace } from "./base";
-import type { ErrorRef } from "./ref";
+import { messages, toDisplayString, trace } from "./base/index.js";
+import type { ErrorRef } from "./ref.js";
 
 export type Type<X> = Schema.Unwrap<X>;
 export namespace Schema {

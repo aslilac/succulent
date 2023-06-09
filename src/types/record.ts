@@ -1,4 +1,4 @@
-import { Schema, SchemaBase } from "../schema";
+import { Schema, SchemaBase } from "../schema.js";
 
 /**
  * Checks that a value is an object where all keys match the provided key schema, and all

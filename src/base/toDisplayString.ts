@@ -5,6 +5,10 @@ export function toDisplayString(x: unknown) {
 		case "string":
 			return `"${x}"`;
 		default:
-			return String(x);
+			try {
+				return String(x);
+			} catch {
+				return "[object]";
+			}
 	}
 }

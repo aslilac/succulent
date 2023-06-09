@@ -1,4 +1,4 @@
-import { indent } from "./indent";
+import { indent } from "./indent.js";
 
 export function trace(message: string, error?: unknown) {
 	if (error instanceof Error) {

@@ -1,4 +1,4 @@
-import { Schema } from "../schema";
+import { Schema } from "../schema.js";
 
 /**
  * Checks if the value is a primitive `number`.

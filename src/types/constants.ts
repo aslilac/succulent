@@ -1,5 +1,5 @@
-import { Schema } from "../schema";
-import { $literal } from "./misc";
+import { Schema } from "../schema.js";
+import { $literal } from "./misc.js";
 
 /**
  * Checks if the value is a primitive `boolean`; `true` or `false`

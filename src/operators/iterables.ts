@@ -1,4 +1,4 @@
-import { Schema } from "../schema";
+import { Schema } from "../schema.js";
 
 export function oneOf<T>(x: Iterable<T>): Schema<T> {
 	return new Schema((t: unknown): t is T => {

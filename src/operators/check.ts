@@ -1,4 +1,4 @@
-import { Schema, SchemaBase } from "../schema";
+import { Schema, SchemaBase } from "../schema.js";
 
 /**
  * @param x The value to check

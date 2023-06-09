@@ -1,12 +1,12 @@
 import * as assert from "node:assert/strict";
-import { Type, $interface, $number, union, $literal, guard } from "succulent";
+import { Type, $Exact, $number, union, $literal, guard } from "succulent";
 
 export const $Stuff = union(
-	$interface({
+	$Exact({
 		type: $literal("one_number"),
 		a: $number,
 	}),
-	$interface({
+	$Exact({
 		type: $literal("two_numbers"),
 		a: $number,
 		b: $number,

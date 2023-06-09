@@ -1,5 +1,5 @@
-import { Schema, SchemaBase } from "../schema";
-import { is } from "./is";
+import { Schema, SchemaBase } from "../schema.js";
+import { is } from "./is.js";
 
 export function union<T extends readonly unknown[]>(
 	...schemas: readonly [...Schema.WrapAll<T>]

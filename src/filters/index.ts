@@ -1,3 +1,3 @@
-export * from "./length";
-export * from "./matches";
-export * from "./range";
+export * from "./length.js";
+export * from "./matches.js";
+export * from "./range.js";

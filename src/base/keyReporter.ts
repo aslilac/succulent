@@ -1,4 +1,4 @@
-import { trace } from "./trace";
+import { trace } from "./trace.js";
 
 type Func<Args extends unknown[], R = void> = (...args: Args) => R;
 

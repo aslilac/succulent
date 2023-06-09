@@ -1,4 +1,4 @@
-import { Schema } from "../schema";
+import { Schema } from "../schema.js";
 
 function isEnumMemberName<E, K extends string | number | symbol>(
 	x: unknown,

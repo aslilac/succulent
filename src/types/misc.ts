@@ -1,5 +1,5 @@
-import { LiteralSchema, Schema, SchemaBase } from "../schema";
-import { $undefined } from "./constants";
+import { LiteralSchema, Schema, SchemaBase } from "../schema.js";
+import { $undefined } from "./constants.js";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function $instanceof<T extends Function>(t: T) {
