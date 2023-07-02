@@ -1,13 +1,5 @@
 /// <reference types="jest" />
-import {
-	check,
-	is,
-	$Array,
-	$number,
-	$interface,
-	$string,
-	$undefined,
-} from "../index.js";
+import { check, is, $Array, $number, $interface, $string, $undefined } from "../index.js";
 
 test("$Array", () => {
 	const numArray = $Array($number);
@@ -15,7 +7,6 @@ test("$Array", () => {
 	expect(is([1], numArray)).toBe(true);
 	expect(is([1, 2, 3, 4, 5], numArray)).toBe(true);
 	expect(is([1, 2, 3, 4, 5, undefined], numArray)).toBe(false);
-
 
 	const undefinedArray = $Array($undefined);
 	expect(is(new Array(100), undefinedArray)).toBe(true);
