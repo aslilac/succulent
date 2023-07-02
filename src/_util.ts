@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 type IsAny<T> = unknown extends T ? (T extends {} ? T : never) : never;
 type NotAny<T> = T extends IsAny<T> ? never : T;
 

@@ -1,7 +1,6 @@
 import { LiteralSchema, Schema, SchemaBase } from "../schema.js";
 import { $undefined } from "./constants.js";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function $instanceof<T extends Function>(t: T) {
 	return new Schema((x: unknown): x is T["prototype"] => x instanceof t, {
 		displayName: t.name,
@@ -14,7 +13,6 @@ export function $instanceof<T extends Function>(t: T) {
  * `Blob` or `File`. If the type `T` is not available in the current environment, the
  * returned schema will be an alias of `$never`.
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function $tryinstanceof<T extends Function>(mapT: () => T) {
 	try {
 		const t = mapT();
@@ -141,7 +139,7 @@ export function $maybe<T>(base: SchemaBase<T>): Schema<T | nullish> {
  * // ...you get the point
  * ```
  */
-export const $any = new Schema((x: unknown): x is any => true, { displayName: "any" }); // eslint-disable-line @typescript-eslint/no-explicit-any
+export const $any = new Schema((x: unknown): x is any => true, { displayName: "any" });
 
 /**
  * The opposite of `$any`, this schema will never match anything.

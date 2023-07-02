@@ -59,7 +59,7 @@ test("$interface", () => {
 	type Numbers = [number, number, number, number];
 
 	type TAutoExample = Type<typeof $Example>;
-	interface IAutoExample extends Type<typeof $Example> {} // eslint-disable-line @typescript-eslint/no-empty-interface
+	interface IAutoExample extends Type<typeof $Example> {}
 	function _(x: unknown) {
 		if (is(x, $Example)) {
 			assertType<Example, typeof x>(x);
