@@ -31,6 +31,8 @@ jobs:
       - run: npm run build
       - run: npm run test
 
+      - run: npm i
+        working-directory: tests/
       - run: npm run test
         working-directory: tests/
 
