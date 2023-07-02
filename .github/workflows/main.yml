@@ -31,4 +31,7 @@ jobs:
       - run: npm run build
       - run: npm run test
 
+      - run: npm run test
+        working-directory: tests/
+
       - uses: codecov/codecov-action@v3
