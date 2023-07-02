@@ -33,8 +33,6 @@
 		"@types/node": "^20.2.5",
 		"@vitest/coverage-v8": "^0.32.2",
 		"esbuild": "^0.17.16",
-		"eslint": "^8.38.0",
-		"eslint-config-mckayla": "^1.0.6",
 		"prettier": "~2.8.7",
 		"typescript": "~5.1.6",
 		"vitest": "^0.32.2"
@@ -42,7 +40,6 @@
 	"scripts": {
 		"build": "tsc -b tsconfig.build.json",
 		"fmt": "prettier --write .",
-		"lint": "eslint .",
 		"prepack": "npm run build -s",
 		"test": "vitest run --coverage"
 	}
