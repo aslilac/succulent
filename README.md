@@ -22,9 +22,9 @@ Some examples...
 
 Getting more complex...
 
--   the type `T[]` (or equivalently, `Array<T>`) could be represented by the schema `$Array($T)` _(assuming `$T` is a schema)_
+-   the type `T[]`/`Array<T>` could be represented by the schema `$Array($T)` _(assuming `$T` is a schema)_
 -   the type `Map<K, V>` could be represented by the schema `$Map($K, $V)` _(assuming `$K` and `$V` are schemas)_
--   the types `$any` and `$never` can be represented by the schemas `$any` and `$never` respectively
+-   the types `any` and `never` can be represented by the schemas `$any` and `$never` respectively
 
 ### Examples
 

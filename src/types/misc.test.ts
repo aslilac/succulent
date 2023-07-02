@@ -3,7 +3,6 @@
 import { assertType } from "../_util";
 import {
 	a,
-	createErrorRef,
 	is,
 	union,
 	$Date,
@@ -112,9 +111,7 @@ test("$maybe", () => {
 	expect(is(null, $maybe($string))).toBe(true);
 	expect(is("hi", $maybe($string))).toBe(true);
 
-	const ref = createErrorRef();
-	expect(is(false, $maybe($string), ref)).toBe(false);
-	expect(ref.error).toMatchSnapshot();
+	expect(is(false, $maybe($string))).toBe(false);
 });
 
 test("$nullish", () => {
@@ -125,10 +122,8 @@ test("$nullish", () => {
 
 test("$optional", () => {
 	expect(is(undefined, $optional($string))).toBe(true);
-	expect(is(null, $optional($string))).toBe(false);
 	expect(is("hi", $optional($string))).toBe(true);
 
-	const ref = createErrorRef();
-	expect(is(false, $optional($string), ref)).toBe(false);
-	expect(ref.error).toMatchSnapshot();
+	expect(is(null, $optional($string))).toBe(false);
+	expect(is(false, $optional($string))).toBe(false);
 });

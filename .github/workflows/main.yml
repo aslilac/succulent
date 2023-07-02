@@ -2,9 +2,9 @@ name: main
 
 on:
   push:
-    branches: [main]
+    branches: ["main"]
   pull_request:
-    branches: [main]
+    branches: ["main"]
 
 jobs:
   build:
@@ -17,13 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Use Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
       - run: npm i
-      - run: ./node_modules/.bin/prettier --check .
+      - run: npx prettier --check .
 
       - run: npm run build
       - run: npm run lint

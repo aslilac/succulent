@@ -3,13 +3,19 @@
 	"dependencies": {
 		"0x": "^5.5.0",
 		"chalk": "^5.2.0",
+		"succulent": "link:.."
+	},
+	"optionalDependencies": {
 		"runtypes": "^6.6.0",
-		"succulent": "file:..",
 		"yup": "^1.0.2",
 		"zod": "^3.21.4"
 	},
+	"devDependencies": {
+		"typescript": "~5.1.6"
+	},
 	"scripts": {
+		"test": "tsc -p tsconfig.json && node ./build/index.js",
 		"bench": "node ./bench/index.js",
-		"perf": "0x -o -- node ./bench/comparisons/succulent.js -run"
+		"perf": "0x -o -- node ./bench/benchmark.js -run"
 	}
 }

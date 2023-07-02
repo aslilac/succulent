@@ -109,20 +109,30 @@ test("Using $interface to match an existing type", () => {
 });
 
 test("$Exact", () => {
-	const schema = $Exact({ a: $boolean, b: $boolean, c: $boolean });
+	const $State = $Exact({ a: $boolean, b: $boolean, c: $boolean });
 
 	const smol = { a: true };
 	const correct = { a: true, b: true, c: true };
 	const big = { a: true, b: true, c: true, d: true, e: true };
 	const wrong = { a: true, b: true, d: true };
 
-	expect(() => check(smol, schema)).toThrowErrorMatchingSnapshot();
-	expect(() => check(correct, schema)).not.toThrow();
-	expect(() => check(big, schema)).toThrowErrorMatchingSnapshot();
-	expect(() => check(wrong, schema)).toThrowErrorMatchingSnapshot();
+	expect(() => check(smol, $State)).toThrowErrorMatchingSnapshot();
+	expect(() => check(correct, $State)).not.toThrow();
+	expect(() => check(big, $State)).toThrowErrorMatchingSnapshot();
+	expect(() => check(wrong, $State)).toThrowErrorMatchingSnapshot();
 
-	expect(is(smol, schema)).toBe(false);
-	expect(is(correct, schema)).toBe(true);
-	expect(is(big, schema)).toBe(false);
-	expect(is(wrong, schema)).toBe(false);
+	expect(is(smol, $State)).toBe(false);
+	expect(is(correct, $State)).toBe(true);
+	expect(is(big, $State)).toBe(false);
+	expect(is(wrong, $State)).toBe(false);
+});
+
+test("`null` prototype", () => {
+	const $Friend = $interface({ name: $string });
+
+	const billie = Object.create(null);
+	expect(is(billie, $Friend)).toBe(false);
+
+	billie.name = "Billie";
+	expect(is(billie, $Friend)).toBe(true);
 });

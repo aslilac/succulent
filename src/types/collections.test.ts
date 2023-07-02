@@ -1,5 +1,5 @@
-/// <reference types="jest" />
-import { check, is, $object, $boolean, $Map, $number, $Set } from "../index";
+/// <reference types="vitest/globals" />
+import { check, is, $object, $boolean, $Map, $number, $Set } from "../index.js";
 
 test("$Map", () => {
 	const example = new Map([

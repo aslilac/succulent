@@ -1,5 +1,4 @@
 import { messages, toDisplayString, trace } from "./base/index.js";
-import type { ErrorRef } from "./ref.js";
 
 export type Type<X> = Schema.Unwrap<X>;
 export namespace Schema {
@@ -35,12 +34,11 @@ export class Schema<T> {
 		return new Schema(base).check(x);
 	}
 
-	static is<T>(base: SchemaBase<T>, x: unknown, ref?: ErrorRef): x is T {
+	static is<T>(base: SchemaBase<T>, x: unknown): x is T {
 		try {
 			Schema.check(base, x);
 			return true;
 		} catch (error) {
-			if (ref && error instanceof Error) ref.error = error;
 			return false;
 		}
 	}

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`$Exact 1`] = `
 "Expected {|a: boolean, b: boolean, c: boolean|}, got [object Object]

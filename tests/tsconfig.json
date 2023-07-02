@@ -1,0 +1,9 @@
+{
+	"extends": "@mckayla/tsconfig",
+	"compilerOptions": {
+		"outDir": "./build/",
+		"types": ["node"],
+		"baseUrl": "."
+	},
+	"include": ["./**/*"]
+}

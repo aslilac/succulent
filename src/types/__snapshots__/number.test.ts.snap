@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`$bigint 1`] = `[TypeError: Expected bigint, got 0]`;
-
-exports[`$bigint 2`] = `[TypeError: Expected 0n, got 0]`;
-
-exports[`$number 1`] = `[TypeError: Expected 0, got 0n]`;

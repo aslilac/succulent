@@ -1,5 +1,5 @@
 import { is, $boolean, $Exact, $interface, $number, $string } from "succulent";
-import { bench, intro, STRICT } from "../shared.js";
+import { bench, intro, STRICT } from "./shared.js";
 
 const $Type = $interface({
 	number: $number,
