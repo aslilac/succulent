@@ -27,16 +27,16 @@ interface SchemaOptions<T> {
 
 export class Schema<T> {
 	static check<T>(base: SchemaBase<T>, x: unknown): x is T {
-		if (base instanceof Schema) {
+		if (base instanceof this) {
 			return base.check(x);
 		}
 
-		return new Schema(base).check(x);
+		return new this(base).check(x);
 	}
 
 	static is<T>(base: SchemaBase<T>, x: unknown): x is T {
 		try {
-			Schema.check(base, x);
+			this.check(base, x);
 			return true;
 		} catch (error) {
 			return false;
@@ -44,22 +44,22 @@ export class Schema<T> {
 	}
 
 	static displayName<T>(base: SchemaBase<T>) {
-		return Schema.from(base).displayName;
+		return this.from(base).displayName;
 	}
 
 	static every<T>(
 		base: SchemaBase<T>,
 		predicate: (value: T, index: number, array: T[]) => boolean,
 	): boolean {
-		return Array.from(Schema.from(base)).every(predicate);
+		return Array.from(this.from(base)).every(predicate);
 	}
 
 	static from<T>(base: SchemaBase<T>): Schema<T> {
-		if (base instanceof Schema) {
+		if (base instanceof this) {
 			return base;
 		}
 
-		return new Schema(base);
+		return new this(base);
 	}
 
 	/**
