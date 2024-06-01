@@ -1,6 +1,6 @@
 {
 	"name": "succulent",
-	"version": "0.20.0",
+	"version": "0.21.0",
 	"author": "McKayla Washburn <mckayla@hey.com>",
 	"description": "Powerful and easy runtime type checking",
 	"keywords": [
