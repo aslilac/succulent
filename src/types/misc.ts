@@ -1,4 +1,4 @@
-import { LiteralSchema, Schema, SchemaBase } from "../schema.js";
+import { type LiteralSchema, Schema, type SchemaBase } from "../schema.js";
 import { $undefined } from "./constants.js";
 
 export function $instanceof<T extends Function>(t: T) {

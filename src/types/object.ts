@@ -1,5 +1,5 @@
 import { KeyReporter, messages, toDisplayKey } from "../base/index.js";
-import { Schema, SchemaBase } from "../schema.js";
+import { Schema, type SchemaBase } from "../schema.js";
 
 const hasOwn = {}.hasOwnProperty;
 
@@ -42,7 +42,7 @@ export const $object = new Schema((x: unknown): x is object => typeof x === "obj
  * guard({ a: 1, b: 2 }, $interface({ a: $number, b: $number })); // ok
  * ```
  */
-export function $interface<const T extends object>(template: {
+export function $interface<T extends object>(template: {
 	[K in keyof T]: SchemaBase<T[K]>;
 }): Schema<T> {
 	const keys = Reflect.ownKeys(template);

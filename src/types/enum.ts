@@ -3,7 +3,7 @@ import { Schema } from "../schema.js";
 function isEnumMemberName<E, K extends string | number | symbol>(
 	x: unknown,
 	enumObject: Record<K, E>,
-): x is E {
+): x is K {
 	// @ts-expect-error: This is some real fun voodoo :)
 	return x in enumObject && typeof enumObject[enumObject[x]] !== "number";
 }

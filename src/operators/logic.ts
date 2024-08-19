@@ -1,4 +1,4 @@
-import { Schema, SchemaBase } from "../schema.js";
+import { Schema, type SchemaBase } from "../schema.js";
 import { is } from "./is.js";
 
 export function union<T extends readonly unknown[]>(

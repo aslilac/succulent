@@ -1,4 +1,4 @@
-import { Schema, SchemaBase } from "../schema.js";
+import { Schema, type SchemaBase } from "../schema.js";
 import { toDisplayKey } from "./toDisplayKey.js";
 import { toDisplayString } from "./toDisplayString.js";
 

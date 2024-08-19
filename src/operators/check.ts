@@ -1,4 +1,4 @@
-import { Schema, SchemaBase } from "../schema.js";
+import { Schema, type SchemaBase } from "../schema.js";
 
 /**
  * When catching errors, you can use something like `error instanceof CheckError` to determine if
