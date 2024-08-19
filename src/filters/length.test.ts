@@ -1,14 +1,5 @@
 /// <reference types="jest" />
-import {
-	hasLength,
-	is,
-	minLength,
-	maxLength,
-	nonEmpty,
-	$any,
-	$Array,
-	$string,
-} from "../index";
+import { hasLength, is, minLength, maxLength, nonEmpty, $any, $Array, $string } from "../index";
 
 const $nonEmptyArray = $Array($any).that(nonEmpty);
 const $nonEmptyString = $string.that(nonEmpty);

@@ -17,6 +17,7 @@
 	"homepage": "https://github.com/aslilac/succulent",
 	"repository": "https://github.com/aslilac/succulent",
 	"bugs": "https://github.com/aslilac/succulent/issues",
+	"packageManager": "npm@10.8.2+sha512.c7f0088c520a46596b85c6f8f1da943400199748a0f7ea8cb8df75469668dc26f6fb3ba26df87e2884a5ebe91557292d0f3db7d0929cdb4f14910c3032ac81fb",
 	"type": "module",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
@@ -28,18 +29,16 @@
 		"build/**"
 	],
 	"devDependencies": {
-		"@mckayla/prettier": "^1.0.3",
-		"@mckayla/tsconfig": "^1.0.3",
-		"@types/node": "^20.2.5",
-		"@vitest/coverage-v8": "^0.32.2",
-		"prettier": "~2.8.7",
-		"typescript": "~5.1.6",
-		"vitest": "^0.32.2"
+		"@mckayla/tsconfig": "^1.0.5",
+		"@types/node": "^22.4.1",
+		"prettier": "~3.3.3",
+		"typescript": "~5.5.4",
+		"vitest": "^2.0.5"
 	},
 	"scripts": {
 		"build": "tsc -b tsconfig.build.json",
 		"fmt": "prettier --write .",
-		"prepack": "npm run build -s",
-		"test": "vitest run --coverage"
+		"prepack": "$npm_execpath run build -s",
+		"test": "vitest run"
 	}
 }

@@ -6,25 +6,20 @@ Powerful and easy runtime type checking
 
 > What if you could just write TypeScript, and get runtime validation for free?
 
-Basically, a lot of equivalent libraries have weird naming and syntax. We already know
-TypeScript, and that knowledge already does so much for us, but to take the concept a
-little bit further, and extend our type checking to the runtime, it kind of feels like
-having to learn another dialect, with all of its subtle differences. Succulent's main goal
-is to make it feel like you're just writing TypeScript, and for the necessary differences
-to feel obvious quickly.
+Basically, a lot of equivalent libraries have weird naming and syntax. We already know TypeScript, and that knowledge already does so much for us, but to take the concept a little bit further, and extend our type checking to the runtime, it kind of feels like having to learn another dialect, with all of its subtle differences. Succulent's main goal is to make it feel like you're just writing TypeScript, and for the necessary differences to feel obvious quickly.
 
 Some examples...
 
--   the type `string` is represented by the schema `$string`
--   the type `bigint` is represented by the schema `$bigint`
--   the type `Date` is represented by the schema `$Date`
--   the type `ArrayBuffer` is represented by the schema `$ArrayBuffer`
+- the type `string` is represented by the schema `$string`
+- the type `bigint` is represented by the schema `$bigint`
+- the type `Date` is represented by the schema `$Date`
+- the type `ArrayBuffer` is represented by the schema `$ArrayBuffer`
 
 Getting more complex...
 
--   the type `T[]`/`Array<T>` could be represented by the schema `$Array($T)` _(assuming `$T` is a schema)_
--   the type `Map<K, V>` could be represented by the schema `$Map($K, $V)` _(assuming `$K` and `$V` are schemas)_
--   the types `any` and `never` can be represented by the schemas `$any` and `$never` respectively
+- the type `T[]`/`Array<T>` could be represented by the schema `$Array($T)` _(assuming `$T` is a schema)_
+- the type `Map<K, V>` could be represented by the schema `$Map($K, $V)` _(assuming `$K` and `$V` are schemas)_
+- the types `any` and `never` can be represented by the schemas `$any` and `$never` respectively
 
 ### Examples
 
@@ -88,16 +83,7 @@ export default function (user: unknown) {
 #### Even more complicated...
 
 ```typescript
-import {
-	guard,
-	inRange,
-	lazy,
-	Schema,
-	$Array,
-	$int,
-	$interface,
-	$string,
-} from "succulent";
+import { guard, inRange, lazy, Schema, $Array, $int, $interface, $string } from "succulent";
 
 type Friend = {
 	name: string;

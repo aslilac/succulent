@@ -14,9 +14,7 @@ test("$tuple", () => {
 	expect(is(["hi", 0, false], various)).toBe(true);
 
 	expect(() => check(["hi", "hi"], strings)).toThrowErrorMatchingSnapshot();
-	expect(() =>
-		check(["hi", "hi", "hi", "howdy"], strings),
-	).toThrowErrorMatchingSnapshot();
+	expect(() => check(["hi", "hi", "hi", "howdy"], strings)).toThrowErrorMatchingSnapshot();
 
 	type Strings = [string, string, string];
 	type Various = [string, number, boolean];

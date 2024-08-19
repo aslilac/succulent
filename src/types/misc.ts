@@ -90,8 +90,7 @@ export function $optional<T>(base: SchemaBase<T>): Schema<T | undefined> {
 	const schema = Schema.from(base);
 
 	return new Schema(
-		(x: unknown): x is T | undefined =>
-			Schema.is(schema, x) || Schema.is($undefined, x),
+		(x: unknown): x is T | undefined => Schema.is(schema, x) || Schema.is($undefined, x),
 		{ displayName: `${schema.displayName}?` },
 	);
 }
@@ -109,8 +108,7 @@ export function $maybe<T>(base: SchemaBase<T>): Schema<T | nullish> {
 	const schema = Schema.from(base);
 
 	return new Schema(
-		(x: unknown): x is T | undefined =>
-			Schema.is(schema, x) || Schema.is($nullish, x),
+		(x: unknown): x is T | undefined => Schema.is(schema, x) || Schema.is($nullish, x),
 		{ displayName: `maybe ${schema.displayName}` },
 	);
 }

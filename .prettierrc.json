@@ -1,1 +1,8 @@
-"@mckayla/prettier"
+{
+	"printWidth": 100,
+	"proseWrap": "never",
+	"quoteProps": "consistent",
+	"tabWidth": 2,
+	"trailingComma": "all",
+	"useTabs": true
+}

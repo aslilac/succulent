@@ -8,8 +8,9 @@ import {
 	union,
 	$boolean,
 	$Exact,
-	$number,
 	$interface,
+	$number,
+	$optional,
 	$string,
 	$Tuple,
 	$undefined,
@@ -75,15 +76,28 @@ test("$interface with unwrapped literals", () => {
 });
 
 test("$interface with optional keys", () => {
-	// I think exactOptionalPropertyTypes would actually make this fail, but
-	// I'm not sure what the solution would be if so.
-	type Test = { hi: string; optional?: string };
-	const schema = $interface({ hi: $string, optional: union($string, $undefined) });
+	const $Test = $interface({ hi: $string, optional: $optional($string) });
+	type Test = Type<typeof $Test>;
 
-	expect(is({ hi: "hi" }, schema)).toBe(true);
+	type MakeOptionalGetUndefined<T extends object> = {
+		[K in keyof T]: undefined extends T[K] ? T[K]? : never;
+	};
+	type MakeOptionalGetRequired<T extends object> = {
+		[K in keyof T]: undefined extends T[K] ? never : T[K];
+	};
+	type MakeOptional<T extends object> = MakeOptionalGetUndefined<T> & MakeOptionalGetRequired<T>;
+
+	type A = MakeOptional<Test>;
+
+	type B = keyof A;
+
+	type C = string | never;
+
+	const test: Test = { hi: "hi" };
+	expect(is(test, $Test)).toBe(true);
 
 	function _(x: unknown) {
-		if (is(x, schema)) assertType<Test, typeof x>(x);
+		if (is(x, $Test)) assertType<Test, typeof x>(x);
 	}
 });
 
@@ -103,9 +117,7 @@ test("Using $interface to match an existing type", () => {
 	expect(is<Friend>({}, $interface({ name: union($undefined, $string) }))).toBe(true);
 
 	// This one works fine, because we're using Partial<Friend> instead of Friend
-	expect(is<Partial<Friend>>({}, $interface({ name: or($undefined, $string) }))).toBe(
-		true,
-	);
+	expect(is<Partial<Friend>>({}, $interface({ name: or($undefined, $string) }))).toBe(true);
 });
 
 test("$Exact", () => {

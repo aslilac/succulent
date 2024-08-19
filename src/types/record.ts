@@ -21,7 +21,7 @@ export function $Record<K extends string | number | symbol, T>(
 		(x: unknown): x is Record<K, T> =>
 			typeof x === "object" &&
 			x != null &&
-			Schema.every(keySchema, (key) => ({}.hasOwnProperty.call(x, key))) &&
+			Schema.every(keySchema, (key) => ({}).hasOwnProperty.call(x, key)) &&
 			Object.entries(x).every(([key, value]) =>
 				// It doesn't hurt if there are extra keys that don't match, as long
 				// as all of the ones that should do

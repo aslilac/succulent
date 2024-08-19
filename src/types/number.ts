@@ -9,10 +9,9 @@ import { Schema } from "../schema.js";
  * guard("1", $number); // will throw a `TypeError`
  * ```
  */
-export const $number = new Schema(
-	(x: unknown): x is number => typeof x === "number" && x === x,
-	{ displayName: "number" },
-);
+export const $number = new Schema((x: unknown): x is number => typeof x === "number" && x === x, {
+	displayName: "number",
+});
 
 /**
  * @example
