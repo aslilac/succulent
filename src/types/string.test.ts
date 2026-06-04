@@ -1,5 +1,4 @@
-/// <reference types="jest" />
-import { is, union, $string } from "../index";
+import { is, union, $string } from "../index.js";
 
 test("$string", () => {
 	expect(is("hi", $string)).toBe(true);

@@ -1,4 +1,3 @@
-/// <reference types="vitest/globals" />
 import { check, is, $object, $boolean, $Map, $number, $Set } from "../index.js";
 
 test("$Map", () => {
@@ -11,8 +10,12 @@ test("$Map", () => {
 	expect(is(example, $Map($number, $object))).toBe(false);
 	expect(is(example, $Map($boolean, $number))).toBe(false);
 
-	expect(() => check(example, $Map($number, $object))).toThrowErrorMatchingSnapshot();
-	expect(() => check(example, $Map($boolean, $number))).toThrowErrorMatchingSnapshot();
+	expect(() =>
+		check(example, $Map($number, $object)),
+	).toThrowErrorMatchingSnapshot();
+	expect(() =>
+		check(example, $Map($boolean, $number)),
+	).toThrowErrorMatchingSnapshot();
 });
 
 test("$Set", () => {

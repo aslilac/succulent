@@ -1,5 +1,4 @@
-/// <reference types="jest" />
-import { is } from "../index";
+import { is } from "../index.js";
 
 test("is", () => {
 	expect(is("hi", "hello")).toBe(false);

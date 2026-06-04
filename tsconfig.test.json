@@ -1,0 +1,11 @@
+{
+	"extends": ".",
+	"compilerOptions": {
+		"composite": true,
+		"noEmit": true,
+		"noUnusedLocals": false,
+		"outDir": "build/",
+		"types": ["vitest/globals"],
+	},
+	"include": ["./vitest.config.ts", "./src/**/*"],
+}

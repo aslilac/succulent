@@ -1,6 +1,4 @@
-/// <reference types="jest" />
-
-import { is, $bigint, $finite, $int, $number } from "../index";
+import { is, $bigint, $finite, $int, $number } from "../index.js";
 
 test("$finite", () => {
 	expect(is(0, $finite)).toBe(true);

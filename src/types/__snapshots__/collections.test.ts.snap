@@ -1,16 +1,16 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`$Map 1`] = `
-"Expected Map<number, object>, got [object Map]
-  Expected number, got true"
+[TypeError: Expected Map<number, object>, got [object Map]
+  Expected number, got true]
 `;
 
 exports[`$Map 2`] = `
-"Expected Map<boolean, number>, got [object Map]
-  Expected number, got [object Object]"
+[TypeError: Expected Map<boolean, number>, got [object Map]
+  Expected number, got [object Object]]
 `;
 
 exports[`$Set 1`] = `
-"Expected Set<number>, got [object Set]
-  Expected number, got true"
+[TypeError: Expected Set<number>, got [object Set]
+  Expected number, got true]
 `;

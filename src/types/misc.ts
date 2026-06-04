@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { type LiteralSchema, Schema, type SchemaBase } from "../schema.js";
 import { $undefined } from "./constants.js";
 
@@ -90,7 +91,8 @@ export function $optional<T>(base: SchemaBase<T>): Schema<T | undefined> {
 	const schema = Schema.from(base);
 
 	return new Schema(
-		(x: unknown): x is T | undefined => Schema.is(schema, x) || Schema.is($undefined, x),
+		(x: unknown): x is T | undefined =>
+			Schema.is(schema, x) || Schema.is($undefined, x),
 		{ displayName: `${schema.displayName}?` },
 	);
 }
@@ -108,7 +110,8 @@ export function $maybe<T>(base: SchemaBase<T>): Schema<T | nullish> {
 	const schema = Schema.from(base);
 
 	return new Schema(
-		(x: unknown): x is T | undefined => Schema.is(schema, x) || Schema.is($nullish, x),
+		(x: unknown): x is T | undefined =>
+			Schema.is(schema, x) || Schema.is($nullish, x),
 		{ displayName: `maybe ${schema.displayName}` },
 	);
 }
@@ -137,7 +140,9 @@ export function $maybe<T>(base: SchemaBase<T>): Schema<T | nullish> {
  * // ...you get the point
  * ```
  */
-export const $any = new Schema((x: unknown): x is any => true, { displayName: "any" });
+export const $any = new Schema((_x: unknown): _x is any => true, {
+	displayName: "any",
+});
 
 /**
  * The opposite of `$any`, this schema will never match anything.
@@ -159,7 +164,7 @@ export const $any = new Schema((x: unknown): x is any => true, { displayName: "a
  * // ...you get the point
  * ```
  */
-export const $never = new Schema((x: unknown): x is never => false, {
+export const $never = new Schema((_x: unknown): _x is never => false, {
 	displayName: "never",
 });
 

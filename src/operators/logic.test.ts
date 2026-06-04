@@ -1,6 +1,5 @@
-/// <reference types="jest" />
-import { assertType } from "../_util";
-import { is, union, $literal, $string } from "../index";
+import { assertType } from "../_util.js";
+import { is, union, $literal, $string } from "../index.js";
 
 test("union", () => {
 	expect(is(0, union(0, 1, 2, 3, 4))).toBe(true);

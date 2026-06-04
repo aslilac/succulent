@@ -1,6 +1,4 @@
-/// <reference types="jest" />
-
-import { assertType } from "../_util";
+import { assertType } from "../_util.js";
 import {
 	a,
 	is,
@@ -17,7 +15,7 @@ import {
 	$RegExp,
 	$string,
 	$URL,
-} from "../index";
+} from "../index.js";
 
 test("$falsy", () => {
 	expect(is(false, $falsy)).toBe(true);

@@ -1,6 +1,5 @@
-/// <reference types="jest" />
-import { assertType } from "../_util";
-import { check, $any, $never, $string } from "../index";
+import { assertType } from "../_util.js";
+import { check, $any, $never, $string } from "../index.js";
 
 test("check", () => {
 	const value: unknown = "hi friend!";

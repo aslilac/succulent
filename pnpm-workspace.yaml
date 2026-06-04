@@ -1,0 +1,6 @@
+packages:
+  - "."
+  - "tests/"
+
+allowBuilds:
+  esbuild: true

@@ -1,4 +1,10 @@
 {
 	"extends": ".",
-	"exclude": ["./**/*.test.*"]
+	"compilerOptions": {
+		"composite": true,
+		"outDir": "build/",
+		"rootDir": "src/",
+	},
+	"include": ["./src/**/*"],
+	"exclude": ["./**/*.test.*", "./**/_*"],
 }

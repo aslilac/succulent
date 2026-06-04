@@ -1,5 +1,4 @@
-/// <reference types="jest" />
-import { is, union, $symbol } from "../index";
+import { is, union, $symbol } from "../index.js";
 
 test("$symbol", () => {
 	const test = Symbol("test");

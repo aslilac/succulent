@@ -1,7 +1,6 @@
-/// <reference types="jest" />
-import { assertType } from "../_util";
-import { check, is, $enum } from "../index";
-import { $interface } from "./object";
+import { assertType } from "../_util.js";
+import { check, is, $enum } from "../index.js";
+import { $interface } from "./object.js";
 
 enum Fruit {
 	Apple,
@@ -35,7 +34,9 @@ test("$enum", () => {
 	expect(is(0, $Fruit)).toBe(true);
 	expect(is("Apple", $Fruit)).toBe(false); // because `"Apple" !== Fruit.Apple`
 	expect(is(5, $Fruit)).toBe(false); // because the enum ends at Strawberry = 4
-	expect($Fruit.displayName).toBe("enum { Apple, Banana, Mango, Peach, Strawberry }");
+	expect($Fruit.displayName).toBe(
+		"enum { Apple, Banana, Mango, Peach, Strawberry }",
+	);
 
 	const $FunnyNumber = $enum(FunnyNumber);
 	expect(is(FunnyNumber.SixtyNine, $FunnyNumber)).toBe(true);

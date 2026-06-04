@@ -1,6 +1,5 @@
-/// <reference types="jest" />
-import { assertType } from "../_util";
-import { check, is, $boolean, $number, $string, $Tuple } from "../index";
+import { assertType } from "../_util.js";
+import { check, is, $boolean, $number, $string, $Tuple } from "../index.js";
 
 test("$tuple", () => {
 	const strings = $Tuple($string, $string, $string);
@@ -14,7 +13,9 @@ test("$tuple", () => {
 	expect(is(["hi", 0, false], various)).toBe(true);
 
 	expect(() => check(["hi", "hi"], strings)).toThrowErrorMatchingSnapshot();
-	expect(() => check(["hi", "hi", "hi", "howdy"], strings)).toThrowErrorMatchingSnapshot();
+	expect(() =>
+		check(["hi", "hi", "hi", "howdy"], strings),
+	).toThrowErrorMatchingSnapshot();
 
 	type Strings = [string, string, string];
 	type Various = [string, number, boolean];

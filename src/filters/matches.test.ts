@@ -1,5 +1,4 @@
-/// <reference types="jest" />
-import { is, matches, $string } from "../index";
+import { is, matches, $string } from "../index.js";
 
 const $email = $string.that(matches(/[A-Za-z0-9_-]{1,}@hey\.com/));
 

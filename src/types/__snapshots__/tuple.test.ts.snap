@@ -1,5 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`$tuple 1`] = `"Expected [string, string, string], got hi,hi"`;
+exports[`$tuple 1`] = `[TypeError: Expected [string, string, string], got hi,hi]`;
 
-exports[`$tuple 2`] = `"Expected [string, string, string], got hi,hi,hi,howdy"`;
+exports[`$tuple 2`] = `[TypeError: Expected [string, string, string], got hi,hi,hi,howdy]`;

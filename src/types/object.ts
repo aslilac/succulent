@@ -26,9 +26,12 @@ const toDisplayKeyValue = ([key, valueSchema]: KeyValuePair) =>
  * guard(null, $object); // will throw a `TypeError`, because `null` is not an object
  * ```
  */
-export const $object = new Schema((x: unknown): x is object => typeof x === "object" && x != null, {
-	displayName: "object",
-});
+export const $object = new Schema(
+	(x: unknown): x is object => typeof x === "object" && x != null,
+	{
+		displayName: "object",
+	},
+);
 
 /**
  * @param template an object with the same keys that a valid object should have, whose
@@ -46,13 +49,16 @@ export function $interface<T extends object>(template: {
 	[K in keyof T]: SchemaBase<T[K]>;
 }): Schema<T> {
 	const keys = Reflect.ownKeys(template);
-	const shape = Object.fromEntries(keys.map((key) => [key, Schema.from(template[key as keyof T])]));
+	const shape = Object.fromEntries(
+		keys.map((key) => [key, Schema.from(template[key as keyof T])]),
+	);
 
 	const known = new KeyReporter(
 		// @ts-expect-error - Can't quite get these types
 		(key: string | symbol, value: unknown) => shape[key].check(value),
-		// @ts-expect-error - Can't quite get these types
-		(key, value) => messages.invalidProperty(key, shape[key] as Schema<unknown>),
+		(key, _) =>
+			// @ts-expect-error - Can't quite get these types
+			messages.invalidProperty(key, shape[key] as Schema<unknown>),
 	);
 
 	return new Schema(
@@ -89,7 +95,7 @@ export function $interface<T extends object>(template: {
  * ```ts
  * guard({ a: 1, b: 2 }, $Exact({ a: $number })); // throws a `TypeError`; property `b` is not allowed by the schema
  *
- * // These behave the same as if we used `$inferface`
+ * // These behave the same as if we used `$interface`
  * guard({}, $Exact({})); // ok
  * guard({ a: 1 }, $Exact({ a: $number })); // ok
  * guard({ a: 1 }, $Exact({ a: $number, b: $number })); // throw a `TypeError`, because `b` is missing
@@ -100,7 +106,9 @@ export function $Exact<const T extends object>(template: {
 	[K in keyof T]: SchemaBase<T[K]>;
 }): Schema<T> {
 	const keys = Reflect.ownKeys(template);
-	const shape = Object.fromEntries(keys.map((key) => [key, Schema.from(template[key as keyof T])]));
+	const shape = Object.fromEntries(
+		keys.map((key) => [key, Schema.from(template[key as keyof T])]),
+	);
 
 	const unknown = new KeyReporter(
 		(key: string | symbol) => assertHasOwn(template, key),
@@ -110,8 +118,9 @@ export function $Exact<const T extends object>(template: {
 	const known = new KeyReporter(
 		// @ts-expect-error - Can't quite get these types
 		(key: string | symbol, value: unknown) => shape[key].check(value),
-		// @ts-expect-error - Can't quite get these types
-		(key, value) => messages.invalidProperty(key, shape[key] as Schema<unknown>),
+		(key, _value) =>
+			// @ts-expect-error - Can't quite get these types
+			messages.invalidProperty(key, shape[key] as Schema<unknown>),
 	);
 
 	return new Schema(

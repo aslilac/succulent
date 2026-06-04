@@ -1,9 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`$Array 1`] = `"Expected {name: string, count: number}[], got false"`;
+exports[`$Array 1`] = `[TypeError: Expected {name: string, count: number}[], got false]`;
 
 exports[`$Array 2`] = `
-"Expected {name: string, count: number}[], got false
+[TypeError: Expected {name: string, count: number}[], got false
   Expected {name: string, count: number}, got false
-    Expected object, got false"
+    Expected object, got false]
 `;

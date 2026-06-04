@@ -1,7 +1,7 @@
 type IsAny<T> = unknown extends T ? (T extends {} ? T : never) : never;
 type NotAny<T> = T extends IsAny<T> ? never : T;
 
-export function assertType<T, X extends T>(x: NotAny<X>) {}
+export function assertType<T, X extends T>(_x: NotAny<X>) {}
 
 /**
  * This should always be an error (hence the ts-expect-error), and

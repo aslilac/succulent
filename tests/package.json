@@ -3,7 +3,7 @@
 	"dependencies": {
 		"0x": "^5.5.0",
 		"chalk": "^5.2.0",
-		"succulent": "file:.."
+		"succulent": "workspace:*"
 	},
 	"optionalDependencies": {
 		"runtypes": "^6.6.0",
@@ -11,7 +11,7 @@
 		"zod": "^3.21.4"
 	},
 	"devDependencies": {
-		"typescript": "~5.1.6"
+		"typescript": "~6.0.3"
 	},
 	"scripts": {
 		"test": "tsc -p tsconfig.json && node ./build/index.js",

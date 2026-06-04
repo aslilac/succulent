@@ -1,5 +1,4 @@
-/// <reference types="jest" />
-import { inRange, is, $number } from "../index";
+import { inRange, is, $number } from "../index.js";
 
 const $rating = $number.that(inRange(1, 5));
 

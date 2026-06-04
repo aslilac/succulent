@@ -1,5 +1,4 @@
-/// <reference types="jest" />
-import { is, oneOf } from "../index";
+import { is, oneOf } from "../index.js";
 
 test("oneOf", () => {
 	type ExampleKey = "a" | "b" | "c";

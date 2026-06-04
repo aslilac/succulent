@@ -1,5 +1,4 @@
-/// <reference types="jest" />
-import { is, union, $Record, $string } from "../index";
+import { is, union, $Record, $string } from "../index.js";
 
 test("$Record", () => {
 	const inst = {

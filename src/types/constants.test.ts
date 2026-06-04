@@ -1,5 +1,12 @@
-/// <reference types="jest" />
-import { is, $boolean, $false, $NaN, $null, $true, $undefined } from "../index";
+import {
+	is,
+	$boolean,
+	$false,
+	$NaN,
+	$null,
+	$true,
+	$undefined,
+} from "../index.js";
 
 test("$boolean", () => {
 	expect(is(true, $boolean)).toBe(true);

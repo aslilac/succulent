@@ -1,5 +1,12 @@
-/// <reference types="jest" />
-import { check, is, $Array, $number, $interface, $string, $undefined } from "../index.js";
+import {
+	check,
+	is,
+	$Array,
+	$number,
+	$interface,
+	$string,
+	$undefined,
+} from "../index.js";
 
 test("$Array", () => {
 	const numArray = $Array($number);
