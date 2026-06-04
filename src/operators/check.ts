@@ -13,7 +13,9 @@ export class CheckError extends TypeError {}
  */
 export function check<T>(x: unknown, schema: SchemaBase<T>): asserts x is T {
 	if (!Schema.check(schema, x)) {
-		throw new CheckError("check returned false instead of throwing, which is bad");
+		throw new CheckError(
+			"check returned false instead of throwing, which is bad",
+		);
 	}
 }
 

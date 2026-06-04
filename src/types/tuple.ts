@@ -1,6 +1,8 @@
 import { Schema } from "../schema.js";
 
-export function $Tuple<T extends unknown[]>(...schemas: [...Schema.WrapAll<T>]): Schema<T> {
+export function $Tuple<T extends unknown[]>(
+	...schemas: [...Schema.WrapAll<T>]
+): Schema<T> {
 	return new Schema(
 		(t: unknown): t is T =>
 			Array.isArray(t) &&

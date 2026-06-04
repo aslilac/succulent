@@ -83,7 +83,16 @@ export default function (user: unknown) {
 #### Even more complicated...
 
 ```typescript
-import { guard, inRange, lazy, Schema, $Array, $int, $interface, $string } from "succulent";
+import {
+	guard,
+	inRange,
+	lazy,
+	Schema,
+	$Array,
+	$int,
+	$interface,
+	$string,
+} from "succulent";
 
 type Friend = {
 	name: string;

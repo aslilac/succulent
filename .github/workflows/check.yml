@@ -28,15 +28,15 @@ jobs:
       - uses: crate-ci/typos@v1
         name: Spellcheck
 
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+
       - uses: pnpm/action-setup@v6
         name: Install dependencies
         with:
           run_install: true
           cache: true
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: ${{ matrix.node-version }}
 
       - run: pnpm -- prettier --check .
         name: Format
@@ -46,5 +46,6 @@ jobs:
 
       - run: npm i
         working-directory: tests/
+
       - run: npm run test
         working-directory: tests/

@@ -9,7 +9,14 @@ export namespace Schema {
 }
 
 export type SchemaBase<T> = Schema<T> | (T extends LiteralSchema ? T : never);
-export type LiteralSchema = string | number | bigint | symbol | boolean | null | undefined;
+export type LiteralSchema =
+	| string
+	| number
+	| bigint
+	| symbol
+	| boolean
+	| null
+	| undefined;
 
 type Filter<T> = (x: T) => boolean;
 
@@ -65,7 +72,10 @@ export class Schema<T> {
 
 	public readonly displayName: string = "(unknown)";
 
-	constructor(base: ((x: unknown) => x is T) | SchemaBase<T>, options: SchemaOptions<T> = {}) {
+	constructor(
+		base: ((x: unknown) => x is T) | SchemaBase<T>,
+		options: SchemaOptions<T> = {},
+	) {
 		const { displayName, iter } = options;
 
 		// Constructing a Schema from a previous Schema, just copy
@@ -114,7 +124,8 @@ export class Schema<T> {
 
 	that(...filters: Array<Filter<T>>): Schema<T> {
 		return new Schema(
-			(x: unknown): x is T => this.check(x) && filters.every((filter) => filter(x)),
+			(x: unknown): x is T =>
+				this.check(x) && filters.every((filter) => filter(x)),
 		);
 	}
 

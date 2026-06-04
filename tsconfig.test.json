@@ -5,7 +5,7 @@
 		"noEmit": true,
 		"noUnusedLocals": false,
 		"outDir": "build/",
-		"types": ["vitest/globals"],
+		"types": ["vitest/globals"]
 	},
-	"include": ["./vitest.config.ts", "./src/**/*"],
+	"include": ["./vitest.config.ts", "./src/**/*"]
 }

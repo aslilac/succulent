@@ -8,8 +8,12 @@ function isEnumMemberName<E, K extends string | number | symbol>(
 	return x in enumObject && typeof enumObject[enumObject[x]] !== "number";
 }
 
-function enumKeys<E, K extends string | number | symbol>(enumObject: Record<K, E>): K[] {
-	return Object.keys(enumObject).filter((key) => isEnumMemberName(key, enumObject)) as K[];
+function enumKeys<E, K extends string | number | symbol>(
+	enumObject: Record<K, E>,
+): K[] {
+	return Object.keys(enumObject).filter((key) =>
+		isEnumMemberName(key, enumObject),
+	) as K[];
 }
 
 export interface EnumOptions {

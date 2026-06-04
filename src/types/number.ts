@@ -9,9 +9,12 @@ import { Schema } from "../schema.js";
  * guard("1", $number); // will throw a `TypeError`
  * ```
  */
-export const $number = new Schema((x: unknown): x is number => typeof x === "number" && x === x, {
-	displayName: "number",
-});
+export const $number = new Schema(
+	(x: unknown): x is number => typeof x === "number" && x === x,
+	{
+		displayName: "number",
+	},
+);
 
 /**
  * @example
@@ -21,9 +24,12 @@ export const $number = new Schema((x: unknown): x is number => typeof x === "num
  * guard(1.1, $int); // will throw a `TypeError`
  * ```
  */
-export const $int = new Schema((x: unknown): x is number => Number.isInteger(x), {
-	displayName: "int",
-});
+export const $int = new Schema(
+	(x: unknown): x is number => Number.isInteger(x),
+	{
+		displayName: "int",
+	},
+);
 
 /**
  * @example
@@ -35,9 +41,12 @@ export const $int = new Schema((x: unknown): x is number => Number.isInteger(x),
  * guard(Number.NEGATIVE_INFINITY, $finite); // also throws a `TypeError`
  * ```
  */
-export const $finite = new Schema((x: unknown): x is number => Number.isFinite(x), {
-	displayName: "finite",
-});
+export const $finite = new Schema(
+	(x: unknown): x is number => Number.isFinite(x),
+	{
+		displayName: "finite",
+	},
+);
 
 /**
  * @example
@@ -46,6 +55,9 @@ export const $finite = new Schema((x: unknown): x is number => Number.isFinite(x
  * guard(1, $bigint); // will throw a `TypeError`
  * ```
  */
-export const $bigint = new Schema((x: unknown): x is bigint => typeof x === "bigint", {
-	displayName: "bigint",
-});
+export const $bigint = new Schema(
+	(x: unknown): x is bigint => typeof x === "bigint",
+	{
+		displayName: "bigint",
+	},
+);

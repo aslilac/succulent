@@ -10,10 +10,13 @@ import { $literal } from "./misc.js";
  * guard(1, $boolean); // will throw a `TypeError`
  * ```
  */
-export const $boolean = new Schema((x: unknown): x is boolean => typeof x === "boolean", {
-	displayName: "boolean",
-	iter: () => [true, false][Symbol.iterator](),
-});
+export const $boolean = new Schema(
+	(x: unknown): x is boolean => typeof x === "boolean",
+	{
+		displayName: "boolean",
+		iter: () => [true, false][Symbol.iterator](),
+	},
+);
 
 /**
  * Checks if the value is `NaN` using `Number.isNaN`

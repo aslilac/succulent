@@ -27,6 +27,8 @@ export function $Record<K extends string | number | symbol, T>(
 				// as all of the ones that should do
 				Schema.is(keySchema, key) ? Schema.is(valueSchema, value) : true,
 			),
-		{ displayName: `Record<${keySchema.displayName}, ${valueSchema.displayName}>` },
+		{
+			displayName: `Record<${keySchema.displayName}, ${valueSchema.displayName}>`,
+		},
 	);
 }

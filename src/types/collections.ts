@@ -1,6 +1,9 @@
 import { Schema, type SchemaBase } from "../schema.js";
 
-export function $Map<K, V>($K: SchemaBase<K>, $V: SchemaBase<V>): Schema<Map<K, V>> {
+export function $Map<K, V>(
+	$K: SchemaBase<K>,
+	$V: SchemaBase<V>,
+): Schema<Map<K, V>> {
 	const keySchema = Schema.from($K);
 	const valueSchema = Schema.from($V);
 	const keyTypeName = keySchema.displayName;
