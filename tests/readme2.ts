@@ -15,7 +15,7 @@ import {
 export type User1 = Type<typeof $User>;
 export interface User2 extends Type<typeof $User> {}
 
-// Easily define a reuseable way to validate input from untrusted sources
+// Easily define a reusable way to validate input from untrusted sources
 // By convention, schemas are named after the type they represent, prefixed with `$`.
 export const $User = $interface({
 	id: $string.that(matches(/[A-Za-z0-9_-]{24}/)),

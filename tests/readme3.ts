@@ -1,4 +1,13 @@
-import { guard, inRange, lazy, Schema, $Array, $int, $interface, $string } from "succulent";
+import {
+	guard,
+	inRange,
+	lazy,
+	Schema,
+	$Array,
+	$int,
+	$interface,
+	$string,
+} from "succulent";
 
 type Friend = {
 	name: string;
@@ -24,6 +33,6 @@ export default function (person: unknown) {
 		// person has type `Friend`
 		// ...
 	} catch (error) {
-		// Do something with the error, like probe the heirarchy of where errors came from!
+		// Do something with the error, like probe the hierarchy of where errors came from!
 	}
 }
