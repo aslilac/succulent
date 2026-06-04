@@ -138,7 +138,7 @@ export function $maybe<T>(base: SchemaBase<T>): Schema<T | nullish> {
  * // ...you get the point
  * ```
  */
-export const $any = new Schema((_x: unknown): _x is any => true, {
+export const $any = new Schema<any>((_x: unknown): _x is any => true, {
 	displayName: "any",
 });
 
@@ -166,9 +166,12 @@ export const $any = new Schema((_x: unknown): _x is any => true, {
  * // ...you get the point
  * ```
  */
-export const $unknown = new Schema((_x: unknown): _x is unknown => true, {
-	displayName: "unknown",
-});
+export const $unknown = new Schema<unknown>(
+	(_x: unknown): _x is unknown => true,
+	{
+		displayName: "unknown",
+	},
+);
 
 /**
  * The opposite of `$any`, this schema will never match anything.
@@ -190,7 +193,7 @@ export const $unknown = new Schema((_x: unknown): _x is unknown => true, {
  * // ...you get the point
  * ```
  */
-export const $never = new Schema((_x: unknown): _x is never => false, {
+export const $never = new Schema<never>((_x: unknown): _x is never => false, {
 	displayName: "never",
 });
 

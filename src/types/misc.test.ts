@@ -3,17 +3,20 @@ import {
 	a,
 	is,
 	union,
+	$any,
 	$Date,
 	$Error,
 	$falsy,
 	$instanceof,
 	$literal,
 	$maybe,
+	$never,
 	$nullish,
 	$interface,
 	$optional,
 	$RegExp,
 	$string,
+	$unknown,
 	$URL,
 } from "../index.js";
 
@@ -124,4 +127,24 @@ test("$optional", () => {
 
 	expect(is(null, $optional($string))).toBe(false);
 	expect(is(false, $optional($string))).toBe(false);
+});
+
+test("$unknown", () => {
+	expect(is({}, $unknown)).toBe(true);
+
+	function _(x: any) {
+		if (is(x, $unknown)) {
+			assertType<unknown, typeof x>(x);
+		}
+	}
+});
+
+test("$never", () => {
+	expect(is({}, $never)).toBe(false);
+
+	function _(x: unknown) {
+		if (is(x, $never)) {
+			assertType<never, typeof x>(x);
+		}
+	}
 });
