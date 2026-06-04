@@ -2,7 +2,7 @@ import {
 	guard,
 	maxLength,
 	matches,
-	Type,
+	type Type,
 	$Array,
 	$Date,
 	$interface,

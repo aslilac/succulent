@@ -24,10 +24,10 @@ importers:
   tests:
     dependencies:
       0x:
-        specifier: ^5.5.0
-        version: 5.8.0
+        specifier: ^6.0.0
+        version: 6.0.0
       chalk:
-        specifier: ^5.2.0
+        specifier: ^5.6.2
         version: 5.6.2
       succulent:
         specifier: workspace:*
@@ -38,19 +38,19 @@ importers:
         version: 6.0.3
     optionalDependencies:
       runtypes:
-        specifier: ^6.6.0
-        version: 6.7.0
+        specifier: ^7.0.4
+        version: 7.0.4
       yup:
-        specifier: ^1.0.2
+        specifier: ^1.7.1
         version: 1.7.1
       zod:
-        specifier: ^3.21.4
-        version: 3.25.76
+        specifier: ^4.4.3
+        version: 4.4.3
 
 packages:
 
-  0x@5.8.0:
-    resolution: {integrity: sha512-d07ToyEoxGz/u8JbaqeivEr3b2X6sPil6IDBINrXKBkgveiTW30EfjwDtHmE0TvP5Y4p5vE7ErbK3p68kYE0aw==}
+  0x@6.0.0:
+    resolution: {integrity: sha512-4JrGHSPTaoEL3MZiKYH5BlNv67X2F48FmR3dKJZOoR/Z1CLVtVOwUb/n4PMf7B+sP9RPz+X50EbIFuwtfYguRQ==}
     engines: {node: '>=8.5.0'}
     hasBin: true
 
@@ -1091,8 +1091,8 @@ packages:
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
-  runtypes@6.7.0:
-    resolution: {integrity: sha512-3TLdfFX8YHNFOhwHrSJza6uxVBmBrEjnNQlNXvXCdItS0Pdskfg5vVXUTWIN+Y23QR09jWpSl99UHkA83m4uWA==}
+  runtypes@7.0.4:
+    resolution: {integrity: sha512-fWEOLUpOlbl7zhmjDrPymCFWZIA+b+EeOFQlAbbQRYQvqcI0ys7Y/O5A09Z5IIvTf3x/DrgTN6396aXLfDRxUA==}
 
   safe-buffer@5.1.2:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
@@ -1437,12 +1437,12 @@ packages:
   yup@1.7.1:
     resolution: {integrity: sha512-GKHFX2nXul2/4Dtfxhozv701jLQHdf6J34YDh2cEkpqoo8le5Mg6/LrdseVLrFarmFygZTlfIhHx/QKfb/QWXw==}
 
-  zod@3.25.76:
-    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
 snapshots:
 
-  0x@5.8.0:
+  0x@6.0.0:
     dependencies:
       ajv: 8.20.0
       browserify: 17.0.1
@@ -2388,7 +2388,7 @@ snapshots:
 
   md5.js@1.3.5:
     dependencies:
-      hash-base: 3.0.5
+      hash-base: 3.1.2
       inherits: 2.0.4
       safe-buffer: 5.2.1
 
@@ -2649,7 +2649,7 @@ snapshots:
       '@rolldown/binding-win32-arm64-msvc': 1.0.3
       '@rolldown/binding-win32-x64-msvc': 1.0.3
 
-  runtypes@6.7.0:
+  runtypes@7.0.4:
     optional: true
 
   safe-buffer@5.1.2: {}
@@ -2972,5 +2972,5 @@ snapshots:
       type-fest: 2.19.0
     optional: true
 
-  zod@3.25.76:
+  zod@4.4.3:
     optional: true

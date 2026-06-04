@@ -2,9 +2,10 @@
 	"extends": ".",
 	"compilerOptions": {
 		"composite": true,
+		"tsBuildInfoFile": ".build/tsconfig.build.tsbuildinfo",
 		"outDir": "build/",
-		"rootDir": "src/"
+		"rootDir": "src/",
 	},
 	"include": ["./src/**/*"],
-	"exclude": ["./**/*.test.*", "./**/_*"]
+	"exclude": ["./**/*.test.*", "./**/_*"],
 }

@@ -1,5 +1,5 @@
 import * as assert from "node:assert/strict";
-import { Type, $Exact, $number, union, $literal, guard } from "succulent";
+import { type Type, $Exact, $number, union, $literal, guard } from "succulent";
 
 export const $Stuff = union(
 	$Exact({

@@ -16,18 +16,18 @@
 		"noUncheckedIndexedAccess": false,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"outDir": "build/",
+		"outDir": ".build/",
 		"preserveWatchOutput": true,
 		"sourceMap": true,
 		"strict": true,
 		"target": "esnext",
 		"types": [],
 		"useDefineForClassFields": true,
-		"verbatimModuleSyntax": true
+		"verbatimModuleSyntax": true,
 	},
 	"files": [],
 	"references": [
 		{ "path": "./tsconfig.build.json" },
-		{ "path": "./tsconfig.test.json" }
-	]
+		{ "path": "./tsconfig.test.json" },
+	],
 }

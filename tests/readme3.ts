@@ -2,7 +2,7 @@ import {
 	guard,
 	inRange,
 	lazy,
-	Schema,
+	type Schema,
 	$Array,
 	$int,
 	$interface,

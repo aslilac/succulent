@@ -1,4 +1,4 @@
-import { Type, $boolean, $Date, $interface, $string } from "succulent";
+import { type Type, $boolean, $Date, $interface, $string } from "succulent";
 
 export const $Friend = $interface({
 	// If your type includes a literal type like this, you can just use the literal!

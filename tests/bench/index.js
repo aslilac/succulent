@@ -7,7 +7,7 @@ benchmark.start();
 try {
 	const runtypes = await import("./comparisons/runtypes.js");
 	runtypes.start();
-} catch (e) {
+} catch (error) {
 	console.error("runtypes benchmark failed:");
 	console.error(error);
 }

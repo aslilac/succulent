@@ -4,8 +4,8 @@
 		"composite": true,
 		"noEmit": true,
 		"noUnusedLocals": false,
-		"outDir": "build/",
-		"types": ["vitest/globals"]
+		"outDir": ".build/",
+		"types": ["vitest/globals"],
 	},
-	"include": ["./vitest.config.ts", "./src/**/*"]
+	"include": ["./vitest.config.ts", "./src/**/*"],
 }
