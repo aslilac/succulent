@@ -117,13 +117,11 @@ export function $maybe<T>(base: SchemaBase<T>): Schema<T | nullish> {
 }
 
 /**
- * As the name suggests, any value passed will be valid, even values you might really not
- * expect, like functions.
+ * As the name suggests, any value passed will be valid, even values you might
+ * really not expect, like functions.
  * @remarks
- * Probably shouldn't be used very frequently, but occasionally useful for
- * stuff like `$array($any)` or just specifying that an object should have a
- * key, without needing to specify the whole type. Basically the same kind of
- * cases you might want to use it for in TypeScript.
+ * If you think you want to use this, similarly to in actual TypeScript, you
+ * should probably use `$unknown` instead.
  * @example
  * ```ts
  * guard(undefined, $any); // ok
@@ -142,6 +140,34 @@ export function $maybe<T>(base: SchemaBase<T>): Schema<T | nullish> {
  */
 export const $any = new Schema((_x: unknown): _x is any => true, {
 	displayName: "any",
+});
+
+/**
+ * Useful for situations where you want to say "there's a value here", but you
+ * don't know the type or want to resolve/check the value later.
+ * @remarks
+ * Probably shouldn't be used very frequently, but occasionally useful for
+ * stuff like `$Array($unknown)` or just specifying that an object should have a
+ * key, without needing to specify the whole type. Basically the same kind of
+ * cases you might want to use it for in TypeScript.
+ * @example
+ * ```ts
+ * guard(undefined, $unknown); // ok
+ * guard(null, $unknown); // ok
+ * guard(1, $unknown); // ok
+ * guard("hello", $unknown); // ok
+ * guard({}, $unknown); // ok
+ * guard([], $unknown); // ok
+ * guard(Symbol(), $unknown); // ok
+ * guard(() => {}, $unknown); // ok
+ * guard(class {}, $unknown); // ok
+ * guard(new Date(), $unknown); // ok
+ * guard(/friend/, $unknown); // ok
+ * // ...you get the point
+ * ```
+ */
+export const $unknown = new Schema((_x: unknown): _x is unknown => true, {
+	displayName: "unknown",
 });
 
 /**

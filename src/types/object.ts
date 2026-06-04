@@ -86,6 +86,8 @@ export function $interface<T extends object>(template: {
 	);
 }
 
+export { $interface as $type };
+
 /**
  * The same as `$interface`, but will reject any object which has properties that are
  * unspecified by the template.
