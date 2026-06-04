@@ -11,3 +11,4 @@ node_modules/
 target/
 *.log
 *.tsbuildinfo
+*.0x/
