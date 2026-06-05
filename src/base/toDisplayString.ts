@@ -16,10 +16,13 @@ export function toDisplayString(x: unknown): string {
 			return "[Function]";
 		case "object": {
 			if (x instanceof Date) {
-				return `[Date ${x.toString()}`;
+				return `[Date ${x.toString()}]`;
 			}
 			if (x instanceof Set) {
 				return `Set${toDisplayString([...x])}`;
+			}
+			if (x instanceof Map) {
+				return `Map${toDisplayString(Object.fromEntries(x))}`;
 			}
 
 			const proto = Object.getPrototypeOf(x);
