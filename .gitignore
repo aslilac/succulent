@@ -3,6 +3,7 @@
 .idea/
 .nova/
 .vscode/
+.astro/
 .build/
 build/
 coverage/
