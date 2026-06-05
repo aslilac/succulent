@@ -1,0 +1,153 @@
+---
+import "../styles/shared.css";
+
+interface Props {
+	title: string;
+	activeNav?: "home" | "guide" | "reference";
+}
+
+const { title, activeNav = "home" } = Astro.props;
+
+// All hrefs in templates are written relative to the base path. The <base> tag
+// below tells the browser to resolve them against the deploy base. The trailing
+// slash matters: <base href="/succulent"> treats "/succulent" as a file, so
+// `getting-started` resolves to `/getting-started` (wrong). Normalize.
+const baseHref = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+const navLinks = [
+	{ href: ".", label: "Home", key: "home" as const },
+	{ href: "getting-started", label: "Guide", key: "guide" as const },
+	{ href: "api", label: "Reference", key: "reference" as const },
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<base href={baseHref} />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		<script is:inline>
+			(function () {
+				try {
+					var t = localStorage.getItem("succ-theme");
+					if (
+						t === "dark" ||
+						(!t && matchMedia("(prefers-color-scheme: dark)").matches)
+					)
+						document.documentElement.setAttribute("data-theme", "dark");
+				} catch (e) {}
+			})();
+		</script>
+	</head>
+	<body>
+		<header class="topbar">
+			<div class="topbar-in">
+				<a class="brand" href="."><span class="rosette"></span>succulent</a>
+				<nav class="topnav">
+					{
+						navLinks.map((link) => (
+							<a
+								href={link.href}
+								class={activeNav === link.key ? "active" : undefined}
+							>
+								{link.label}
+							</a>
+						))
+					}
+				</nav>
+				<div class="topbar-right">
+					<button class="search-trigger" data-cmdk>
+						<svg
+							viewBox="0 0 24 24"
+							width="16"
+							height="16"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<circle cx="11" cy="11" r="7"></circle>
+							<path d="m20 20-3.5-3.5"></path>
+						</svg>
+						<span class="label">Search the docs</span>
+						<span class="kbd">⌘K</span>
+					</button>
+					<a
+						class="icon-btn"
+						href="https://github.com/aslilac/succulent"
+						aria-label="GitHub"
+					>
+						<svg
+							viewBox="0 0 24 24"
+							width="18"
+							height="18"
+							fill="currentColor"
+						>
+							<path
+								d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49v-1.7c-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.85.09-.67.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"
+							></path>
+						</svg>
+					</a>
+					<button
+						class="theme-toggle"
+						onclick="SUCC.toggleTheme()"
+						aria-label="Toggle theme"
+					>
+						<svg
+							class="sun"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<circle cx="12" cy="12" r="4.5"></circle>
+							<path
+								d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"
+							></path>
+						</svg>
+						<svg
+							class="moon"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</header>
+
+		<main>
+			<slot />
+		</main>
+
+		<footer class="site-foot">
+			<div class="site-foot-in">
+				<div>
+					<a class="brand" href="."><span class="rosette"></span>succulent</a>
+					<p class="note" style="margin-top: 0.8rem">
+						Powerful and easy runtime type checking. Just write TypeScript.
+					</p>
+				</div>
+				<div class="cols">
+					<div class="col">
+						<h5>Docs</h5>
+						<a href="getting-started">Getting started</a>
+						<a href="api">API reference</a>
+						<a href="#" data-cmdk>Search ⌘K</a>
+					</div>
+					<div class="col">
+						<h5>Project</h5>
+						<a href="https://github.com/aslilac/succulent">GitHub</a>
+						<a href="https://github.com/aslilac/succulent/issues">Issues</a>
+						<a href="https://npmx.dev/succulent">npm</a>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+		<script is:inline src="shared.js"></script>
+	</body>
+</html>

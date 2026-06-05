@@ -1,0 +1,245 @@
+---
+import Layout from "../layouts/Layout.astro";
+import DocsSidebar from "../components/DocsSidebar.astro";
+---
+
+<Layout title="Migrating from yup · Succulent" activeNav="guide">
+	<style>
+		.migrate-table {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 1.4rem 0 2rem;
+			font-family: var(--font-mono);
+			font-size: 0.88rem;
+			border: 1px solid var(--border);
+			border-radius: var(--radius);
+			overflow: hidden;
+		}
+		.migrate-table thead th {
+			text-align: left;
+			font-family: var(--font-mono);
+			font-size: 0.72rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: var(--ink-mute);
+			background: var(--bg-tint);
+			padding: 0.7rem 1rem;
+			border-bottom: 1px solid var(--border);
+		}
+		.migrate-table tbody td {
+			padding: 0.55rem 1rem;
+			border-bottom: 1px solid var(--border);
+			vertical-align: top;
+		}
+		.migrate-table tbody tr:last-child td {
+			border-bottom: none;
+		}
+		.migrate-table tbody td:first-child {
+			color: var(--ink-soft);
+			width: 50%;
+			white-space: nowrap;
+			overflow-x: auto;
+		}
+		.migrate-table tbody td:last-child {
+			color: var(--green-deep);
+			font-weight: 500;
+			white-space: nowrap;
+			overflow-x: auto;
+		}
+	</style>
+
+	<div class="docs">
+		<DocsSidebar active="migrate-yup" />
+
+		<main class="docs-main">
+			<article class="prose">
+				<div class="crumb">
+					Docs <span class="sep">/</span> Migration
+					<span class="sep">/</span> From yup
+				</div>
+				<h1>Migrating from yup</h1>
+				<p class="sub">
+					yup's mental model differs more from succulent's than zod's does —
+					yup is built around validation <em>and</em> coercion, and treats
+					fields as optional unless required. Succulent inverts both. Things to
+					internalize:
+				</p>
+				<ul>
+					<li>
+						<strong>Required by default.</strong> yup fields are optional unless
+						<code class="inl">.required()</code>; succulent fields are required
+						unless wrapped in <code class="inl">$optional(…)</code>.
+					</li>
+					<li>
+						<strong>No coercion or transformation.</strong> yup happily turns
+						<code class="inl">"42"</code> into
+						<code class="inl">42</code>; succulent never does.
+					</li>
+					<li>
+						<strong>Synchronous only.</strong> No async refinements.
+					</li>
+					<li>
+						<strong>Errors throw.</strong> Use
+						<code class="inl">guard(x, $T)</code> instead of
+						<code class="inl">T.validateSync(x)</code>.
+					</li>
+				</ul>
+
+				<h2 id="mapping">Mapping table</h2>
+				<table class="migrate-table">
+					<thead>
+						<tr><th>yup</th><th>succulent</th></tr>
+					</thead>
+					<tbody>
+						<tr><td>yup.string()</td><td>$string</td></tr>
+						<tr><td>yup.number()</td><td>$number</td></tr>
+						<tr><td>yup.number().integer()</td><td>$int</td></tr>
+						<tr><td>yup.boolean()</td><td>$boolean</td></tr>
+						<tr><td>yup.date()</td><td>$Date</td></tr>
+						<tr><td>yup.mixed()</td><td>$unknown (or $any)</td></tr>
+						<tr><td>yup.array().of(T)</td><td>$Array($T)</td></tr>
+						<tr><td>yup.tuple([A, B])</td><td>$Tuple($A, $B)</td></tr>
+						<tr><td>yup.object({"{…}"})</td><td>$interface({"{…}"})</td></tr>
+						<tr><td>yup.object({"{…}"}).noUnknown()</td><td>$Exact({"{…}"})</td></tr>
+						<tr><td>yup.string().required()</td><td>$string (required by default)</td></tr>
+						<tr><td>yup.string() / .notRequired()</td><td>$optional($string)</td></tr>
+						<tr><td>yup.string().nullable()</td><td>$maybe($string)</td></tr>
+						<tr><td>yup.string().min(n)</td><td>$string.that(minLength(n))</td></tr>
+						<tr><td>yup.string().max(n)</td><td>$string.that(maxLength(n))</td></tr>
+						<tr><td>yup.string().length(n)</td><td>$string.that(hasLength(n))</td></tr>
+						<tr><td>yup.string().matches(re)</td><td>$string.that(matches(re))</td></tr>
+						<tr><td>yup.number().min(n).max(m)</td><td>$number.that(inRange(n, m))</td></tr>
+						<tr><td>yup.oneOf([…])</td><td>oneOf([…])</td></tr>
+						<tr><td>T.validateSync(x)</td><td>guard(x, $T) or check(x, $T)</td></tr>
+						<tr><td>T.isValidSync(x)</td><td>is(x, $T)</td></tr>
+						<tr><td>yup.InferType&lt;typeof T&gt;</td><td>Type&lt;typeof $T&gt;</td></tr>
+						<tr><td>ValidationError</td><td>CheckError</td></tr>
+					</tbody>
+				</table>
+
+				<h2 id="patterns">Common patterns</h2>
+
+				<h3>Required vs optional</h3>
+				<p>
+					yup's three states (required / optional / nullable) collapse to two
+					in succulent — wrap in <code class="inl">$optional</code> or
+					<code class="inl">$maybe</code> only where you actually want to allow
+					missing data.
+				</p>
+				<pre
+					class="bare"><code data-lang="ts">{`// yup
+yup.object({
+  name: yup.string().required(),    // required
+  bio: yup.string(),                 // optional / undefined OK
+  notes: yup.string().nullable(),    // null OK
+});
+
+// succulent
+$interface({
+  name: $string,
+  bio: $optional($string),
+  notes: $maybe($string),
+});`}</code></pre>
+
+				<h3>Object shape with refinements</h3>
+				<pre
+					class="bare"><code data-lang="ts">{`// yup
+const User = yup.object({
+  id: yup.string().matches(/[a-z0-9]+/).required(),
+  age: yup.number().integer().min(0).max(120).required(),
+});
+
+// succulent
+const $User = $interface({
+  id: $string.that(matches(/[a-z0-9]+/)),
+  age: $int.that(inRange(0, 120)),
+});`}</code></pre>
+
+				<h3>Validation</h3>
+				<pre
+					class="bare"><code data-lang="ts">{`// yup
+const data = schema.validateSync(input);   // throws ValidationError
+const ok = schema.isValidSync(input);      // boolean
+
+// succulent
+guard(input, $Schema);                     // throws CheckError, narrows input
+const ok = is(input, $Schema);             // boolean, narrows on true branch`}</code></pre>
+
+				<h3>Type inference</h3>
+				<pre
+					class="bare"><code data-lang="ts">{`// yup
+type User = yup.InferType<typeof User>;
+
+// succulent
+type User = Type<typeof $User>;`}</code></pre>
+
+				<h2 id="gaps">What's missing or different</h2>
+				<ul>
+					<li>
+						<strong>No transformations.</strong>
+						<code class="inl">.cast()</code>, <code class="inl">.strip()</code>,
+						<code class="inl">.default()</code> — none have equivalents.
+						Succulent validates without reshaping.
+					</li>
+					<li>
+						<strong>No async validation.</strong> No
+						<code class="inl">.validate()</code> Promises, no async
+						<code class="inl">.test()</code>.
+					</li>
+					<li>
+						<strong>No conditional schemas.</strong>
+						<code class="inl">yup.when(…)</code> has no direct equivalent —
+						express conditional shapes as a
+						<code class="inl">union</code> over discriminated cases.
+					</li>
+					<li>
+						<strong>Required-by-default semantics.</strong> Don't sprinkle
+						<code class="inl">.required()</code> everywhere; sprinkle
+						<code class="inl">$optional(…)</code> only where you mean it.
+					</li>
+				</ul>
+
+				<div class="pager">
+					<a href="migrate-from-zod">
+						<div class="dir">←</div>
+						<div class="ttl">From zod</div>
+					</a>
+					<a class="next" href="api">
+						<div class="dir">→</div>
+						<div class="ttl">API reference</div>
+					</a>
+				</div>
+			</article>
+		</main>
+
+		<aside class="docs-toc">
+			<h5>On this page</h5>
+			<nav id="toc">
+				<a href="#mapping">Mapping table</a>
+				<a href="#patterns">Common patterns</a>
+				<a href="#gaps">What's missing or different</a>
+			</nav>
+		</aside>
+	</div>
+
+	<script is:inline>
+		(function () {
+			var links = [].slice.call(document.querySelectorAll("#toc a"));
+			var heads = links.map(function (a) {
+				return document.querySelector(a.getAttribute("href"));
+			});
+			function onScroll() {
+				var y = window.scrollY + 100,
+					cur = 0;
+				heads.forEach(function (h, i) {
+					if (h && h.offsetTop <= y) cur = i;
+				});
+				links.forEach(function (a, i) {
+					a.classList.toggle("active", i === cur);
+				});
+			}
+			window.addEventListener("scroll", onScroll);
+			onScroll();
+		})();
+	</script>
+</Layout>

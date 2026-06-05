@@ -1,0 +1,780 @@
+---
+import Layout from "../layouts/Layout.astro";
+import InstallPicker from "../components/InstallPicker.astro";
+---
+
+<Layout
+	title="Succulent · Runtime type checking that feels like TypeScript"
+	activeNav="home"
+>
+	<style>
+		/* ---------- Landing A : Editorial Garden ---------- */
+		.hero {
+			padding-block: 4.5rem 1rem;
+		}
+		.hero-grid {
+			display: grid;
+			grid-template-columns: 1.05fr 0.95fr;
+			gap: 3.5rem;
+			align-items: center;
+		}
+		.hero h1 {
+			font-size: clamp(2.7rem, 5vw, 4.1rem);
+			line-height: 1.03;
+			margin: 1rem 0 0;
+		}
+		.hero h1 em {
+			font-style: italic;
+			color: var(--green-deep);
+		}
+		.hero .lead {
+			margin: 1.5rem 0 2rem;
+			max-width: 48ch;
+		}
+		.hero-cta {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.8rem;
+			align-items: center;
+		}
+		.install-slot {
+			margin-top: 1.6rem;
+		}
+		.cta-row {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 1.2rem;
+		}
+
+		.why {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 2.2rem;
+			padding: 2.5rem 0;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+			border-bottom: 1px solid var(--border);
+		}
+		.why .item {
+			display: flex;
+			flex-direction: column;
+			gap: 0.2rem;
+		}
+		.why .item .k {
+			font-family: var(--font-mono);
+			font-size: 0.72rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: var(--green-deep);
+		}
+		.why .item .v {
+			font-family: var(--font-display);
+			font-size: 1.45rem;
+		}
+		.why .item .d {
+			font-size: 0.86rem;
+			color: var(--ink-mute);
+		}
+
+		.section {
+			padding-block: 4.5rem;
+		}
+		.section-head {
+			max-width: 60ch;
+			margin-bottom: 2.6rem;
+		}
+		.section-head h2 {
+			font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+			margin-top: 0.7rem;
+		}
+		.section-head p {
+			margin-top: 0.8rem;
+			color: var(--ink-soft);
+			font-size: 1.05rem;
+		}
+
+		/* feature bullets */
+		.feat-grid {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 0.4rem 3rem;
+		}
+		.feat {
+			display: grid;
+			grid-template-columns: 28px 1fr;
+			gap: 0.9rem;
+			padding: 1.3rem 0;
+			border-top: 1px solid var(--border);
+		}
+		.feat .leaf {
+			width: 26px;
+			height: 26px;
+			border-radius: 50%;
+			background: var(--green-tint);
+			display: grid;
+			place-items: center;
+			flex: none;
+			margin-top: 2px;
+		}
+		.feat .leaf svg {
+			width: 15px;
+			height: 15px;
+			color: var(--green-deep);
+		}
+		.feat h3 {
+			font-family: var(--font-sans);
+			font-weight: 700;
+			font-size: 1.02rem;
+			letter-spacing: -0.01em;
+		}
+		.feat p {
+			font-size: 0.92rem;
+			color: var(--ink-mute);
+			margin-top: 0.25rem;
+		}
+		.feat code {
+			font-family: var(--font-mono);
+			font-size: 0.84em;
+			color: var(--green-deep);
+		}
+
+		/* mapping table */
+		.map {
+			display: grid;
+			grid-template-columns: 1fr auto 1fr;
+			gap: 0;
+			border: 1px solid var(--border);
+			border-radius: var(--radius);
+			overflow: hidden;
+			background: var(--paper);
+		}
+		@media (max-width: 540px) {
+			.map {
+				font-size: 0.85rem;
+			}
+			.map .cell {
+				padding: 0.7rem 0.9rem;
+				font-size: 0.85rem;
+			}
+			.map .arrow {
+				padding: 0 0.4rem;
+			}
+		}
+		.map .mh {
+			padding: 0.9rem 1.4rem;
+			font-family: var(--font-mono);
+			font-size: 0.74rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: var(--ink-mute);
+			background: var(--bg-tint);
+			border-bottom: 1px solid var(--border);
+		}
+		.map .mh.mid {
+			background: var(--bg-tint);
+			border-bottom: 1px solid var(--border);
+		}
+		.map .cell {
+			padding: 0.85rem 1.4rem;
+			font-family: var(--font-mono);
+			font-size: 0.94rem;
+			border-bottom: 1px solid var(--border);
+			display: flex;
+			align-items: center;
+		}
+		.map .arrow {
+			display: grid;
+			place-items: center;
+			color: var(--ink-faint);
+			border-bottom: 1px solid var(--border);
+			padding: 0 0.8rem;
+		}
+		.map .cell.ts {
+			color: var(--ink-soft);
+		}
+		.map > :nth-last-child(-n + 3) {
+			border-bottom: none;
+		}
+
+		/* botanical band */
+		.band {
+			display: grid;
+			grid-template-columns: 0.9fr 1.1fr;
+			gap: 3rem;
+			align-items: center;
+			background: var(--green-tint);
+			border: 1px solid var(--green-line);
+			border-radius: var(--radius-lg);
+			padding: 2.8rem;
+		}
+		.plant-scene {
+			display: grid;
+			place-items: center;
+			aspect-ratio: 1;
+			border-radius: var(--radius);
+			background: radial-gradient(
+				circle at 50% 42%,
+				var(--paper),
+				transparent 70%
+			);
+		}
+		.plant-scene svg {
+			width: 74%;
+			max-width: 270px;
+			height: auto;
+			filter: drop-shadow(0 14px 22px oklch(0.4 0.05 150 / 0.16));
+		}
+		.band h2 {
+			font-size: 2rem;
+		}
+		.band p {
+			color: var(--ink-soft);
+			margin-top: 0.8rem;
+			max-width: 42ch;
+		}
+
+		/* cta */
+		.cta {
+			text-align: center;
+			padding-block: 5rem;
+		}
+		.cta h2 {
+			font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+			max-width: 16ch;
+			margin: 0 auto 1.5rem;
+		}
+		.cta h2 em {
+			font-style: italic;
+			color: var(--green-deep);
+		}
+
+		@media (max-width: 900px) {
+			.hero-grid,
+			.band {
+				grid-template-columns: 1fr;
+				gap: 2rem;
+			}
+			.feat-grid {
+				grid-template-columns: 1fr;
+				gap: 0;
+			}
+			.plant-scene {
+				order: 2;
+				max-width: 280px;
+				margin: 0 auto;
+			}
+			.band {
+				padding: 2rem;
+			}
+		}
+		@media (max-width: 640px) {
+			.hero {
+				padding-block: 3rem 0.5rem;
+			}
+			.section {
+				padding-block: 3rem;
+			}
+			.cta {
+				padding-block: 3.5rem;
+			}
+			.band {
+				padding: 1.6rem;
+			}
+		}
+	</style>
+
+	<!-- HERO -->
+	<section class="hero wrap">
+		<div class="hero-grid">
+			<div>
+				<span class="chip"
+					><span class="dot"></span>MIT licensed · zero dependencies</span
+				>
+				<h1>Just write TypeScript.<br />Get validation <em>for free</em>.</h1>
+				<p class="lead">
+					Succulent is runtime type checking that mirrors the types you already
+					know. No new dialect, no clever DSL — the schema for
+					<code class="inl">string</code> is <code class="inl">$string</code>, and
+					it only gets more obvious from there.
+				</p>
+				<div class="hero-cta">
+					<a class="btn btn-primary" href="getting-started">Get started →</a>
+					<a class="btn btn-ghost" href="api">Browse the API</a>
+				</div>
+				<div class="install-slot">
+					<InstallPicker />
+				</div>
+			</div>
+
+			<div class="code" style="box-shadow: var(--shadow-lg)">
+				<div class="code-head">
+					<span class="fname">index.ts</span>
+					<button class="copy">
+						<svg
+							viewBox="0 0 24 24"
+							width="13"
+							height="13"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<rect x="9" y="9" width="11" height="11" rx="2"></rect>
+							<path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+						</svg>
+						<span class="copy-label">copy</span>
+					</button>
+				</div>
+				<pre data-lang="ts"><code>{`import { guard, $string } from "succulent";
+
+// Takes untrusted user input!
+export default function (x: unknown): string {
+  guard(x, $string);
+
+  // x now has type \`string\`,
+  // and can be treated as such
+  return x;
+}`}</code></pre>
+			</div>
+		</div>
+
+		<!-- why strip -->
+		<div class="why">
+			<div class="item">
+				<span class="k">Mirrors TS</span><span class="v">$string</span><span
+					class="d">one schema per type you know</span
+				>
+			</div>
+			<div class="item">
+				<span class="k">Assert</span><span class="v">guard()</span><span
+					class="d">narrows, or throws a TypeError</span
+				>
+			</div>
+			<div class="item">
+				<span class="k">Compose</span><span class="v">.that(…)</span><span
+					class="d">chain filters onto any schema</span
+				>
+			</div>
+			<div class="item">
+				<span class="k">Infer</span><span class="v">Type&lt;…&gt;</span><span
+					class="d">generate types from schemas</span
+				>
+			</div>
+		</div>
+	</section>
+
+	<!-- FEATURES -->
+	<section class="section wrap">
+		<div class="section-head">
+			<span class="eyebrow">Why succulent</span>
+			<h2>Everything you'd expect, nothing you wouldn't.</h2>
+			<p>
+				A focused set of primitives — every one of these maps directly to
+				something the library actually does today.
+			</p>
+		</div>
+		<div class="feat-grid">
+			<div class="feat">
+				<span class="leaf"
+					><svg
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.4"
+					>
+						<path d="M20 6 9 17l-5-5"></path>
+					</svg></span
+				>
+				<div>
+					<h3>It's just TypeScript</h3>
+					<p>
+						Schemas are named after the types they represent. If you can write
+						the type, you can write the schema.
+					</p>
+				</div>
+			</div>
+			<div class="feat">
+				<span class="leaf"
+					><svg
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.4"
+					>
+						<path d="M20 6 9 17l-5-5"></path>
+					</svg></span
+				>
+				<div>
+					<h3>Assert or just check</h3>
+					<p>
+						<code>guard()</code> narrows and throws on failure;
+						<code>is()</code> returns a boolean. Same schema, your choice.
+					</p>
+				</div>
+			</div>
+			<div class="feat">
+				<span class="leaf"
+					><svg
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.4"
+					>
+						<path d="M20 6 9 17l-5-5"></path>
+					</svg></span
+				>
+				<div>
+					<h3>Composable filters</h3>
+					<p>
+						Refine any schema with
+						<code>.that(matches(/…/), inRange(0,10))</code> — small functions,
+						infinitely combinable.
+					</p>
+				</div>
+			</div>
+			<div class="feat">
+				<span class="leaf"
+					><svg
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.4"
+					>
+						<path d="M20 6 9 17l-5-5"></path>
+					</svg></span
+				>
+				<div>
+					<h3>Types from schemas</h3>
+					<p>
+						Define once, then <code>Type&lt;typeof $User&gt;</code> hands you a
+						matching TypeScript type for free.
+					</p>
+				</div>
+			</div>
+			<div class="feat">
+				<span class="leaf"
+					><svg
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.4"
+					>
+						<path d="M20 6 9 17l-5-5"></path>
+					</svg></span
+				>
+				<div>
+					<h3>Recursive &amp; lazy</h3>
+					<p>
+						Self-referential types work via
+						<code>lazy(() =&gt; $Friend)</code> — trees, graphs and linked lists
+						welcome.
+					</p>
+				</div>
+			</div>
+			<div class="feat">
+				<span class="leaf"
+					><svg
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.4"
+					>
+						<path d="M20 6 9 17l-5-5"></path>
+					</svg></span
+				>
+				<div>
+					<h3>Errors you can probe</h3>
+					<p>
+						Failures throw a <code>CheckError</code> (extends
+						<code>TypeError</code>) with a traced hierarchy, so you know exactly
+						which property went wrong.
+					</p>
+				</div>
+			</div>
+			<div class="feat">
+				<span class="leaf"
+					><svg
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.4"
+					>
+						<path d="M20 6 9 17l-5-5"></path>
+					</svg></span
+				>
+				<div>
+					<h3>Zero dependencies</h3>
+					<p>
+						A small, MIT-licensed package with no transitive baggage.
+						Tree-shakes down to just what you import.
+					</p>
+				</div>
+			</div>
+			<div class="feat">
+				<span class="leaf"
+					><svg
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.4"
+					>
+						<path d="M20 6 9 17l-5-5"></path>
+					</svg></span
+				>
+				<div>
+					<h3>Runs anywhere</h3>
+					<p>
+						Pure ESM. Works in Node, Deno, Bun and the browser — same schemas,
+						every runtime.
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- MAPPING -->
+	<section class="section wrap" style="padding-top: 0">
+		<div class="section-head">
+			<span class="eyebrow">The whole idea</span>
+			<h2>You already know the syntax.</h2>
+			<p>
+				Every schema is the type you'd write, with a
+				<code class="inl">$</code> in front. The necessary differences are meant
+				to feel obvious quickly.
+			</p>
+		</div>
+		<div class="map">
+			<div class="mh">TypeScript</div>
+			<div class="mh mid"></div>
+			<div class="mh">Succulent</div>
+			<div class="cell ts">string</div>
+			<div class="arrow">→</div>
+			<div class="cell"><span class="tok-schema">$string</span></div>
+			<div class="cell ts">bigint</div>
+			<div class="arrow">→</div>
+			<div class="cell"><span class="tok-schema">$bigint</span></div>
+			<div class="cell ts">Date</div>
+			<div class="arrow">→</div>
+			<div class="cell"><span class="tok-schema">$Date</span></div>
+			<div class="cell ts">T[]&nbsp;&nbsp;/&nbsp;&nbsp;Array&lt;T&gt;</div>
+			<div class="arrow">→</div>
+			<div class="cell">
+				<span class="tok-fn">$Array</span>(<span class="tok-schema">$T</span>)
+			</div>
+			<div class="cell ts">Map&lt;K, V&gt;</div>
+			<div class="arrow">→</div>
+			<div class="cell">
+				<span class="tok-fn">$Map</span>(<span class="tok-schema">$K</span>,
+				<span class="tok-schema">$V</span>)
+			</div>
+			<div class="cell ts">{`{ name: string }`}</div>
+			<div class="arrow">→</div>
+			<div class="cell">
+				<span
+					><span class="tok-fn">$interface</span>({"{"} name:&nbsp;<span
+						class="tok-schema">$string</span
+					>&nbsp;{"}"})</span
+				>
+			</div>
+			<div class="cell ts">
+				any&nbsp;&nbsp;/&nbsp;&nbsp;unknown&nbsp;&nbsp;/&nbsp;&nbsp;never
+			</div>
+			<div class="arrow">→</div>
+			<div class="cell">
+				<span class="tok-schema">$any</span>&nbsp;/&nbsp;<span class="tok-schema"
+					>$unknown</span
+				>&nbsp;/&nbsp;<span class="tok-schema">$never</span>
+			</div>
+		</div>
+	</section>
+
+	<!-- BOTANICAL BAND + deeper example -->
+	<section class="section wrap" style="padding-top: 0">
+		<div class="band">
+			<div class="plant-scene">
+				<svg viewBox="0 0 260 272" role="img" aria-label="A potted succulent">
+					<ellipse
+						cx="130"
+						cy="252"
+						rx="66"
+						ry="11"
+						fill="var(--green-deep)"
+						opacity="0.13"></ellipse>
+					<g fill="var(--green-deep)">
+						<ellipse
+							cx="130"
+							cy="84"
+							rx="20"
+							ry="44"
+							transform="rotate(0 130 116)"></ellipse>
+						<ellipse
+							cx="130"
+							cy="84"
+							rx="20"
+							ry="44"
+							transform="rotate(45 130 116)"></ellipse>
+						<ellipse
+							cx="130"
+							cy="84"
+							rx="20"
+							ry="44"
+							transform="rotate(90 130 116)"></ellipse>
+						<ellipse
+							cx="130"
+							cy="84"
+							rx="20"
+							ry="44"
+							transform="rotate(135 130 116)"></ellipse>
+						<ellipse
+							cx="130"
+							cy="84"
+							rx="20"
+							ry="44"
+							transform="rotate(225 130 116)"></ellipse>
+						<ellipse
+							cx="130"
+							cy="84"
+							rx="20"
+							ry="44"
+							transform="rotate(315 130 116)"></ellipse>
+					</g>
+					<g fill="var(--green)">
+						<ellipse
+							cx="130"
+							cy="96"
+							rx="16"
+							ry="35"
+							transform="rotate(22 130 116)"></ellipse>
+						<ellipse
+							cx="130"
+							cy="96"
+							rx="16"
+							ry="35"
+							transform="rotate(67 130 116)"></ellipse>
+						<ellipse
+							cx="130"
+							cy="96"
+							rx="16"
+							ry="35"
+							transform="rotate(112 130 116)"></ellipse>
+						<ellipse
+							cx="130"
+							cy="96"
+							rx="16"
+							ry="35"
+							transform="rotate(248 130 116)"></ellipse>
+						<ellipse
+							cx="130"
+							cy="96"
+							rx="16"
+							ry="35"
+							transform="rotate(293 130 116)"></ellipse>
+						<ellipse
+							cx="130"
+							cy="96"
+							rx="16"
+							ry="35"
+							transform="rotate(338 130 116)"></ellipse>
+					</g>
+					<g fill="var(--green-bright)">
+						<ellipse
+							cx="130"
+							cy="104"
+							rx="11"
+							ry="23"
+							transform="rotate(0 130 116)"></ellipse>
+						<ellipse
+							cx="130"
+							cy="104"
+							rx="11"
+							ry="23"
+							transform="rotate(72 130 116)"></ellipse>
+						<ellipse
+							cx="130"
+							cy="104"
+							rx="11"
+							ry="23"
+							transform="rotate(144 130 116)"></ellipse>
+						<ellipse
+							cx="130"
+							cy="104"
+							rx="11"
+							ry="23"
+							transform="rotate(216 130 116)"></ellipse>
+						<ellipse
+							cx="130"
+							cy="104"
+							rx="11"
+							ry="23"
+							transform="rotate(288 130 116)"></ellipse>
+					</g>
+					<circle cx="130" cy="115" r="7" fill="var(--clay)"></circle>
+					<rect x="91" y="150" width="78" height="19" rx="7" fill="var(--clay)"
+					></rect>
+					<path
+						d="M98 169 H162 L153 244 Q152 251 145 251 H115 Q108 251 107 244 Z"
+						fill="var(--clay-deep)"></path>
+					<rect
+						x="91"
+						y="150"
+						width="78"
+						height="6"
+						rx="3"
+						fill="var(--clay)"
+						opacity="0.55"></rect>
+				</svg>
+			</div>
+			<div>
+				<span class="eyebrow">Grows with your codebase</span>
+				<h2 style="margin-top: 0.6rem">Compose real-world schemas.</h2>
+				<p>
+					Build a validator once and reuse it anywhere untrusted data shows up
+					— request bodies, config files, third-party APIs. Here's a user record
+					with refinements and an optional nested object:
+				</p>
+				<div class="code" style="margin-top: 1.4rem">
+					<div class="code-head">
+							<span class="fname">user.ts</span>
+						<button class="copy">
+							<svg
+								viewBox="0 0 24 24"
+								width="13"
+								height="13"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+							>
+								<rect x="9" y="9" width="11" height="11" rx="2"></rect>
+								<path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+							</svg>
+							<span class="copy-label">copy</span>
+						</button>
+					</div>
+					<pre
+						data-lang="ts"><code>{`import { matches, maxLength, type Type, $Date, $interface, $optional, $string } from "succulent";
+
+export const $User = $interface({
+  id: $string.that(matches(/[A-Za-z0-9_-]{24}/)),
+  name: $string.that(maxLength(50)),
+  meta: $optional($interface({ lastSeen: $optional($Date) })),
+});
+
+// Generate the matching type, for free
+export type User = Type<typeof $User>;`}</code></pre>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- CTA -->
+	<section class="cta wrap">
+		<span class="eyebrow">Ready when you are</span>
+		<h2 style="margin-top: 0.8rem">
+			Validation that feels like <em>home</em>.
+		</h2>
+		<div class="cta-row">
+			<a class="btn btn-primary" href="getting-started">Read the guide →</a>
+			<InstallPicker />
+		</div>
+	</section>
+</Layout>

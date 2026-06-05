@@ -1,6 +1,6 @@
 {
 	"name": "succulent",
-	"version": "0.21.0",
+	"version": "0.22.0",
 	"author": "McKayla Washburn-Love <kayla@tree.camp>",
 	"description": "Powerful and easy runtime type checking",
 	"keywords": [
@@ -8,13 +8,10 @@
 		"type checking",
 		"validation",
 		"types",
-		"type safety",
-		"runtypes",
-		"yup",
-		"zod"
+		"type safety"
 	],
 	"license": "MIT",
-	"homepage": "https://github.com/aslilac/succulent",
+	"homepage": "https://mckayla.dev/succulent/",
 	"repository": "https://github.com/aslilac/succulent",
 	"bugs": "https://github.com/aslilac/succulent/issues",
 	"type": "module",

@@ -1,0 +1,336 @@
+---
+import Layout from "../layouts/Layout.astro";
+import DocsSidebar from "../components/DocsSidebar.astro";
+---
+
+<Layout title="Getting started · Succulent" activeNav="guide">
+	<div class="docs">
+		<DocsSidebar active="getting-started" />
+
+		<!-- MAIN -->
+		<main class="docs-main">
+			<article class="prose">
+				<div class="crumb">
+					Docs <span class="sep">/</span> Introduction
+					<span class="sep">/</span> Getting started
+				</div>
+				<h1>Getting started</h1>
+				<p class="sub">
+					Install Succulent, write your first guard, and go from
+					<code class="inl">unknown</code> to a fully-typed value in about two
+					minutes.
+				</p>
+
+				<div class="callout">
+					<span class="i">$</span>
+					<p>
+						<strong>The one idea:</strong> every schema is named after the
+						TypeScript type it represents, prefixed with a
+						<code class="inl">$</code>. The schema for
+						<code class="inl">string</code> is
+						<code class="inl">$string</code>. Learn that, and you already know
+						most of the library.
+					</p>
+				</div>
+
+				<h2 id="motivation">Why succulent?</h2>
+				<p>
+					A lot of validation libraries ask you to learn a second dialect — new
+					names, new syntax, subtle differences from the TypeScript you write
+					every day. Succulent's goal is the opposite: make runtime validation
+					feel like <em>just writing TypeScript</em>, and make the necessary
+					differences obvious fast.
+				</p>
+				<ul>
+					<li>
+						<strong>It's just TypeScript.</strong>
+						<code class="inl">string</code> →
+						<code class="inl">$string</code>, <code class="inl">Date</code> →
+						<code class="inl">$Date</code>, <code class="inl">T[]</code> →
+						<code class="inl">$Array($T)</code>.
+					</li>
+					<li>
+						<strong>Assert or check.</strong>
+						<code class="inl">guard()</code> narrows and throws;
+						<code class="inl">is()</code> returns a boolean.
+					</li>
+					<li>
+						<strong>Composable filters.</strong> Refine any schema with
+						<code class="inl">.that(matches(/…/), inRange(0, 10))</code>.
+					</li>
+					<li>
+						<strong>Types for free.</strong> Generate a matching type with
+						<code class="inl">Type&lt;typeof $User&gt;</code>.
+					</li>
+				</ul>
+
+				<h2 id="install">Installation</h2>
+				<p>
+					Succulent is a zero-dependency ESM package. Install it with your
+					package manager of choice:
+				</p>
+				<div class="code">
+					<div class="code-head">
+						<span class="fname">terminal</span>
+						<button class="copy">
+							<svg
+								viewBox="0 0 24 24"
+								width="13"
+								height="13"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+							>
+								<rect x="9" y="9" width="11" height="11" rx="2"></rect>
+								<path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+							</svg>
+							<span class="copy-label">copy</span>
+						</button>
+					</div>
+					<pre><code><span class="tok-schema">$</span> npm install succulent
+<span class="tok-comment"># or: pnpm add succulent · yarn add succulent · bun add succulent</span></code></pre>
+				</div>
+
+				<hr />
+
+				<h2 id="first-guard">Your first guard</h2>
+				<p>
+					Say you have a value of type <code class="inl">unknown</code> — a
+					request body, some parsed JSON, anything you didn't create yourself.
+					Pass it to <code class="inl">guard</code> along with a schema. If it
+					matches, TypeScript narrows the type. If it doesn't,
+					<code class="inl">guard</code> throws a
+					<code class="inl">CheckError</code> (which extends
+					<code class="inl">TypeError</code>).
+				</p>
+				<div class="code">
+					<div class="code-head">
+						<span class="fname">clean.ts</span>
+						<button class="copy">
+							<svg
+								viewBox="0 0 24 24"
+								width="13"
+								height="13"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+							>
+								<rect x="9" y="9" width="11" height="11" rx="2"></rect>
+								<path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+							</svg>
+							<span class="copy-label">copy</span>
+						</button>
+					</div>
+					<pre data-lang="ts"><code>{`import { guard, $string } from "succulent";
+
+export default function (x: unknown): string {
+  guard(x, $string);
+
+  // x now has type \`string\`, and can be treated as such
+  return x;
+}`}</code></pre>
+				</div>
+				<p>
+					Prefer a boolean instead of a thrown error? Use
+					<code class="inl">is</code>, which narrows inside the branch:
+				</p>
+				<pre class="bare"><code data-lang="ts">{`import { is, $number } from "succulent";
+
+if (is(value, $number)) {
+  // value is a number in here
+}`}</code></pre>
+
+				<h2 id="objects">Validating objects</h2>
+				<p>
+					Describe object shapes with <code class="inl">$interface</code>. It
+					takes a template whose values are themselves schemas — exactly
+					mirroring how you'd write the type.
+				</p>
+				<div class="code">
+					<div class="code-head">
+						<span class="fname">user.ts</span>
+						<button class="copy">
+							<svg
+								viewBox="0 0 24 24"
+								width="13"
+								height="13"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+							>
+								<rect x="9" y="9" width="11" height="11" rx="2"></rect>
+								<path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+							</svg>
+							<span class="copy-label">copy</span>
+						</button>
+					</div>
+					<pre data-lang="ts"><code>{`import { $interface, $optional, $string, $Date } from "succulent";
+
+export const $User = $interface({
+  name: $string,
+  meta: $optional($interface({
+    lastSeen: $optional($Date),
+  })),
+});`}</code></pre>
+				</div>
+
+				<h2 id="filters">Refining with filters</h2>
+				<p>
+					Every schema has a <code class="inl">.that()</code> method that takes
+					one or more filters — small predicate functions. Chain as many as you
+					need.
+				</p>
+				<pre
+					class="bare"><code data-lang="ts">{`import { matches, maxLength, inRange, $string, $int } from "succulent";
+
+const $Handle = $string.that(matches(/^[a-z0-9_]+$/), maxLength(15));
+const $Score  = $int.that(inRange(0, 100));`}</code></pre>
+				<div class="callout clay">
+					<span class="i">!</span>
+					<p>
+						Filters run <em>after</em> the base type check, so inside
+						<code class="inl">inRange</code> you can safely assume you already
+						have a number.
+					</p>
+				</div>
+
+				<h2 id="types">Inferring types</h2>
+				<p>
+					Don't write the type twice. Derive it from the schema with
+					<code class="inl">Type</code>, and the two can never drift out of
+					sync.
+				</p>
+				<pre
+					class="bare"><code data-lang="ts">{`import { Type } from "succulent";
+
+export type User = Type<typeof $User>;
+// equivalently: export interface User extends Type<typeof $User> {}`}</code></pre>
+
+				<h2 id="recursive">Recursive types</h2>
+				<p>
+					For self-referential shapes, wrap the recursive reference in
+					<code class="inl">lazy</code> so it can refer to a schema that isn't
+					defined yet.
+				</p>
+				<pre
+					class="bare"><code data-lang="ts">{`import { inRange, lazy, Schema, $Array, $int, $interface, $string } from "succulent";
+
+type Friend = { name: string; happiness: number; friends: Friend[] };
+
+const $Friend: Schema<Friend> = $interface({
+  name: $string,
+  happiness: $int.that(inRange(0, 10)),
+  friends: $Array(lazy(() => $Friend)),
+});`}</code></pre>
+
+				<h2 id="errors">Handling errors</h2>
+				<p>
+					When <code class="inl">guard</code> fails it throws a
+					<code class="inl">CheckError</code> with a traced hierarchy, so you
+					can see exactly which property was invalid. Catch with
+					<code class="inl">CheckError</code> when you want to distinguish
+					succulent's failures from other <code class="inl">TypeError</code>s.
+				</p>
+				<pre class="bare"><code data-lang="ts">{`import { guard, CheckError } from "succulent";
+
+try {
+  guard(person, $Friend);
+  // person has type \`Friend\` now!
+} catch (error) {
+  if (error instanceof CheckError) {
+    // Probe the hierarchy of where the error came from
+  }
+}`}</code></pre>
+
+				<h2 id="namespace">The <code class="inl">$</code> namespace</h2>
+				<p>
+					If you'd rather not import every schema individually — or you're
+					coming from zod and miss the <code class="inl">z.string()</code> style
+					— Succulent also exports a single <code class="inl">$</code> object
+					that bundles every built-in schema:
+				</p>
+				<pre class="bare"><code data-lang="ts">{`import { $, guard, inRange } from "succulent";
+
+const $User = $.type({
+  id: $.string,
+  age: $.int.that(inRange(0, 120)),
+  friends: $.Array($.string),
+});
+
+guard(unknownInput, $User);`}</code></pre>
+				<p>
+					The naming follows the underlying schema with the leading
+					<code class="inl">$</code> dropped, so
+					<code class="inl">$string</code> becomes
+					<code class="inl">$.string</code>,
+					<code class="inl">$Array</code> becomes
+					<code class="inl">$.Array</code>, and so on.
+					<code class="inl">$interface</code> is available as both
+					<code class="inl">$.interface</code> and
+					<code class="inl">$.type</code> — pick whichever reads better in
+					context.
+				</p>
+				<div class="callout">
+					<span class="i">$</span>
+					<p>
+						<code class="inl">$</code> only collects the type schemas. Operators
+						(<code class="inl">guard</code>, <code class="inl">is</code>,
+						<code class="inl">union</code>, <code class="inl">lazy</code>, …) and
+						filters (<code class="inl">matches</code>,
+						<code class="inl">inRange</code>, …) are still standalone imports —
+						mix and match whichever style you like.
+					</p>
+				</div>
+
+				<div class="pager">
+					<a href=".">
+						<div class="dir">←</div>
+						<div class="ttl">Home</div>
+					</a>
+					<a class="next" href="api">
+						<div class="dir">→</div>
+						<div class="ttl">API reference</div>
+					</a>
+				</div>
+			</article>
+		</main>
+
+		<!-- ON THIS PAGE -->
+		<aside class="docs-toc">
+			<h5>On this page</h5>
+			<nav id="toc">
+				<a href="#motivation">Why succulent?</a>
+				<a href="#install">Installation</a>
+				<a href="#first-guard">Your first guard</a>
+				<a href="#objects">Validating objects</a>
+				<a href="#filters">Refining with filters</a>
+				<a href="#types">Inferring types</a>
+				<a href="#recursive">Recursive types</a>
+				<a href="#errors">Handling errors</a>
+				<a href="#namespace">The $ namespace</a>
+			</nav>
+		</aside>
+	</div>
+
+	<script is:inline>
+		// active TOC highlight
+		(function () {
+			var links = [].slice.call(document.querySelectorAll("#toc a"));
+			var heads = links.map(function (a) {
+				return document.querySelector(a.getAttribute("href"));
+			});
+			function onScroll() {
+				var y = window.scrollY + 100,
+					cur = 0;
+				heads.forEach(function (h, i) {
+					if (h && h.offsetTop <= y) cur = i;
+				});
+				links.forEach(function (a, i) {
+					a.classList.toggle("active", i === cur);
+				});
+			}
+			window.addEventListener("scroll", onScroll);
+			onScroll();
+		})();
+	</script>
+</Layout>

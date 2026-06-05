@@ -51,6 +51,7 @@ export const $ = {
 	Tuple: Types.$Tuple,
 	enum: Types.$enum,
 	instanceof: Types.$instanceof,
+	interface: Types.$interface,
 	literal: Types.$literal,
 	maybe: Types.$maybe,
 	optional: Types.$optional,

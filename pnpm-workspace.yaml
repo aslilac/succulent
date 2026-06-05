@@ -1,6 +1,8 @@
 packages:
   - "."
+  - "docs/"
   - "tests/"
 
 allowBuilds:
   esbuild: true
+  sharp: true

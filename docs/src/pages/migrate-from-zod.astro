@@ -1,0 +1,268 @@
+---
+import Layout from "../layouts/Layout.astro";
+import DocsSidebar from "../components/DocsSidebar.astro";
+---
+
+<Layout title="Migrating from zod · Succulent" activeNav="guide">
+	<style>
+		.migrate-table {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 1.4rem 0 2rem;
+			font-family: var(--font-mono);
+			font-size: 0.88rem;
+			border: 1px solid var(--border);
+			border-radius: var(--radius);
+			overflow: hidden;
+		}
+		.migrate-table thead th {
+			text-align: left;
+			font-family: var(--font-mono);
+			font-size: 0.72rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: var(--ink-mute);
+			background: var(--bg-tint);
+			padding: 0.7rem 1rem;
+			border-bottom: 1px solid var(--border);
+		}
+		.migrate-table tbody td {
+			padding: 0.55rem 1rem;
+			border-bottom: 1px solid var(--border);
+			vertical-align: top;
+		}
+		.migrate-table tbody tr:last-child td {
+			border-bottom: none;
+		}
+		.migrate-table tbody td:first-child {
+			color: var(--ink-soft);
+			width: 50%;
+			white-space: nowrap;
+			overflow-x: auto;
+		}
+		.migrate-table tbody td:last-child {
+			color: var(--green-deep);
+			font-weight: 500;
+			white-space: nowrap;
+			overflow-x: auto;
+		}
+	</style>
+
+	<div class="docs">
+		<DocsSidebar active="migrate-zod" />
+
+		<main class="docs-main">
+			<article class="prose">
+				<div class="crumb">
+					Docs <span class="sep">/</span> Migration
+					<span class="sep">/</span> From zod
+				</div>
+				<h1>Migrating from zod</h1>
+				<p class="sub">
+					If you've used zod, succulent will feel familiar — schemas mirror
+					TypeScript types in a similar spirit. The shifts to internalize:
+				</p>
+
+				<ul>
+					<li>
+						<strong>Schemas are values, not chains.</strong>
+						<code class="inl">$string</code> is a constant; refinements come from
+						external filters chained via
+						<code class="inl">.that(…)</code>.
+					</li>
+					<li>
+						<strong>Errors throw by default.</strong> Use
+						<code class="inl">guard(x, $T)</code> instead of
+						<code class="inl">T.parse(x)</code>. For a boolean check use
+						<code class="inl">is(x, $T)</code>.
+					</li>
+					<li>
+						<strong>No transformation or coercion.</strong> succulent only
+						validates; it never reshapes.
+					</li>
+				</ul>
+
+				<h2 id="mapping">Mapping table</h2>
+				<table class="migrate-table">
+					<thead>
+						<tr><th>zod</th><th>succulent</th></tr>
+					</thead>
+					<tbody>
+						<tr><td>z.string()</td><td>$string</td></tr>
+						<tr><td>z.number()</td><td>$number</td></tr>
+						<tr><td>z.number().int()</td><td>$int</td></tr>
+						<tr><td>z.number().finite()</td><td>$finite</td></tr>
+						<tr><td>z.bigint()</td><td>$bigint</td></tr>
+						<tr><td>z.boolean()</td><td>$boolean</td></tr>
+						<tr><td>z.date()</td><td>$Date</td></tr>
+						<tr><td>z.symbol()</td><td>$symbol</td></tr>
+						<tr><td>z.null()</td><td>$null</td></tr>
+						<tr><td>z.undefined()</td><td>$undefined</td></tr>
+						<tr><td>z.any()</td><td>$any</td></tr>
+						<tr><td>z.unknown()</td><td>$unknown</td></tr>
+						<tr><td>z.never()</td><td>$never</td></tr>
+						<tr><td>z.literal("x")</td><td>$literal("x") or "x"</td></tr>
+						<tr><td>z.array(T)</td><td>$Array($T)</td></tr>
+						<tr><td>z.tuple([A, B])</td><td>$Tuple($A, $B)</td></tr>
+						<tr><td>z.object({"{…}"})</td><td>$interface({"{…}"})</td></tr>
+						<tr><td>z.object({"{…}"}).strict()</td><td>$Exact({"{…}"})</td></tr>
+						<tr><td>z.record(K, V)</td><td>$Record($K, $V)</td></tr>
+						<tr><td>z.map(K, V)</td><td>$Map($K, $V)</td></tr>
+						<tr><td>z.set(T)</td><td>$Set($T)</td></tr>
+						<tr><td>z.enum([…])</td><td>oneOf([…])</td></tr>
+						<tr><td>z.nativeEnum(E)</td><td>$enum(E)</td></tr>
+						<tr><td>z.union([A, B])</td><td>union($A, $B)</td></tr>
+						<tr><td>z.intersection(A, B)</td><td>and($A, $B)</td></tr>
+						<tr><td>z.lazy(() {"=>"} X)</td><td>lazy(() {"=>"} $X)</td></tr>
+						<tr><td>z.optional(T) / T.optional()</td><td>$optional($T)</td></tr>
+						<tr><td>z.nullable(T) / T.nullable()</td><td>$maybe($T)</td></tr>
+						<tr><td>z.nullish(T)</td><td>$maybe($T)</td></tr>
+						<tr><td>z.instanceof(C)</td><td>$instanceof(C)</td></tr>
+						<tr><td>z.string().min(n)</td><td>$string.that(minLength(n))</td></tr>
+						<tr><td>z.string().max(n)</td><td>$string.that(maxLength(n))</td></tr>
+						<tr><td>z.string().length(n)</td><td>$string.that(hasLength(n))</td></tr>
+						<tr><td>z.string().regex(re)</td><td>$string.that(matches(re))</td></tr>
+						<tr><td>z.string().nonempty()</td><td>$string.that(nonEmpty)</td></tr>
+						<tr><td>z.number().min(n).max(m)</td><td>$number.that(inRange(n, m))</td></tr>
+						<tr><td>T.parse(x)</td><td>guard(x, $T) or check(x, $T)</td></tr>
+						<tr><td>T.safeParse(x).success</td><td>is(x, $T)</td></tr>
+						<tr><td>z.infer&lt;typeof T&gt;</td><td>Type&lt;typeof $T&gt;</td></tr>
+						<tr><td>ZodError</td><td>CheckError</td></tr>
+					</tbody>
+				</table>
+
+				<h2 id="patterns">Common patterns</h2>
+
+				<h3>Object shapes</h3>
+				<pre
+					class="bare"><code data-lang="ts">{`// zod
+const User = z.object({
+  id: z.string().regex(/[a-z0-9]+/),
+  age: z.number().int().min(0).max(120),
+});
+
+// succulent
+const $User = $interface({
+  id: $string.that(matches(/[a-z0-9]+/)),
+  age: $int.that(inRange(0, 120)),
+});`}</code></pre>
+
+				<h3>Optional vs nullable</h3>
+				<pre
+					class="bare"><code data-lang="ts">{`// zod
+const Schema = z.object({
+  nickname: z.string().optional(),  // undefined OK
+  bio: z.string().nullable(),       // null OK
+  notes: z.string().nullish(),      // null + undefined OK
+});
+
+// succulent
+const $Schema = $interface({
+  nickname: $optional($string),     // undefined OK
+  bio: $maybe($string),             // null + undefined OK
+  notes: $maybe($string),
+});`}</code></pre>
+				<div class="callout">
+					<span class="i">$</span>
+					<p>
+						succulent doesn't ship a "null-only" wrapper because in practice
+						you almost always also want to accept undefined. If you really need
+						"null but not undefined", compose it yourself with
+						<code class="inl">union($T, $null)</code>.
+					</p>
+				</div>
+
+				<h3>Validation</h3>
+				<pre
+					class="bare"><code data-lang="ts">{`// zod
+const data = Schema.parse(input);          // throws ZodError
+const result = Schema.safeParse(input);    // { success, data | error }
+
+// succulent
+guard(input, $Schema);                     // throws CheckError, narrows input
+const ok = is(input, $Schema);             // boolean, narrows on true branch`}</code></pre>
+
+				<h3>Type inference</h3>
+				<pre
+					class="bare"><code data-lang="ts">{`// zod
+type User = z.infer<typeof User>;
+
+// succulent
+type User = Type<typeof $User>;`}</code></pre>
+
+				<h2 id="gaps">What's missing or different</h2>
+				<ul>
+					<li>
+						<strong>No <code class="inl">.transform()</code> /
+						<code class="inl">.preprocess()</code>.</strong> succulent validates,
+						it doesn't reshape. Transform on the way in or out yourself.
+					</li>
+					<li>
+						<strong>No coercion.</strong>
+						<code class="inl">$number</code> won't accept
+						<code class="inl">"42"</code>. Convert first.
+					</li>
+					<li>
+						<strong>No async schemas.</strong> Validation is synchronous.
+					</li>
+					<li>
+						<strong>No <code class="inl">.default()</code>.</strong> Apply
+						defaults yourself before or after validation.
+					</li>
+					<li>
+						<strong>Discriminated unions.</strong> No dedicated helper. Combine a
+						literal discriminator with <code class="inl">union(…)</code>:
+					</li>
+				</ul>
+				<pre
+					class="bare"><code data-lang="ts">{`const $Event = union(
+  $interface({ kind: "click", x: $number, y: $number }),
+  $interface({ kind: "key", code: $string }),
+);
+// Inferred type: { kind: "click"; x: number; y: number }
+//              | { kind: "key"; code: string }`}</code></pre>
+
+				<div class="pager">
+					<a href="getting-started">
+						<div class="dir">←</div>
+						<div class="ttl">Getting started</div>
+					</a>
+					<a class="next" href="migrate-from-yup">
+						<div class="dir">→</div>
+						<div class="ttl">From yup</div>
+					</a>
+				</div>
+			</article>
+		</main>
+
+		<aside class="docs-toc">
+			<h5>On this page</h5>
+			<nav id="toc">
+				<a href="#mapping">Mapping table</a>
+				<a href="#patterns">Common patterns</a>
+				<a href="#gaps">What's missing or different</a>
+			</nav>
+		</aside>
+	</div>
+
+	<script is:inline>
+		(function () {
+			var links = [].slice.call(document.querySelectorAll("#toc a"));
+			var heads = links.map(function (a) {
+				return document.querySelector(a.getAttribute("href"));
+			});
+			function onScroll() {
+				var y = window.scrollY + 100,
+					cur = 0;
+				heads.forEach(function (h, i) {
+					if (h && h.offsetTop <= y) cur = i;
+				});
+				links.forEach(function (a, i) {
+					a.classList.toggle("active", i === cur);
+				});
+			}
+			window.addEventListener("scroll", onScroll);
+			onScroll();
+		})();
+	</script>
+</Layout>

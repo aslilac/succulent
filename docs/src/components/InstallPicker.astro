@@ -1,0 +1,183 @@
+---
+const commands = {
+	npm: "npm install succulent",
+	yarn: "yarn add succulent",
+	pnpm: "pnpm add succulent",
+	bun: "bun add succulent",
+} as const;
+
+type Pm = keyof typeof commands;
+const order: readonly Pm[] = ["npm", "yarn", "pnpm", "bun"];
+const initial: Pm = "npm";
+---
+
+<div class="install" data-install>
+	<div class="pm-tabs" role="tablist" aria-label="Package manager">
+		{
+			order.map((pm) => (
+				<button
+					type="button"
+					class:list={["pm", { active: pm === initial }]}
+					role="tab"
+					aria-selected={pm === initial}
+					data-pm={pm}
+					data-cmd={commands[pm]}
+				>
+					{pm}
+				</button>
+			))
+		}
+	</div>
+	<div class="cmd-row">
+		<span class="prompt">$</span>
+		<span class="cmd">{commands[initial]}</span>
+		<button type="button" class="cp" data-copy aria-label="Copy command">
+			<svg
+				viewBox="0 0 24 24"
+				width="15"
+				height="15"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				aria-hidden="true"
+			>
+				<rect x="9" y="9" width="11" height="11" rx="2"></rect>
+				<path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+			</svg>
+			<svg
+				class="check"
+				viewBox="0 0 24 24"
+				width="15"
+				height="15"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2.4"
+				aria-hidden="true"
+			>
+				<path d="M20 6 9 17l-5-5"></path>
+			</svg>
+		</button>
+	</div>
+</div>
+
+<style>
+	.install {
+		display: inline-flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0.45rem;
+		font-family: var(--font-mono);
+		font-size: 0.9rem;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		padding: 0.5rem;
+		min-width: 20rem;
+		max-width: 100%;
+	}
+	.pm-tabs {
+		display: inline-flex;
+		gap: 0.15rem;
+		padding: 0 0.2rem;
+	}
+	.pm {
+		font-family: var(--font-mono);
+		font-size: 0.76rem;
+		padding: 0.3rem 0.6rem;
+		border-radius: 8px;
+		color: var(--ink-mute);
+		transition:
+			color 0.15s,
+			background 0.15s;
+	}
+	.pm:hover {
+		color: var(--ink-soft);
+		background: var(--bg-tint);
+	}
+	.pm.active {
+		background: var(--green-tint);
+		color: var(--green-deep);
+	}
+	.cmd-row {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.6rem;
+		padding: 0.45rem 0.55rem 0.45rem 0.85rem;
+		border-radius: 999px;
+		background: var(--bg-tint);
+		min-width: 0;
+	}
+	.prompt {
+		color: var(--green);
+		flex: none;
+	}
+	.cmd {
+		color: var(--ink-soft);
+		overflow-x: auto;
+		white-space: nowrap;
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+	.cp {
+		width: 30px;
+		height: 30px;
+		border-radius: 999px;
+		display: grid;
+		place-items: center;
+		background: var(--paper);
+		color: var(--ink-mute);
+		flex: none;
+		transition: color 0.15s;
+	}
+	.cp:hover {
+		color: var(--green-deep);
+	}
+	.cp .check {
+		display: none;
+	}
+	.cp.copied {
+		color: var(--green);
+	}
+	.cp.copied svg:not(.check) {
+		display: none;
+	}
+	.cp.copied .check {
+		display: block;
+	}
+</style>
+
+<script>
+	document.querySelectorAll<HTMLElement>("[data-install]").forEach((root) => {
+		const cmdEl = root.querySelector<HTMLElement>(".cmd");
+		const copyBtn = root.querySelector<HTMLButtonElement>("[data-copy]");
+		const pms = root.querySelectorAll<HTMLButtonElement>(".pm");
+		if (!cmdEl || !copyBtn) return;
+
+		pms.forEach((btn) => {
+			btn.addEventListener("click", () => {
+				pms.forEach((b) => {
+					b.classList.remove("active");
+					b.setAttribute("aria-selected", "false");
+				});
+				btn.classList.add("active");
+				btn.setAttribute("aria-selected", "true");
+				cmdEl.textContent = btn.dataset.cmd ?? "";
+			});
+		});
+
+		let resetTimer: number | undefined;
+		copyBtn.addEventListener("click", async () => {
+			const cmd = cmdEl.textContent ?? "";
+			try {
+				await navigator.clipboard?.writeText(cmd);
+			} catch {
+				// best-effort; no fallback path for older browsers
+			}
+			copyBtn.classList.add("copied");
+			window.clearTimeout(resetTimer);
+			resetTimer = window.setTimeout(() => {
+				copyBtn.classList.remove("copied");
+			}, 1400);
+		});
+	});
+</script>

@@ -1,0 +1,63 @@
+---
+interface Props {
+	active: "getting-started" | "migrate-zod" | "migrate-yup";
+}
+
+const { active } = Astro.props;
+const onGuide = active === "getting-started";
+// Prefix for the in-guide anchor links so they work from other pages too.
+const gs = onGuide ? "" : "getting-started";
+---
+
+<aside class="docs-side">
+	<button class="search-trigger side-search" data-cmdk>
+		<svg
+			viewBox="0 0 24 24"
+			width="15"
+			height="15"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+		>
+			<circle cx="11" cy="11" r="7"></circle>
+			<path d="m20 20-3.5-3.5"></path>
+		</svg>
+		<span class="label">Search</span><span class="kbd">⌘K</span>
+	</button>
+	<div class="grp">
+		<h5>Introduction</h5>
+		<a
+			href={onGuide ? "#" : "getting-started"}
+			class:list={[{ active: onGuide }]}>Getting started</a
+		>
+		<a href={`${gs}#motivation`}>Why succulent?</a>
+		<a href={`${gs}#install`}>Installation</a>
+	</div>
+	<div class="grp">
+		<h5>Guides</h5>
+		<a href={`${gs}#first-guard`}>Your first guard</a>
+		<a href={`${gs}#objects`}>Validating objects</a>
+		<a href={`${gs}#filters`}>Refining with filters</a>
+		<a href={`${gs}#types`}>Inferring types</a>
+		<a href={`${gs}#recursive`}>Recursive types</a>
+		<a href={`${gs}#errors`}>Handling errors</a>
+		<a href={`${gs}#namespace`}>The $ namespace</a>
+	</div>
+	<div class="grp">
+		<h5>Migration</h5>
+		<a
+			href={active === "migrate-zod" ? "#" : "migrate-from-zod"}
+			class:list={[{ active: active === "migrate-zod" }]}>From zod</a
+		>
+		<a
+			href={active === "migrate-yup" ? "#" : "migrate-from-yup"}
+			class:list={[{ active: active === "migrate-yup" }]}>From yup</a
+		>
+	</div>
+	<div class="grp">
+		<h5>Reference</h5>
+		<a class="mono" href="api">schemas</a>
+		<a class="mono" href="api#api-guard">operators</a>
+		<a class="mono" href="api#api-matches">filters</a>
+	</div>
+</aside>
