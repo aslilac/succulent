@@ -15,6 +15,25 @@ type KeyValuePair = readonly [key: unknown, valueSchema: SchemaBase<unknown>];
 const toDisplayKeyValue = ([key, valueSchema]: KeyValuePair) =>
 	`${toDisplayKey(key)}: ${Schema.displayName(valueSchema)}`;
 
+// Keys whose value type includes `undefined` become optional (`?:`), so that
+// `$interface({ url: $optional($string) })` yields `{ url?: string | undefined }`
+// instead of `{ url: string | undefined }`. The `unknown extends T[K]` guard
+// excludes `any` and `unknown`, whose value types trivially include `undefined`
+// but should still produce a required key.
+type WithOptionalKeys<T> = {
+	[K in keyof T as unknown extends T[K]
+		? K
+		: [undefined] extends [T[K]]
+			? never
+			: K]: T[K];
+} & {
+	[K in keyof T as unknown extends T[K]
+		? never
+		: [undefined] extends [T[K]]
+			? K
+			: never]?: T[K];
+};
+
 /**
  * Matches any non-primitive, non-null, non-undefined, value. Equivalent to `object` in TypeScript.
  * @example
@@ -47,7 +66,7 @@ export const $object = new Schema(
  */
 export function $interface<T extends object>(template: {
 	[K in keyof T]: SchemaBase<T[K]>;
-}): Schema<T> {
+}): Schema<WithOptionalKeys<T>> {
 	const keys = Reflect.ownKeys(template);
 	const shape = Object.fromEntries(
 		keys.map((key) => [key, Schema.from(template[key as keyof T])]),
@@ -106,7 +125,7 @@ export { $interface as $type };
  */
 export function $Exact<const T extends object>(template: {
 	[K in keyof T]: SchemaBase<T[K]>;
-}): Schema<T> {
+}): Schema<WithOptionalKeys<T>> {
 	const keys = Reflect.ownKeys(template);
 	const shape = Object.fromEntries(
 		keys.map((key) => [key, Schema.from(template[key as keyof T])]),

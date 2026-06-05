@@ -1,0 +1,34 @@
+name: Check docs
+
+on:
+  push:
+    branches: ["trunk"]
+  pull_request:
+    branches: ["**"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    name: Check
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        name: Checkout
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.x
+
+      - uses: pnpm/action-setup@v6
+        name: Install dependencies
+        with:
+          run_install: true
+          cache: true
+
+      - run: pnpm astro check
+        name: Check types

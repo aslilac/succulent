@@ -1,5 +1,5 @@
 ---
-import "../styles/shared.css";
+import "../shared.css";
 
 interface Props {
 	title: string;
@@ -88,11 +88,7 @@ const navLinks = [
 							></path>
 						</svg>
 					</a>
-					<button
-						class="theme-toggle"
-						onclick="SUCC.toggleTheme()"
-						aria-label="Toggle theme"
-					>
+					<button class="theme-toggle" aria-label="Toggle theme">
 						<svg
 							class="sun"
 							viewBox="0 0 24 24"
@@ -148,6 +144,8 @@ const navLinks = [
 			</div>
 		</footer>
 
-		<script is:inline src="shared.js"></script>
+		<script>
+			import "../scripts/shared";
+		</script>
 	</body>
 </html>

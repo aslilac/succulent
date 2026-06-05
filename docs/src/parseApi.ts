@@ -72,8 +72,8 @@ export function parseApi(files: Record<string, string>): ApiDocs {
 		if (path.endsWith(".test.ts")) continue;
 		EXPORT_RE.lastIndex = 0;
 		let m: RegExpExecArray | null;
-		while ((m = EXPORT_RE.exec(text)) !== null) {
-			const [, comment, name] = m as [string, string, string];
+		while ((m = EXPORT_RE.exec(text)) !== null && m.length >= 3) {
+			const [, comment, name] = m;
 			const parsed = parseComment(`/**${comment}*/`);
 			if (parsed.description || parsed.examples.length || parsed.remarks) {
 				out[name] = parsed;

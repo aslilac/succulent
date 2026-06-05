@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { parseApi } from "../lib/parseApi.ts";
+import { parseApi } from "../parseApi";
 
 const sources = import.meta.glob<string>("../../../src/**/*.ts", {
 	eager: true,
@@ -42,264 +42,227 @@ const docs = parseApi(sources);
 		</aside>
 	</div>
 
-	<script is:inline define:vars={{ DOCS: docs }}>
-		window.SUCC = window.SUCC || {};
-		window.SUCC.docs = DOCS;
-	</script>
+	{/* Server-rendered TSDoc payload, read by the bundled script below. */}
+	<script
+		type="application/json"
+		id="succ-api-docs"
+		set:html={JSON.stringify(docs).replace(/</g, "\\u003c")}
+	/>
 
-	<script is:inline>
-		// Wait for shared.js (loaded at end of body) to populate window.SUCC.
-		document.addEventListener("DOMContentLoaded", function () {
-			var EX = {
-				guard: "guard(x, $string);",
-				check: "check(x, $User);",
-				is: "if (is(x, $number)) { /* x: number */ }",
-				lazy: "friends: $Array(lazy(() => $Friend))",
-				union: "union($string, $number) // string | number",
-				or: "or($string, $number) // string | number",
-				and: "and($Named, $Aged) // Named & Aged",
-				oneOf: 'oneOf(["red", "green", "blue"])',
-				CheckError:
-					"try { guard(x, $User); } catch (e) {\n  if (e instanceof CheckError) {/* …*/}\n}",
-				$tryinstanceof: "$tryinstanceof(() => Buffer)",
-				$ArrayBufferView: "guard(buf, $ArrayBufferView);",
-				$File: "guard(x, $File);",
-				$Buffer: "guard(x, $Buffer);",
-				$Request: "guard(x, $Request);",
-				$Response: "guard(x, $Response);",
-				matches: "$string.that(matches(/^[a-z0-9_]+$/))",
-				inRange: "$int.that(inRange(0, 100))",
-				hasLength: "$string.that(hasLength(8))",
-				minLength: "$Array($int).that(minLength(1))",
-				maxLength: "$string.that(maxLength(50))",
-				nonEmpty: "$string.that(nonEmpty)",
-				$string: "guard(x, $string);",
-				$number: "guard(x, $number);",
-				$int: "guard(x, $int);",
-				$finite: "guard(x, $finite);",
-				$bigint: "guard(x, $bigint);",
-				$boolean: "guard(x, $boolean);",
-				$symbol: "guard(x, $symbol);",
-				$NaN: "guard(x, $NaN);",
-				$literal: '$literal("draft") // the string "draft"',
-				$optional: "$optional($string) // string | undefined",
-				$maybe: "$maybe($Date) // Date | null | undefined",
-				$nullish: "guard(x, $nullish);",
-				$falsy: "guard(x, $falsy);",
-				$any: "guard(x, $any); // always ok",
-				$unknown: "guard(x, $unknown); // always ok, narrows to unknown",
-				$never: "guard(x, $never); // always throws",
-				$true: "guard(x, $true);",
-				$false: "guard(x, $false);",
-				$null: "guard(x, $null);",
-				$undefined: "guard(x, $undefined);",
-				$interface: "$interface({ name: $string, age: $int })",
-				$Exact: "$Exact({ id: $string }) // no extra keys",
-				$object: "guard(x, $object); // any non-null object",
-				$Array: "$Array($number) // number[]",
-				$Tuple: "$Tuple($string, $number) // [string, number]",
-				$Record: "$Record($string, $int) // Record<string, number>",
-				$Map: "$Map($string, $User) // Map<string, User>",
-				$Set: "$Set($string) // Set<string>",
-				$enum: "$enum(Color) // a TypeScript enum",
-				$Date: "guard(x, $Date);",
-				$RegExp: "guard(x, $RegExp);",
-				$Error: "guard(x, $Error);",
-				$URL: "guard(x, $URL);",
-				$ArrayBuffer: "guard(buf, $ArrayBuffer);",
-				$Blob: "guard(x, $Blob);",
-				$instanceof: "$instanceof(MyClass) // an instance of MyClass",
-				Type: "type User = Type<typeof $User>;",
-				Schema: "const $F: Schema<Friend> = $interface({ /* … */ });",
-			};
-			var KIND_LABEL = {
-				schema: "schema",
-				operator: "operator",
-				filter: "filter",
-				type: "type",
-			};
+	<script>
+		import { symbols, highlight, type SuccApiDoc, type SuccSymbolKind } from "../scripts/shared";
 
-			var syms = window.SUCC.symbols.filter(function (s) {
-				return s.kind !== "page";
-			});
-			var entriesEl = document.getElementById("entries");
-			var sideEl = document.getElementById("side");
-			var tocEl = document.getElementById("toc");
+		const docsEl = document.getElementById("succ-api-docs");
+		const docs: Record<string, SuccApiDoc> = docsEl?.textContent
+			? JSON.parse(docsEl.textContent)
+			: {};
 
-			var order = [
-				"Operators",
-				"Filters",
-				"Primitives",
-				"Special",
-				"Objects & collections",
-				"Built-ins",
-				"Typed arrays",
-				"Type helpers",
-			];
-			var groups = {};
-			syms.forEach(function (s) {
-				(groups[s.group] = groups[s.group] || []).push(s);
-			});
+		const EX: Record<string, string> = {
+			guard: "guard(x, $string);",
+			check: "check(x, $User);",
+			is: "if (is(x, $number)) { /* x: number */ }",
+			lazy: "friends: $Array(lazy(() => $Friend))",
+			union: "union($string, $number) // string | number",
+			or: "or($string, $number) // string | number",
+			and: "and($Named, $Aged) // Named & Aged",
+			oneOf: 'oneOf(["red", "green", "blue"])',
+			CheckError:
+				"try { guard(x, $User); } catch (e) {\n  if (e instanceof CheckError) {/* …*/}\n}",
+			$tryinstanceof: "$tryinstanceof(() => Buffer)",
+			$ArrayBufferView: "guard(buf, $ArrayBufferView);",
+			$File: "guard(x, $File);",
+			$Buffer: "guard(x, $Buffer);",
+			$Request: "guard(x, $Request);",
+			$Response: "guard(x, $Response);",
+			matches: "$string.that(matches(/^[a-z0-9_]+$/))",
+			inRange: "$int.that(inRange(0, 100))",
+			hasLength: "$string.that(hasLength(8))",
+			minLength: "$Array($int).that(minLength(1))",
+			maxLength: "$string.that(maxLength(50))",
+			nonEmpty: "$string.that(nonEmpty)",
+			$string: "guard(x, $string);",
+			$number: "guard(x, $number);",
+			$int: "guard(x, $int);",
+			$finite: "guard(x, $finite);",
+			$bigint: "guard(x, $bigint);",
+			$boolean: "guard(x, $boolean);",
+			$symbol: "guard(x, $symbol);",
+			$NaN: "guard(x, $NaN);",
+			$literal: '$literal("draft") // the string "draft"',
+			$optional: "$optional($string) // string | undefined",
+			$maybe: "$maybe($Date) // Date | null | undefined",
+			$nullish: "guard(x, $nullish);",
+			$falsy: "guard(x, $falsy);",
+			$any: "guard(x, $any); // always ok",
+			$unknown: "guard(x, $unknown); // always ok, narrows to unknown",
+			$never: "guard(x, $never); // always throws",
+			$true: "guard(x, $true);",
+			$false: "guard(x, $false);",
+			$null: "guard(x, $null);",
+			$undefined: "guard(x, $undefined);",
+			$interface: "$interface({ name: $string, age: $int })",
+			$Exact: "$Exact({ id: $string }) // no extra keys",
+			$object: "guard(x, $object); // any non-null object",
+			$Array: "$Array($number) // number[]",
+			$Tuple: "$Tuple($string, $number) // [string, number]",
+			$Record: "$Record($string, $int) // Record<string, number>",
+			$Map: "$Map($string, $User) // Map<string, User>",
+			$Set: "$Set($string) // Set<string>",
+			$enum: "$enum(Color) // a TypeScript enum",
+			$Date: "guard(x, $Date);",
+			$RegExp: "guard(x, $RegExp);",
+			$Error: "guard(x, $Error);",
+			$URL: "guard(x, $URL);",
+			$ArrayBuffer: "guard(buf, $ArrayBuffer);",
+			$Blob: "guard(x, $Blob);",
+			$instanceof: "$instanceof(MyClass) // an instance of MyClass",
+			Type: "type User = Type<typeof $User>;",
+			Schema: "const $F: Schema<Friend> = $interface({ /* … */ });",
+		};
+		const KIND_LABEL: Partial<Record<SuccSymbolKind, string>> = {
+			schema: "schema",
+			operator: "operator",
+			filter: "filter",
+			type: "type",
+		};
 
-			var sideHtml =
-				'<button class="search-trigger side-search" data-cmdk>' +
-				'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>' +
-				'<span class="label">Search</span><span class="kbd">⌘K</span></button>';
-			order.forEach(function (g) {
-				if (!groups[g]) return;
-				sideHtml +=
-					'<div class="grp"><h5>' +
-					g +
-					"</h5>" +
-					groups[g]
-						.map(function (s) {
-							return (
-								'<a class="mono" href="#api-' + s.name + '">' + s.name + "</a>"
-							);
-						})
-						.join("") +
-					"</div>";
-			});
-			sideEl.innerHTML = sideHtml;
+		const syms = symbols.filter((s) => s.kind !== "page");
+		const entriesEl = document.getElementById("entries")!;
+		const sideEl = document.getElementById("side")!;
+		const tocEl = document.getElementById("toc")!;
 
-			tocEl.innerHTML = order
-				.filter(function (g) {
-					return groups[g];
-				})
-				.map(function (g) {
-					return (
-						'<a href="#grp-' + g.replace(/[^a-z]/gi, "") + '">' + g + "</a>"
+		const order = [
+			"Operators",
+			"Filters",
+			"Primitives",
+			"Special",
+			"Objects & collections",
+			"Built-ins",
+			"Typed arrays",
+			"Type helpers",
+		];
+		const groups: Record<string, typeof syms> = {};
+		syms.forEach((s) => {
+			(groups[s.group] = groups[s.group] || []).push(s);
+		});
+
+		let sideHtml =
+			'<button class="search-trigger side-search" data-cmdk>' +
+			'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>' +
+			'<span class="label">Search</span><span class="kbd">⌘K</span></button>';
+		order.forEach((g) => {
+			if (!groups[g]) return;
+			sideHtml +=
+				`<div class="grp"><h5>${g}</h5>` +
+				groups[g]!
+					.map((s) => `<a class="mono" href="#api-${s.name}">${s.name}</a>`)
+					.join("") +
+				"</div>";
+		});
+		sideEl.innerHTML = sideHtml;
+
+		tocEl.innerHTML = order
+			.filter((g) => groups[g])
+			.map((g) => `<a href="#grp-${g.replace(/[^a-z]/gi, "")}">${g}</a>`)
+			.join("");
+
+		const escapeHtml = (s: string) =>
+			s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+		// Lightweight inline-markdown: convert `code` to <code class="inl">,
+		// split paragraphs on blank lines.
+		const renderProse = (text: string) => {
+			if (!text) return "";
+			return text
+				.split(/\n{2,}/)
+				.map((para) => {
+					let safe = escapeHtml(para);
+					safe = safe.replace(
+						/`([^`]+)`/g,
+						(_, c) => `<code class="inl">${c}</code>`,
 					);
+					return `<p>${safe.replace(/\n/g, " ")}</p>`;
 				})
 				.join("");
+		};
 
-			function escapeHtml(s) {
-				return s
-					.replace(/&/g, "&amp;")
-					.replace(/</g, "&lt;")
-					.replace(/>/g, "&gt;");
-			}
-			// Lightweight inline-markdown: convert `code` to <code class="inl">,
-			// split paragraphs on blank lines.
-			function renderProse(text) {
-				if (!text) return "";
-				return text
-					.split(/\n{2,}/)
-					.map(function (para) {
-						var safe = escapeHtml(para);
-						safe = safe.replace(/`([^`]+)`/g, function (_, c) {
-							return '<code class="inl">' + c + "</code>";
-						});
-						return "<p>" + safe.replace(/\n/g, " ") + "</p>";
-					})
-					.join("");
-			}
-
-			var html = "";
-			order.forEach(function (g) {
-				if (!groups[g]) return;
+		let html = "";
+		order.forEach((g) => {
+			if (!groups[g]) return;
+			html += `<h2 class="api-group-title" id="grp-${g.replace(/[^a-z]/gi, "")}">${g}</h2>`;
+			groups[g]!.forEach((s) => {
+				const doc = docs[s.name] ?? null;
+				const example =
+					(doc && doc.examples[0]) || EX[s.name] || `guard(x, ${s.name});`;
 				html +=
-					'<h2 class="api-group-title" id="grp-' +
-					g.replace(/[^a-z]/gi, "") +
-					'">' +
-					g +
-					"</h2>";
-				groups[g].forEach(function (s) {
-					var doc = (window.SUCC.docs && window.SUCC.docs[s.name]) || null;
-					var example =
-						(doc && doc.examples && doc.examples[0]) ||
-						EX[s.name] ||
-						"guard(x, " + s.name + ");";
-					html +=
-						'<div class="api-entry" id="api-' +
-						s.name +
-						'">' +
-						'<div class="sig-row"><span class="sig">' +
-						window.SUCC.highlight(s.sig || s.name) +
-						"</span>" +
-						'<span class="kindtag">' +
-						(KIND_LABEL[s.kind] || s.kind) +
-						"</span></div>" +
-						'<p class="blurb">' +
-						s.blurb +
-						"</p>";
-					if (doc && doc.description) {
-						html += '<div class="desc">' + renderProse(doc.description) + "</div>";
-					}
-					if (doc && doc.remarks) {
-						html += '<div class="desc">' + renderProse(doc.remarks) + "</div>";
-					}
-					html +=
-						'<div class="code ex"><pre><code>' +
-						window.SUCC.highlight(example) +
-						"</code></pre></div>" +
-						"</div>";
-				});
-			});
-			entriesEl.innerHTML = html;
-
-			var filterBtns = [].slice.call(
-				document.querySelectorAll("#filter button"),
-			);
-			filterBtns.forEach(function (b) {
-				b.addEventListener("click", function () {
-					filterBtns.forEach(function (x) {
-						x.classList.remove("active");
-					});
-					b.classList.add("active");
-					var k = b.dataset.k;
-					[].slice
-						.call(document.querySelectorAll(".api-entry"))
-						.forEach(function (e) {
-							var name = e.id.replace("api-", "");
-							var sym = syms.find(function (s) {
-								return s.name === name;
-							});
-							e.style.display =
-								k === "all" || (sym && sym.kind === k) ? "" : "none";
-						});
-					[].slice
-						.call(document.querySelectorAll(".api-group-title"))
-						.forEach(function (t) {
-							var any = false,
-								n = t.nextElementSibling;
-							while (n && !n.classList.contains("api-group-title")) {
-								if (
-									n.classList.contains("api-entry") &&
-									n.style.display !== "none"
-								)
-									any = true;
-								n = n.nextElementSibling;
-							}
-							t.style.display = any ? "" : "none";
-						});
-				});
-			});
-
-			if (location.hash) {
-				var t = document.getElementById(location.hash.slice(1));
-				if (t) {
-					t.classList.add("flash");
-					setTimeout(function () {
-						t.classList.remove("flash");
-					}, 1400);
+					`<div class="api-entry" id="api-${s.name}">` +
+					`<div class="sig-row"><span class="sig">${highlight(s.sig || s.name)}</span>` +
+					`<span class="kindtag">${KIND_LABEL[s.kind] ?? s.kind}</span></div>` +
+					`<p class="blurb">${s.blurb}</p>`;
+				if (doc?.description) {
+					html += `<div class="desc">${renderProse(doc.description)}</div>`;
 				}
-			}
+				if (doc?.remarks) {
+					html += `<div class="desc">${renderProse(doc.remarks)}</div>`;
+				}
+				html +=
+					`<div class="code ex"><pre><code>${highlight(example)}</code></pre></div>` +
+					"</div>";
+			});
+		});
+		entriesEl.innerHTML = html;
 
-			var tl = [].slice.call(tocEl.querySelectorAll("a"));
-			var th = tl.map(function (a) {
-				return document.getElementById(a.getAttribute("href").slice(1));
-			});
-			window.addEventListener("scroll", function () {
-				var y = window.scrollY + 110,
-					cur = 0;
-				th.forEach(function (h, i) {
-					if (h && h.offsetTop <= y) cur = i;
+		const filterBtns = Array.from(
+			document.querySelectorAll<HTMLButtonElement>("#filter button"),
+		);
+		filterBtns.forEach((b) => {
+			b.addEventListener("click", () => {
+				filterBtns.forEach((x) => x.classList.remove("active"));
+				b.classList.add("active");
+				const k = b.dataset["k"];
+				document.querySelectorAll<HTMLElement>(".api-entry").forEach((e) => {
+					const name = e.id.replace("api-", "");
+					const sym = syms.find((s) => s.name === name);
+					e.style.display =
+						k === "all" || (sym && sym.kind === k) ? "" : "none";
 				});
-				tl.forEach(function (a, i) {
-					a.classList.toggle("active", i === cur);
-				});
+				document
+					.querySelectorAll<HTMLElement>(".api-group-title")
+					.forEach((t) => {
+						let any = false;
+						let n = t.nextElementSibling;
+						while (n && !n.classList.contains("api-group-title")) {
+							if (
+								n.classList.contains("api-entry") &&
+								(n as HTMLElement).style.display !== "none"
+							)
+								any = true;
+							n = n.nextElementSibling;
+						}
+						t.style.display = any ? "" : "none";
+					});
 			});
+		});
+
+		if (location.hash) {
+			const t = document.getElementById(location.hash.slice(1));
+			if (t) {
+				t.classList.add("flash");
+				setTimeout(() => t.classList.remove("flash"), 1400);
+			}
+		}
+
+		const tl = Array.from(tocEl.querySelectorAll<HTMLAnchorElement>("a"));
+		const th = tl.map((a) =>
+			document.getElementById(a.getAttribute("href")!.slice(1)),
+		);
+		window.addEventListener("scroll", () => {
+			const y = window.scrollY + 110;
+			let cur = 0;
+			th.forEach((h, i) => {
+				if (h && h.offsetTop <= y) cur = i;
+			});
+			tl.forEach((a, i) => a.classList.toggle("active", i === cur));
 		});
 	</script>
 </Layout>

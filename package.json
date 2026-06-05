@@ -27,7 +27,7 @@
 		"build/**"
 	],
 	"devDependencies": {
-		"@types/node": "^25.9.1",
+		"@types/node": "^24.12.4",
 		"prettier": "~3.8.3",
 		"typescript": "~6.0.3",
 		"vitest": "^4.1.8"

@@ -74,19 +74,32 @@ test("$interface with unwrapped literals", () => {
 	expect(is({ hi: "hi" }, $interface({ hi: "hey" }))).toBe(false);
 });
 
-test.skip("$interface with optional keys", () => {
-	const $Test = $interface({ hi: $string, optional: $optional($string) });
+test("$interface with optional keys", () => {
+	const $Test = $interface({ hi: $string, there: $optional($string) });
 	type Test = Type<typeof $Test>;
 
-	// @ts-expect-error: There's not a great way in TypeScript to say "this key can be `undefined`,
-	// so let it be optional." I'd love to fix this, but it requires some nasty type shenanigans
-	// that only 50% work.
+	// Asserts that the derived `Test` type allows omitting the `$optional`
+	// `there` property from object literals.
 	const test: Test = { hi: "hi" };
 	expect(is(test, $Test)).toBe(true);
+	expect(is({ hi: "hi", optional: "ok" }, $Test)).toBe(true);
+	expect(is({ hi: "hi", optional: undefined }, $Test)).toBe(true);
+	expect(is({}, $Test)).toBe(false);
 
 	function _(x: unknown) {
 		if (is(x, $Test)) assertType<Test, typeof x>(x);
 	}
+});
+
+// Regression test for https://github.com/aslilac/succulent/issues/13 — an
+// `$optional` property combined with an index signature should not force the
+// property to be present.
+test("$interface optional property + index signature (issue #13)", () => {
+	const $Foo = $interface({ url: $optional($string) });
+	type Foo = Type<typeof $Foo> & { [index: string]: unknown };
+
+	const data: Foo = { notUrl: "any" };
+	expect(is(data, $Foo)).toBe(true);
 });
 
 test("Using $interface to match an existing type", () => {
