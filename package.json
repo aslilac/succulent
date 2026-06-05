@@ -1,6 +1,6 @@
 {
 	"name": "succulent",
-	"version": "0.22.0",
+	"version": "1.0.0",
 	"author": "McKayla Washburn-Love <kayla@tree.camp>",
 	"description": "Powerful and easy runtime type checking",
 	"keywords": [
