@@ -7,10 +7,10 @@ exports[`$Map 1`] = `
 
 exports[`$Map 2`] = `
 [TypeError: Expected Map<boolean, number>, got [object Map]
-  Expected number, got [object Object]]
+  Expected number, got {}]
 `;
 
 exports[`$Set 1`] = `
-[TypeError: Expected Set<number>, got [object Set]
+[TypeError: Expected Set<number>, got Set[true,false]
   Expected number, got true]
 `;

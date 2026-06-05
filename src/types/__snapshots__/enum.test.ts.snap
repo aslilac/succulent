@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`$enum 1`] = `
-[TypeError: Expected {friend: enum { August, Bandit, Dot, Mady, Toby }, message: Message}, got [object Object]
+[TypeError: Expected {friend: enum { August, Bandit, Dot, Mady, Toby }, message: Message}, got {"friend":"Tony","message":null}
   Expected property friend to have type enum { August, Bandit, Dot, Mady, Toby }
     Expected enum { August, Bandit, Dot, Mady, Toby }, got "Tony"
   Expected property message to have type Message

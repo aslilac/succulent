@@ -132,8 +132,8 @@ export function $Exact<const T extends object>(template: {
 	);
 
 	const unknown = new KeyReporter(
-		(key: string | symbol) => assertHasOwn(template, key),
-		(key) => `Unexpected property ${toDisplayKey(key)}`,
+		(key: string | symbol, _value: unknown) => assertHasOwn(template, key),
+		(key, value) => messages.unexpectedProperty(key, value),
 	);
 
 	const known = new KeyReporter(
@@ -152,7 +152,7 @@ export function $Exact<const T extends object>(template: {
 
 			unknown.reset();
 			for (const key of Reflect.ownKeys(x)) {
-				unknown.report(key);
+				unknown.report(key, Reflect.get(x, key));
 			}
 			unknown.resolve();
 

@@ -127,6 +127,20 @@ test("Using $interface to match an existing type", () => {
 	).toBe(true);
 });
 
+// Regression test for https://github.com/aslilac/succulent/issues/12 — the
+// values of unexpected properties should appear in the error message.
+test("$Exact reports values of unexpected properties (issue #12)", () => {
+	const $A = $Exact({ a: $number });
+	try {
+		check({ a: 1, b: 2, c: "hello" }, $A);
+		throw new Error("expected check to throw");
+	} catch (error) {
+		const msg = (error as Error).message;
+		expect(msg).toContain("Unexpected property b, has value 2");
+		expect(msg).toContain('Unexpected property c, has value "hello"');
+	}
+});
+
 test("$Exact", () => {
 	const $State = $Exact({ a: $boolean, b: $boolean, c: $boolean });
 

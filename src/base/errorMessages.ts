@@ -15,3 +15,7 @@ export function invalidValue(value: unknown, schema: SchemaBase<unknown>) {
 
 	return `Expected ${typeName}, got ${displayValue}`;
 }
+
+export function unexpectedProperty(key: unknown, value: unknown) {
+	return `Unexpected property ${toDisplayKey(key)}, has value ${toDisplayString(value)}`;
+}
