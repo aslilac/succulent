@@ -38,6 +38,9 @@ jobs:
       - run: pnpm test
         name: Run tests
 
+      - run: pnpm build
+        name: Build
+
       - run: pnpm test
         name: Run e2e tests
         working-directory: tests/
