@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import DocsSidebar from "../components/DocsSidebar.astro";
+import InstallPicker from "../components/InstallPicker.astro";
 ---
 
 <Layout title="Getting started · Succulent" activeNav="guide">
@@ -69,27 +70,7 @@ import DocsSidebar from "../components/DocsSidebar.astro";
 					Succulent is a zero-dependency ESM package. Install it with your
 					package manager of choice:
 				</p>
-				<div class="code">
-					<div class="code-head">
-						<span class="fname">terminal</span>
-						<button class="copy">
-							<svg
-								viewBox="0 0 24 24"
-								width="13"
-								height="13"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-							>
-								<rect x="9" y="9" width="11" height="11" rx="2"></rect>
-								<path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
-							</svg>
-							<span class="copy-label">copy</span>
-						</button>
-					</div>
-					<pre><code><span class="tok-schema">$</span> npm install succulent
-<span class="tok-comment"># or: pnpm add succulent · yarn add succulent · bun add succulent</span></code></pre>
-				</div>
+				<InstallPicker fluid />
 
 				<hr />
 

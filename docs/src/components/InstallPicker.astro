@@ -1,4 +1,10 @@
 ---
+interface Props {
+	fluid?: boolean;
+}
+
+const { fluid = false } = Astro.props;
+
 const commands = {
 	npm: "npm install succulent",
 	yarn: "yarn add succulent",
@@ -11,7 +17,7 @@ const order: readonly Pm[] = ["npm", "yarn", "pnpm", "bun"];
 const initial: Pm = "npm";
 ---
 
-<div class="install" data-install>
+<div class:list={["install", { fluid }]} data-install>
 	<div class="pm-tabs" role="tablist" aria-label="Package manager">
 		{
 			order.map((pm) => (
@@ -74,6 +80,11 @@ const initial: Pm = "npm";
 		padding: 0.5rem;
 		min-width: 20rem;
 		max-width: 100%;
+	}
+	.install.fluid {
+		display: flex;
+		width: 100%;
+		min-width: 0;
 	}
 	.pm-tabs {
 		display: inline-flex;
