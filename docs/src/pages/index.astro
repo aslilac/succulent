@@ -199,31 +199,8 @@ import InstallPicker from "../components/InstallPicker.astro";
 
 		/* botanical band */
 		.band {
-			display: grid;
-			grid-template-columns: 0.9fr 1.1fr;
-			gap: 3rem;
-			align-items: center;
-			background: var(--green-tint);
-			border: 1px solid var(--green-line);
 			border-radius: var(--radius-lg);
 			padding: 2.8rem;
-		}
-		.plant-scene {
-			display: grid;
-			place-items: center;
-			aspect-ratio: 1;
-			border-radius: var(--radius);
-			background: radial-gradient(
-				circle at 50% 42%,
-				var(--paper),
-				transparent 70%
-			);
-		}
-		.plant-scene svg {
-			width: 74%;
-			max-width: 270px;
-			height: auto;
-			filter: drop-shadow(0 14px 22px oklch(0.4 0.05 150 / 0.16));
 		}
 		.band h2 {
 			font-size: 2rem;
@@ -231,7 +208,7 @@ import InstallPicker from "../components/InstallPicker.astro";
 		.band p {
 			color: var(--ink-soft);
 			margin-top: 0.8rem;
-			max-width: 42ch;
+			max-width: 65ch;
 		}
 
 		/* cta */
@@ -250,19 +227,13 @@ import InstallPicker from "../components/InstallPicker.astro";
 		}
 
 		@media (max-width: 900px) {
-			.hero-grid,
-			.band {
+			.hero-grid {
 				grid-template-columns: 1fr;
 				gap: 2rem;
 			}
 			.feat-grid {
 				grid-template-columns: 1fr;
 				gap: 0;
-			}
-			.plant-scene {
-				order: 2;
-				max-width: 280px;
-				margin: 0 auto;
 			}
 			.band {
 				padding: 2rem;
@@ -591,139 +562,6 @@ export default function (x: unknown): string {
 	<!-- BOTANICAL BAND + deeper example -->
 	<section class="section wrap" style="padding-top: 0">
 		<div class="band">
-			<div class="plant-scene">
-				<svg viewBox="0 0 260 272" role="img" aria-label="A potted succulent">
-					<ellipse
-						cx="130"
-						cy="252"
-						rx="66"
-						ry="11"
-						fill="var(--green-deep)"
-						opacity="0.13"></ellipse>
-					<g fill="var(--green-deep)">
-						<ellipse
-							cx="130"
-							cy="84"
-							rx="20"
-							ry="44"
-							transform="rotate(0 130 116)"></ellipse>
-						<ellipse
-							cx="130"
-							cy="84"
-							rx="20"
-							ry="44"
-							transform="rotate(45 130 116)"></ellipse>
-						<ellipse
-							cx="130"
-							cy="84"
-							rx="20"
-							ry="44"
-							transform="rotate(90 130 116)"></ellipse>
-						<ellipse
-							cx="130"
-							cy="84"
-							rx="20"
-							ry="44"
-							transform="rotate(135 130 116)"></ellipse>
-						<ellipse
-							cx="130"
-							cy="84"
-							rx="20"
-							ry="44"
-							transform="rotate(225 130 116)"></ellipse>
-						<ellipse
-							cx="130"
-							cy="84"
-							rx="20"
-							ry="44"
-							transform="rotate(315 130 116)"></ellipse>
-					</g>
-					<g fill="var(--green)">
-						<ellipse
-							cx="130"
-							cy="96"
-							rx="16"
-							ry="35"
-							transform="rotate(22 130 116)"></ellipse>
-						<ellipse
-							cx="130"
-							cy="96"
-							rx="16"
-							ry="35"
-							transform="rotate(67 130 116)"></ellipse>
-						<ellipse
-							cx="130"
-							cy="96"
-							rx="16"
-							ry="35"
-							transform="rotate(112 130 116)"></ellipse>
-						<ellipse
-							cx="130"
-							cy="96"
-							rx="16"
-							ry="35"
-							transform="rotate(248 130 116)"></ellipse>
-						<ellipse
-							cx="130"
-							cy="96"
-							rx="16"
-							ry="35"
-							transform="rotate(293 130 116)"></ellipse>
-						<ellipse
-							cx="130"
-							cy="96"
-							rx="16"
-							ry="35"
-							transform="rotate(338 130 116)"></ellipse>
-					</g>
-					<g fill="var(--green-bright)">
-						<ellipse
-							cx="130"
-							cy="104"
-							rx="11"
-							ry="23"
-							transform="rotate(0 130 116)"></ellipse>
-						<ellipse
-							cx="130"
-							cy="104"
-							rx="11"
-							ry="23"
-							transform="rotate(72 130 116)"></ellipse>
-						<ellipse
-							cx="130"
-							cy="104"
-							rx="11"
-							ry="23"
-							transform="rotate(144 130 116)"></ellipse>
-						<ellipse
-							cx="130"
-							cy="104"
-							rx="11"
-							ry="23"
-							transform="rotate(216 130 116)"></ellipse>
-						<ellipse
-							cx="130"
-							cy="104"
-							rx="11"
-							ry="23"
-							transform="rotate(288 130 116)"></ellipse>
-					</g>
-					<circle cx="130" cy="115" r="7" fill="var(--clay)"></circle>
-					<rect x="91" y="150" width="78" height="19" rx="7" fill="var(--clay)"
-					></rect>
-					<path
-						d="M98 169 H162 L153 244 Q152 251 145 251 H115 Q108 251 107 244 Z"
-						fill="var(--clay-deep)"></path>
-					<rect
-						x="91"
-						y="150"
-						width="78"
-						height="6"
-						rx="3"
-						fill="var(--clay)"
-						opacity="0.55"></rect>
-				</svg>
-			</div>
 			<div>
 				<span class="eyebrow">Grows with your codebase</span>
 				<h2 style="margin-top: 0.6rem">Compose real-world schemas.</h2>
